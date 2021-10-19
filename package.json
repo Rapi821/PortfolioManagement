@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Rapi821/PortfolioManagement_Webcrawler#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "puppeteer": "^10.4.0"
   }
 }
