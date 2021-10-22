@@ -42,12 +42,19 @@ for (let elm of aktien) {
     akObj.kurs = kurs;
 
     // get Name
-    const [n] = await page.$x(
-      '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+    // const [n] = await page.$x(
+    //   '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+    // );
+    const n = await page.$eval(() =>
+      Array.from(
+        document.querySelectorAll('.quotebox'),
+        (element) => element.textContent
+      )
     );
-    const nameData = await n.getProperty('textContent');
-    const name = await nameData.jsonValue();
-    akObj.name = name;
+    console.log(n);
+    // const nameData = await n.getProperty('textContent');
+    // const name = await nameData.jsonValue();
+    // akObj.name = name;
 
     akObj.time = getTime();
 
