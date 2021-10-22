@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 const aktien = ['amazon', 'apple'];
-let json;
+
 let akObj = {
   name: '',
   isin: '',
@@ -52,6 +52,9 @@ for (let elm of aktien) {
     akObj.time = getTime();
 
     console.log(akObj);
+
+    fs.appendFileSync('./aktien.json', JSON.stringify(akObj));
+
     browser.close();
   })();
 }
