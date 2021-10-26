@@ -14,6 +14,8 @@ let akObj = {
   time: 0,
 };
 
+
+// Cron Jede Minute crawlen
 let job = new CronJob('* * * * *', function () {
   for (let elm of aktien) {
     (async () => {
@@ -21,7 +23,7 @@ let job = new CronJob('* * * * *', function () {
       const page = await browser.newPage();
       await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`);
 
-      //getIsin
+      // ISIN, WKN, Symbol holen
       const [el] = await page.$x(
         '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
       );
@@ -36,7 +38,7 @@ let job = new CronJob('* * * * *', function () {
       akObj.wkn = wkn[1];
       akObj.symbol = sym[1];
 
-      //get Kurs
+      // Derzeitigen Kurs bekommen
       const [ku] = await page.$x(
         '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
       );
@@ -44,7 +46,7 @@ let job = new CronJob('* * * * *', function () {
       const kurs = await kursData.jsonValue();
       akObj.kurs = kurs;
 
-      // get Name
+      // Aktien namen bekommen
       const [n] = await page.$x(
         '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
       );
@@ -56,9 +58,11 @@ let job = new CronJob('* * * * *', function () {
       // );
       // console.log(n);
       const nameData = await n.getProperty('textContent');
-      const name = await nameData.jsonValue();
-      akObj.name = name;
+      let name = await nameData.jsonValue();
+      name = name.split(' ');
+      akObj.name = name[0];
 
+      // Derzeitiges Datum & Zeit zum Objekt hinzufügen
       akObj.time = getTime();
 
       console.log(akObj);
@@ -73,6 +77,8 @@ let job = new CronJob('* * * * *', function () {
 
 job.start();
 
+
+// Function um Datum & Zeit zu bekommen
 function getTime() {
   let today = new Date();
   let date =
