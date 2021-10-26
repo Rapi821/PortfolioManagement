@@ -10,6 +10,7 @@ let akObj = {
   isin: '',
   wkn: '',
   symbol: '',
+  waehrung: '',
   kurs: 0,
   time: 0,
 };
@@ -43,8 +44,10 @@ let job = new CronJob('* * * * *', function () {
         '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
       );
       const kursData = await ku.getProperty('textContent');
-      const kurs = await kursData.jsonValue();
-      akObj.kurs = kurs;
+      let kurs = await kursData.jsonValue();
+      kurs = kurs.split('E');
+      akObj.kurs = kurs[0];
+      akObj.waehrung = 'E'+ kurs[1];
 
       // Aktien namen bekommen
       const [n] = await page.$x(
