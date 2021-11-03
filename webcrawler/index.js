@@ -1,8 +1,11 @@
 const puppeteer = require('puppeteer');
+const { query } = require('./db');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
 
 const aktien = ['amazon', 'apple', 'microsoft'];
+
+require('dotenv').config();
 
 let akObj = {
   name: '',
@@ -46,6 +49,7 @@ let job = new CronJob(
         const kursData = await ku.getProperty('textContent');
         let kurs = await kursData.jsonValue();
         kurs = kurs.split('E');
+        // akObj.kurs = parseFloat(kurs[0]);
         akObj.kurs = kurs[0];
         akObj.waehrung = 'E' + kurs[1];
 
@@ -69,7 +73,7 @@ let job = new CronJob(
         akObj.time = getTime();
 
         console.log(akObj);
-
+        insertData(akObj);
         // fs.appendFileSync('./aktien.json', JSON.stringify(akObj));
 
         browser.close();
@@ -90,4 +94,11 @@ function getTime() {
     today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
   let dateTime = date + ' ' + time;
   return dateTime;
+}
+
+async function insertData(obj) {
+  await query(
+    `INSERT INTO aktien (aktien_name, isin, wkn, symbol, kurs, waehrung, zeit) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+    [obj.name, obj.isin, obj.wkn, obj.symbol, obj.kurs, obj.waehrung, obj.time]
+  );
 }
