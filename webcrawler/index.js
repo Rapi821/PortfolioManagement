@@ -49,8 +49,8 @@ let job = new CronJob(
         const kursData = await ku.getProperty('textContent');
         let kurs = await kursData.jsonValue();
         kurs = kurs.split('E');
-        // akObj.kurs = parseFloat(kurs[0]);
-        akObj.kurs = kurs[0];
+        akObj.kurs = parseFloat(kurs[0]).toFixed(2);
+        // akObj.kurs = kurs[0];
         akObj.waehrung = 'E' + kurs[1];
 
         // Aktien namen bekommen
