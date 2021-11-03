@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
 
-const aktien = ['amazon', 'apple', 'microsoft', 'alphabet'];
+const aktien = ['amazon', 'apple', 'microsoft'];
 
 let akObj = {
   name: '',
@@ -26,7 +26,7 @@ let job = new CronJob(
 
         // ISIN, WKN, Symbol holen
         const [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
+          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
         );
         const isinData = await el.getProperty('textContent');
         const isin = await isinData.jsonValue();
@@ -41,7 +41,7 @@ let job = new CronJob(
 
         // Derzeitigen Kurs bekommen
         const [ku] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
         );
         const kursData = await ku.getProperty('textContent');
         let kurs = await kursData.jsonValue();
@@ -51,7 +51,7 @@ let job = new CronJob(
 
         // Aktien namen bekommen
         const [n] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
         );
         // const n = await page.$eval(() =>
         //   Array.from(
