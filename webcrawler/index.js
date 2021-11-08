@@ -7,6 +7,25 @@ const aktien = ['amazon', 'apple', 'microsoft'];
 
 require('dotenv').config();
 
+const paths = [
+  (path1 = {
+    isin: '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span',
+    kurs: '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]',
+    name: '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1',
+  }),
+  (path2 = {
+    isin: '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span',
+    kurs: '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]',
+    name: '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1',
+  }),
+];
+
+let curPath = {
+  isin: '',
+  kurs: '',
+  name: '',
+};
+
 let akObj = {
   name: '',
   isin: '',
@@ -21,6 +40,9 @@ let akObj = {
 let job = new CronJob(
   '* * * * *',
   function () {
+    curPath.isin = paths[0].isin;
+    curPath.kurs = paths[0].kurs;
+    curPath.name = paths[0].name;
     for (let elm of aktien) {
       (async () => {
         const browser = await puppeteer.launch();
@@ -28,9 +50,14 @@ let job = new CronJob(
         await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`);
 
         // ISIN, WKN, Symbol holen
-        const [el] = await page.$x(
+        let [el] = await page.$x(
           '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
         );
+        if (el == undefined) {
+          [el] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+          );
+        }
         const isinData = await el.getProperty('textContent');
         const isin = await isinData.jsonValue();
         let info = isin.split(' / ');
@@ -43,27 +70,29 @@ let job = new CronJob(
         akObj.symbol = sym[1];
 
         // Derzeitigen Kurs bekommen
-        const [ku] = await page.$x(
+        let [ku] = await page.$x(
           '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
         );
+        if (ku == undefined) {
+          [ku] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+          );
+        }
         const kursData = await ku.getProperty('textContent');
         let kurs = await kursData.jsonValue();
         kurs = kurs.split('E');
         akObj.kurs = parseFloat(kurs[0]).toFixed(2);
-        // akObj.kurs = kurs[0];
         akObj.waehrung = 'E' + kurs[1];
 
         // Aktien namen bekommen
-        const [n] = await page.$x(
+        let [n] = await page.$x(
           '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
         );
-        // const n = await page.$eval(() =>
-        //   Array.from(
-        //     document.querySelectorAll('.quotebox'),
-        //     (element) => element.textContent
-        //   )
-        // );
-        // console.log(n);
+        if (n == undefined) {
+          [n] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+          );
+        }
         const nameData = await n.getProperty('textContent');
         let name = await nameData.jsonValue();
         name = name.split(' ');
@@ -96,6 +125,7 @@ function getTime() {
   return dateTime;
 }
 
+// Daten in Datenbank einfügen
 async function insertData(obj) {
   await query(
     `INSERT INTO aktien (aktien_name, isin, wkn, symbol, kurs, waehrung, zeit) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
