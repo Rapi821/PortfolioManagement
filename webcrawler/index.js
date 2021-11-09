@@ -128,7 +128,7 @@ function getTime() {
 // Daten in Datenbank einfügen
 async function insertData(obj) {
   await query(
-    `INSERT INTO aktien (aktien_name, isin, wkn, symbol, kurs, waehrung, zeit) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-    [obj.name, obj.isin, obj.wkn, obj.symbol, obj.kurs, obj.waehrung, obj.time]
+    `INSERT INTO "aktienKurs" (wert, waehrung, zeit, isin) VALUES ($1,$2,$3,$4)`,
+    [obj.kurs, obj.waehrung, obj.time, obj.isin]
   );
 }
