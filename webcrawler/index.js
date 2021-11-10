@@ -3,28 +3,9 @@ const { query } = require('./db');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
 
-const aktien = ['amazon', 'apple', 'microsoft'];
+const aktien = ['adidas'];
 
 require('dotenv').config();
-
-const paths = [
-  (path1 = {
-    isin: '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span',
-    kurs: '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]',
-    name: '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1',
-  }),
-  (path2 = {
-    isin: '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span',
-    kurs: '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]',
-    name: '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1',
-  }),
-];
-
-let curPath = {
-  isin: '',
-  kurs: '',
-  name: '',
-};
 
 let akObj = {
   name: '',
@@ -40,9 +21,6 @@ let akObj = {
 let job = new CronJob(
   '* * * * *',
   function () {
-    curPath.isin = paths[0].isin;
-    curPath.kurs = paths[0].kurs;
-    curPath.name = paths[0].name;
     for (let elm of aktien) {
       (async () => {
         const browser = await puppeteer.launch();
@@ -58,12 +36,23 @@ let job = new CronJob(
             '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
           );
         }
+        if (el == undefined) {
+          [el] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+          );
+        }
         const isinData = await el.getProperty('textContent');
         const isin = await isinData.jsonValue();
         let info = isin.split(' / ');
+        console.log(info);
         let wkn = info[0].split(': ');
         let is = info[1].split(': ');
-        let sym = info[2].split(': ');
+        let sym;
+        if (info.length < 3) {
+          sym = ['', ''];
+        } else {
+          sym = info[2].split(': ');
+        }
 
         akObj.isin = is[1];
         akObj.wkn = wkn[1];
