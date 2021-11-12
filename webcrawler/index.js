@@ -3,7 +3,48 @@ const { query } = require('./db');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
 
-const aktien = ['adidas'];
+const aktien = [
+  'adidas',
+  'airbus',
+  'allianz',
+  'basf',
+  'bayer',
+  'beiersdorf',
+  'bmw',
+  'brenntag',
+  'continental',
+  'covestro',
+  'daimler',
+  'delivery_hero',
+  'deutsche_bank',
+  'deutsche_boerse',
+  'deutsche_post',
+  'deutsche_telekom',
+  'eon',
+  'fresenius',
+  'fresenius_medical_care',
+  'heidelbergcement',
+  'hellofresh',
+  'henkel_vz',
+  'infineon',
+  'linde',
+  'merck',
+  'mtu',
+  'munich_re',
+  'porsche',
+  'puma',
+  'qiagen',
+  'rwe',
+  'sap',
+  'sartorius_vz',
+  'siemens',
+  'siemens_energy',
+  'siemens_healthineers',
+  'symrise',
+  'volkswagen_vz',
+  'vonovia',
+  'zalando',
+];
 
 require('dotenv').config();
 
