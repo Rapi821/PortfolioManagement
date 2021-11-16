@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const { query } = require('./db');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
+const EventEmitter = require('events');
 
 const aktien = [
   'adidas',
@@ -58,14 +59,19 @@ let akObj = {
   time: 0,
 };
 
+// let ee = new EventEmitter();
+// ee.setMaxListeners(1000000000000);
+process.setMaxListeners(Infinity);
 // Cron Jede Minute crawlen
+
 let job = new CronJob(
-  '* * * * *',
+  '0 * * * *',
   function () {
     for (let elm of aktien) {
       (async () => {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
+        await page.setDefaultNavigationTimeout(0);
         await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`);
 
         // ISIN, WKN, Symbol holen
@@ -125,7 +131,7 @@ let job = new CronJob(
         }
         const nameData = await n.getProperty('textContent');
         let name = await nameData.jsonValue();
-        name = name.split(' ');
+        name = name.split(' Aktie');
         akObj.name = name[0];
 
         // Derzeitiges Datum & Zeit zum Objekt hinzufügen
@@ -141,7 +147,6 @@ let job = new CronJob(
   },
   'Americas/Vancouver'
 );
-
 job.start();
 
 // Function um Datum & Zeit zu bekommen
