@@ -1,0 +1,2 @@
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (1, 'US0378331005', 133.44, 10, 0, 0, '2021-11-17');
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (2, 'US5949181045', 300.1, 5, 0, 2, '2021-11-17');
