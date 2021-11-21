@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-center fill-height">
+  <div class="d-flex  justify-center align-center">
     <Chart class="a " />
   </div>
 </template>
@@ -13,7 +13,8 @@ export default {
 </script>
 <style scoped>
 .a {
-  width: 1000px;
-  height: 500px;
+  min-width: 500px;
+  max-width: 800px;
+  max-height: 500px;
 }
 </style>

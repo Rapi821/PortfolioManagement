@@ -18,6 +18,7 @@ export default {
       datasets: [
         {
           backgroundColor: "#f87979",
+
           data: [40, 20, 51, 31, 75, 21, 44, 12],
         },
       ],
