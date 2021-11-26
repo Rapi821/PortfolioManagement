@@ -60,100 +60,100 @@ let akObj = {
 process.setMaxListeners(Infinity);
 // Cron Jede Minute crawlen
 
-// let job = new CronJob(
-//   '* * * * *',
-//   'Americas/Vancouver'
-// );
-// job.start();
-
-function crawling() {
-  console.log('crawling');
-  for (let elm of aktien) {
-    (async () => {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await page.setDefaultNavigationTimeout(0);
-      await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`, {
-        waitUntil: 'load',
-        // Remove the timeout
-        timeout: 0,
-      });
-
-      // ISIN, WKN, Symbol holen
-      let [el] = await page.$x(
-        '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
-      );
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+let job = new CronJob(
+  '* * * * *',
+  function(){
+    for (let elm of aktien) {
+      (async () => {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setDefaultNavigationTimeout(0);
+        await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`, {
+          waitUntil: 'load',
+          // Remove the timeout
+          timeout: 0,
+        });
+  
+        // ISIN, WKN, Symbol holen
+        let [el] = await page.$x(
+          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
         );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+        if (el == undefined) {
+          [el] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+          );
+        }
+        if (el == undefined) {
+          [el] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+          );
+        }
+        if (el == undefined) {
+          [el] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+          );
+        }
+        const isinData = await el.getProperty('textContent');
+        const isin = await isinData.jsonValue();
+        let info = isin.split(' / ');
+        console.log(info);
+        let wkn = info[0].split(': ');
+        let is = info[1].split(': ');
+        let sym;
+        if (info.length < 3) {
+          sym = ['', ''];
+        } else {
+          sym = info[2].split(': ');
+        }
+  
+        akObj.isin = is[1];
+        akObj.wkn = wkn[1];
+        akObj.symbol = sym[1];
+  
+        // Derzeitigen Kurs bekommen
+        let [ku] = await page.$x(
+          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
         );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+        if (ku == undefined) {
+          [ku] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+          );
+        }
+        const kursData = await ku.getProperty('textContent');
+        let kurs = await kursData.jsonValue();
+        kurs = kurs.split('E');
+        akObj.kurs = parseFloat(kurs[0]).toFixed(2);
+        akObj.waehrung = 'E' + kurs[1];
+  
+        // Aktien namen bekommen
+        let [n] = await page.$x(
+          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
         );
-      }
-      const isinData = await el.getProperty('textContent');
-      const isin = await isinData.jsonValue();
-      let info = isin.split(' / ');
-      console.log(info);
-      let wkn = info[0].split(': ');
-      let is = info[1].split(': ');
-      let sym;
-      if (info.length < 3) {
-        sym = ['', ''];
-      } else {
-        sym = info[2].split(': ');
-      }
+        if (n == undefined) {
+          [n] = await page.$x(
+            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+          );
+        }
+        const nameData = await n.getProperty('textContent');
+        let name = await nameData.jsonValue();
+        name = name.split(' Aktie');
+        akObj.name = name[0];
+  
+        // Derzeitiges Datum & Zeit zum Objekt hinzufügen
+        akObj.time = getTime();
+  
+        console.log(akObj);
+        insertData(akObj);
+  
+        browser.close();
+      })();
+    }
+  },
+  'Americas/Vancouver'
+);
+job.start();
 
-      akObj.isin = is[1];
-      akObj.wkn = wkn[1];
-      akObj.symbol = sym[1];
 
-      // Derzeitigen Kurs bekommen
-      let [ku] = await page.$x(
-        '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
-      );
-      if (ku == undefined) {
-        [ku] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
-        );
-      }
-      const kursData = await ku.getProperty('textContent');
-      let kurs = await kursData.jsonValue();
-      kurs = kurs.split('E');
-      akObj.kurs = parseFloat(kurs[0]).toFixed(2);
-      akObj.waehrung = 'E' + kurs[1];
-
-      // Aktien namen bekommen
-      let [n] = await page.$x(
-        '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
-      );
-      if (n == undefined) {
-        [n] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
-        );
-      }
-      const nameData = await n.getProperty('textContent');
-      let name = await nameData.jsonValue();
-      name = name.split(' Aktie');
-      akObj.name = name[0];
-
-      // Derzeitiges Datum & Zeit zum Objekt hinzufügen
-      akObj.time = getTime();
-
-      console.log(akObj);
-      insertData(akObj);
-
-      browser.close();
-    })();
-  }
-}
 
 // Function um Datum & Zeit zu bekommen
 function getTime() {
@@ -174,12 +174,4 @@ async function insertData(obj) {
   );
 }
 
-// async function testSelect() {
-//   console.log('Select');
-//   let erg = await (
-//     await query('SELECT * FROM "public"."aktienInfo" LIMIT 100')
-//   ).rows;
-//   console.log(erg);
-// }
 
-crawling();
