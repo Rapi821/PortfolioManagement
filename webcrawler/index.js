@@ -61,7 +61,7 @@ process.setMaxListeners(Infinity);
 // Cron Jede Minute crawlen
 
 let job = new CronJob(
-  '* * * * *',
+  '0 * * * *',
   function(){
     for (let elm of aktien) {
       (async () => {
