@@ -1,2 +1,4 @@
-INSERT INTO public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id) VALUES (0, '2021-11-17', 'Test-Competition', 50000, true, '2022-06-17', 3);
-INSERT INTO public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id) VALUES (1, '2021-12-01', 'Test-Competiion-2', 25000, true, '2022-12-01', 2);
+INSERT INTO public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (0, '2021-11-17', 'Test-Competition', 50000, true, '2022-06-17', 3, '7H9OBF01YM');
+INSERT INTO public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (1, '2021-12-01', 'Test-Competiion-2', 25000, true, '2022-12-01', 2, '3LB81ZCVYD');
+INSERT INTO public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (2, '2021-12-02', 'Test-3', 100000, true, null, 2, 'CJMTUDLUOT');
+INSERT INTO public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (10, '2021-12-02', 'CRUD-POST-Competition', 20000, true, '2022-12-01', 4, 'V12FO3FWNY');

@@ -176,7 +176,8 @@ CREATE TABLE public.competitions (
     starting_money integer DEFAULT 100000,
     active boolean DEFAULT true,
     end_date date,
-    owner_id integer
+    owner_id integer NOT NULL,
+    competition_code character varying(10) NOT NULL
 );
 
 
@@ -362,6 +363,7 @@ COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, coun
 5	US5949181045	295.45	3	1	3	2021-11-25
 7	0000	49704.55	1	1	3	2021-11-25
 8	0000	24624.24	1	0	1	2021-11-24
+9	0000	23123.94	1	0	0	2021-11-17
 \.
 
 
@@ -392,9 +394,11 @@ COPY public.competition_stocks (competition_stocks_id, isin, competition_id, sto
 -- Data for Name: competitions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id) FROM stdin;
-0	2021-11-17	Test-Competition	50000	t	2022-06-17	3
-1	2021-12-01	Test-Competiion-2	25000	t	2022-12-01	2
+COPY public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) FROM stdin;
+0	2021-11-17	Test-Competition	50000	t	2022-06-17	3	7H9OBF01YM
+1	2021-12-01	Test-Competiion-2	25000	t	2022-12-01	2	3LB81ZCVYD
+2	2021-12-02	Test-3	100000	t	\N	2	CJMTUDLUOT
+10	2021-12-02	CRUD-POST-Competition	20000	t	2022-12-01	4	V12FO3FWNY
 \.
 
 
@@ -447,14 +451,14 @@ SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 -- Name: competition_member_depot_lines_depot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 8, true);
+SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 9, true);
 
 
 --
 -- Name: competitions_competition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competitions_competition_id_seq', 1, false);
+SELECT pg_catalog.setval('public.competitions_competition_id_seq', 10, true);
 
 
 --
@@ -525,6 +529,13 @@ ALTER TABLE ONLY public.all_stocks
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pk PRIMARY KEY (user_id);
+
+
+--
+-- Name: competitions_competition_code_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX competitions_competition_code_uindex ON public.competitions USING btree (competition_code);
 
 
 --
@@ -703,6 +714,13 @@ GRANT USAGE ON SEQUENCE public.competition_member_depot_lines_depot_id_seq TO re
 
 GRANT SELECT ON TABLE public.competitions TO read_only;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competitions TO read_write;
+
+
+--
+-- Name: SEQUENCE competitions_competition_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public.competitions_competition_id_seq TO read_write;
 
 
 --
