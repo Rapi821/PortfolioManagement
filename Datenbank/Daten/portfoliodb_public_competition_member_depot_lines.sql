@@ -1,2 +1,7 @@
 INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (1, 'US0378331005', 133.44, 10, 0, 0, '2021-11-17');
 INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (2, 'US5949181045', 300.1, 5, 0, 2, '2021-11-17');
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (3, 'US0378331005', 140.15, 5, 0, 0, '2021-12-02');
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (4, 'US0378331005', 132.12, 8, 0, 1, '2021-12-01');
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (5, 'US5949181045', 295.45, 3, 1, 3, '2021-11-25');
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (7, '0000', 49704.55, 1, 1, 3, '2021-11-25');
+INSERT INTO public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (8, '0000', 24624.24, 1, 0, 1, '2021-11-24');
