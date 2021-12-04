@@ -110,13 +110,28 @@
                           Gib deine Daten ein und erstelle einen Account
                         </h4>
                         <v-form>
-                          <v-text-field
-                            label="Name"
-                            name="Name"
+                          <v-layout >
+                          <v-flex xs6>
+                            <v-text-field
+                            label="Vorname"
+                            name="Vorname"
                             prepend-icon="mdi-account"
                             type="text"
                             color="primary"
                           />
+                          </v-flex>
+                          
+                          <v-flex xs6>
+                            <v-text-field
+                            class="ml-1"
+                            label="Nachname"
+                            name="Nachname"
+                           
+                            type="text"
+                            color="primary"
+                          />
+                          </v-flex>
+                           </v-layout>
                           <v-text-field
                             label="Email"
                             name="Email"
