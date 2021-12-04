@@ -1,1 +1,13 @@
 GET http://localhost:3000/akInfo
+
+###
+
+GET http://localhost:3000/akKurs
+
+###
+
+GET http://localhost:3000/akDetail/DE000BAY0017
+
+###
+
+GET http://localhost:3000/akDetailKurs/DE000A1EWWW0

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import LoginRegister from "../views/LoginRegister.vue";
 import Market from "../views/Market.vue";
+import DetailAktie from '../views/akDetail.vue';
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,12 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
+  {
+    path: "/akDetail/:isin",
+    props: true,
+    name: "Detail",
+    component: DetailAktie,
   },
 ];
 
