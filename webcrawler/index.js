@@ -1,6 +1,13 @@
 const puppeteer = require('puppeteer');
 const { query } = require('./db');
 const CronJob = require('cron').CronJob;
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const logger = require('morgan');
+
+const app = express();
+const routes = require('./routes');
 
 const aktien = [
   'adidas',
@@ -57,12 +64,24 @@ let akObj = {
   time: 0,
 };
 
+//Server API Setup
+app.use(logger('dev'));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', routes);
+
+app.listen(process.env.PORT);
+
+// Webcrawler
 process.setMaxListeners(Infinity);
 // Cron Jede Minute crawlen
 
 let job = new CronJob(
   '0 * * * *',
-  function(){
+  function () {
     for (let elm of aktien) {
       (async () => {
         const browser = await puppeteer.launch();
@@ -73,7 +92,7 @@ let job = new CronJob(
           // Remove the timeout
           timeout: 0,
         });
-  
+
         // ISIN, WKN, Symbol holen
         let [el] = await page.$x(
           '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
@@ -105,11 +124,11 @@ let job = new CronJob(
         } else {
           sym = info[2].split(': ');
         }
-  
+
         akObj.isin = is[1];
         akObj.wkn = wkn[1];
         akObj.symbol = sym[1];
-  
+
         // Derzeitigen Kurs bekommen
         let [ku] = await page.$x(
           '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
@@ -124,7 +143,7 @@ let job = new CronJob(
         kurs = kurs.split('E');
         akObj.kurs = parseFloat(kurs[0]).toFixed(2);
         akObj.waehrung = 'E' + kurs[1];
-  
+
         // Aktien namen bekommen
         let [n] = await page.$x(
           '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
@@ -138,22 +157,20 @@ let job = new CronJob(
         let name = await nameData.jsonValue();
         name = name.split(' Aktie');
         akObj.name = name[0];
-  
+
         // Derzeitiges Datum & Zeit zum Objekt hinzufügen
         akObj.time = getTime();
-  
+
         console.log(akObj);
         insertData(akObj);
-  
+
         browser.close();
       })();
     }
   },
   'Americas/Vancouver'
 );
-job.start();
-
-
+// job.start();
 
 // Function um Datum & Zeit zu bekommen
 function getTime() {
@@ -173,5 +190,3 @@ async function insertData(obj) {
     [obj.kurs, obj.waehrung, obj.time, obj.isin]
   );
 }
-
-
