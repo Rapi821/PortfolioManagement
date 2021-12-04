@@ -170,7 +170,7 @@ let job = new CronJob(
   },
   'Americas/Vancouver'
 );
-// job.start();
+job.start();
 
 // Function um Datum & Zeit zu bekommen
 function getTime() {
