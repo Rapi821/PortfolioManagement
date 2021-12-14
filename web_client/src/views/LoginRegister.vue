@@ -51,7 +51,9 @@
                         </h3>
                       </v-card-text>
                       <div class="text-center mt-3 mb-12">
-                        <v-btn rounded color="primary" dark>SIGN IN</v-btn>
+                        <v-btn rounded color="primary" to="MainMenu" dark
+                          >SIGN IN</v-btn
+                        >
                       </div>
                     </v-col>
                     <v-col cols="12" md="4" class=" grad1">
@@ -64,7 +66,12 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn rounded outlined dark @click="step++"
+                        <v-btn
+                          rounded
+                          outlined
+                          dark
+                          @click="step++"
+                          to="MainMenu"
                           >SIGN UP</v-btn
                         >
                       </div>
@@ -83,7 +90,12 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn rounded outlined dark @click="step--"
+                        <v-btn
+                          rounded
+                          outlined
+                          dark
+                          @click="step--"
+                          to="MainMenu"
                           >Sign in</v-btn
                         >
                       </div>
@@ -110,28 +122,27 @@
                           Gib deine Daten ein und erstelle einen Account
                         </h4>
                         <v-form>
-                          <v-layout >
-                          <v-flex xs6>
-                            <v-text-field
-                            label="Vorname"
-                            name="Vorname"
-                            prepend-icon="mdi-account"
-                            type="text"
-                            color="primary"
-                          />
-                          </v-flex>
-                          
-                          <v-flex xs6>
-                            <v-text-field
-                            class="ml-1"
-                            label="Nachname"
-                            name="Nachname"
-                           
-                            type="text"
-                            color="primary"
-                          />
-                          </v-flex>
-                           </v-layout>
+                          <v-layout>
+                            <v-flex xs6>
+                              <v-text-field
+                                label="Vorname"
+                                name="Vorname"
+                                prepend-icon="mdi-account"
+                                type="text"
+                                color="primary"
+                              />
+                            </v-flex>
+
+                            <v-flex xs6>
+                              <v-text-field
+                                class="ml-1"
+                                label="Nachname"
+                                name="Nachname"
+                                type="text"
+                                color="primary"
+                              />
+                            </v-flex>
+                          </v-layout>
                           <v-text-field
                             label="Email"
                             name="Email"

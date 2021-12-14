@@ -10,7 +10,7 @@
         class="elevation-1"
       >
         <template v-slot:item.actions="{ item }">
-          <v-btn :to="`/akDetail/${item.isin}`">Details</v-btn>
+          <v-btn :to="`/akDetail/${item.isin}`" class="primary">Details</v-btn>
         </template>
       </v-data-table>
     </div>
