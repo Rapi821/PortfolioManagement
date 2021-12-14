@@ -27,7 +27,7 @@ export default {
           align: "start",
           sortable: false,
           value: "name",
-          width: "500px",
+          width: "40vh",
         },
         { text: "Calories", value: "calories", width: "50%" },
         { text: "Fat (g)", value: "fat", width: "50%" },
