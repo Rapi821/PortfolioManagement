@@ -21,162 +21,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: competition_members; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.competition_members (
-    member_id integer NOT NULL,
-    user_id integer,
-    competition_id integer
-);
-
-
-ALTER TABLE public.competition_members OWNER TO postgres;
-
---
--- Name: CompetitionMembers_DepotID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."CompetitionMembers_DepotID_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."CompetitionMembers_DepotID_seq" OWNER TO postgres;
-
---
--- Name: CompetitionMembers_DepotID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."CompetitionMembers_DepotID_seq" OWNED BY public.competition_members.member_id;
-
-
---
--- Name: competition_stocks; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.competition_stocks (
-    competition_stocks_id integer NOT NULL,
-    isin character varying NOT NULL,
-    competition_id integer,
-    stock_id integer
-);
-
-
-ALTER TABLE public.competition_stocks OWNER TO postgres;
-
---
--- Name: CompetitionStocks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."CompetitionStocks_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."CompetitionStocks_id_seq" OWNER TO postgres;
-
---
--- Name: CompetitionStocks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."CompetitionStocks_id_seq" OWNED BY public.competition_stocks.competition_stocks_id;
-
-
---
--- Name: depot_records; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.depot_records (
-    depot_records_id integer NOT NULL,
-    depot_id integer NOT NULL,
-    date date NOT NULL,
-    price numeric NOT NULL,
-    count integer NOT NULL,
-    buy_sell character varying NOT NULL,
-    isin character varying,
-    CONSTRAINT check_if_buy_or_sell CHECK ((((buy_sell)::text ~~ 'buy'::text) OR ((buy_sell)::text ~~ 'sell'::text)))
-);
-
-
-ALTER TABLE public.depot_records OWNER TO postgres;
-
---
--- Name: DepotRecords_depot_records_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."DepotRecords_depot_records_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."DepotRecords_depot_records_id_seq" OWNER TO postgres;
-
---
--- Name: DepotRecords_depot_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."DepotRecords_depot_records_id_seq" OWNED BY public.depot_records.depot_records_id;
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.users (
-    email character varying NOT NULL,
-    firstname character varying NOT NULL,
-    lastname character varying NOT NULL,
-    password character varying NOT NULL,
-    user_id integer NOT NULL,
-    CONSTRAINT isemail CHECK (((email)::text ~~ '%_@__%.__%'::text))
-);
-
-
-ALTER TABLE public.users OWNER TO postgres;
-
---
--- Name: TABLE users; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON TABLE public.users IS 'Table of all Users';
-
-
---
--- Name: Users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."Users_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."Users_id_seq" OWNER TO postgres;
-
---
--- Name: Users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."Users_id_seq" OWNED BY public.users.user_id;
-
-
---
 -- Name: all_stocks; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -209,6 +53,77 @@ ALTER TABLE public.all_stocks_stock_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.all_stocks_stock_id_seq OWNED BY public.all_stocks.stock_id;
+
+
+--
+-- Name: competition_members; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.competition_members (
+    member_id integer NOT NULL,
+    user_id integer,
+    competition_id integer
+);
+
+
+ALTER TABLE public.competition_members OWNER TO postgres;
+
+--
+-- Name: competitionMembers_DepotID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."competitionMembers_DepotID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."competitionMembers_DepotID_seq" OWNER TO postgres;
+
+--
+-- Name: competitionMembers_DepotID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."competitionMembers_DepotID_seq" OWNED BY public.competition_members.member_id;
+
+
+--
+-- Name: competition_stocks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.competition_stocks (
+    competition_stocks_id integer NOT NULL,
+    isin character varying NOT NULL,
+    competition_id integer,
+    stock_id integer
+);
+
+
+ALTER TABLE public.competition_stocks OWNER TO postgres;
+
+--
+-- Name: competitionStocks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."competitionStocks_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."competitionStocks_id_seq" OWNER TO postgres;
+
+--
+-- Name: competitionStocks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."competitionStocks_id_seq" OWNED BY public.competition_stocks.competition_stocks_id;
 
 
 --
@@ -261,11 +176,119 @@ CREATE TABLE public.competitions (
     starting_money integer DEFAULT 100000,
     active boolean DEFAULT true,
     end_date date,
-    owner_id integer
+    owner_id integer NOT NULL,
+    competition_code character varying(10) NOT NULL
 );
 
 
 ALTER TABLE public.competitions OWNER TO postgres;
+
+--
+-- Name: competitions_competition_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.competitions_competition_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.competitions_competition_id_seq OWNER TO postgres;
+
+--
+-- Name: competitions_competition_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.competitions_competition_id_seq OWNED BY public.competitions.competition_id;
+
+
+--
+-- Name: depot_records; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.depot_records (
+    depot_records_id integer NOT NULL,
+    depot_id integer NOT NULL,
+    date date NOT NULL,
+    price numeric NOT NULL,
+    count integer NOT NULL,
+    buy_sell character varying NOT NULL,
+    isin character varying,
+    CONSTRAINT check_if_buy_or_sell CHECK ((((buy_sell)::text ~~ 'buy'::text) OR ((buy_sell)::text ~~ 'sell'::text)))
+);
+
+
+ALTER TABLE public.depot_records OWNER TO postgres;
+
+--
+-- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."depotRecords_depot_records_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."depotRecords_depot_records_id_seq" OWNER TO postgres;
+
+--
+-- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."depotRecords_depot_records_id_seq" OWNED BY public.depot_records.depot_records_id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    email character varying NOT NULL,
+    firstname character varying NOT NULL,
+    lastname character varying NOT NULL,
+    password character varying NOT NULL,
+    user_id integer NOT NULL,
+    CONSTRAINT isemail CHECK (((email)::text ~~ '%_@__%.__%'::text))
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: TABLE users; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.users IS 'Table of all Users';
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.user_id;
+
 
 --
 -- Name: all_stocks stock_id; Type: DEFAULT; Schema: public; Owner: postgres
@@ -285,28 +308,35 @@ ALTER TABLE ONLY public.competition_member_depot_lines ALTER COLUMN depot_line_i
 -- Name: competition_members member_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.competition_members ALTER COLUMN member_id SET DEFAULT nextval('public."CompetitionMembers_DepotID_seq"'::regclass);
+ALTER TABLE ONLY public.competition_members ALTER COLUMN member_id SET DEFAULT nextval('public."competitionMembers_DepotID_seq"'::regclass);
 
 
 --
 -- Name: competition_stocks competition_stocks_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.competition_stocks ALTER COLUMN competition_stocks_id SET DEFAULT nextval('public."CompetitionStocks_id_seq"'::regclass);
+ALTER TABLE ONLY public.competition_stocks ALTER COLUMN competition_stocks_id SET DEFAULT nextval('public."competitionStocks_id_seq"'::regclass);
+
+
+--
+-- Name: competitions competition_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competitions ALTER COLUMN competition_id SET DEFAULT nextval('public.competitions_competition_id_seq'::regclass);
 
 
 --
 -- Name: depot_records depot_records_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.depot_records ALTER COLUMN depot_records_id SET DEFAULT nextval('public."DepotRecords_depot_records_id_seq"'::regclass);
+ALTER TABLE ONLY public.depot_records ALTER COLUMN depot_records_id SET DEFAULT nextval('public."depotRecords_depot_records_id_seq"'::regclass);
 
 
 --
 -- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."Users_id_seq"'::regclass);
+ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -317,6 +347,7 @@ COPY public.all_stocks (stock_id, isin, name) FROM stdin;
 0	US0378331005	Apple
 1	US5949181045	Microsoft
 2	US0231351067	Amazon
+3	0000	CURRENT MONEY
 \.
 
 
@@ -327,6 +358,12 @@ COPY public.all_stocks (stock_id, isin, name) FROM stdin;
 COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) FROM stdin;
 1	US0378331005	133.44	10	0	0	2021-11-17
 2	US5949181045	300.10	5	0	2	2021-11-17
+3	US0378331005	140.15	5	0	0	2021-12-02
+4	US0378331005	132.12	8	0	1	2021-12-01
+5	US5949181045	295.45	3	1	3	2021-11-25
+7	0000	49704.55	1	1	3	2021-11-25
+8	0000	24624.24	1	0	1	2021-11-24
+9	0000	23123.94	1	0	0	2021-11-17
 \.
 
 
@@ -338,6 +375,7 @@ COPY public.competition_members (member_id, user_id, competition_id) FROM stdin;
 0	0	0
 1	1	0
 2	2	0
+3	1	1
 \.
 
 
@@ -348,6 +386,7 @@ COPY public.competition_members (member_id, user_id, competition_id) FROM stdin;
 COPY public.competition_stocks (competition_stocks_id, isin, competition_id, stock_id) FROM stdin;
 2	US5949181045	0	1
 1	US0378331005	0	0
+4	0000	1	3
 \.
 
 
@@ -355,8 +394,11 @@ COPY public.competition_stocks (competition_stocks_id, isin, competition_id, sto
 -- Data for Name: competitions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id) FROM stdin;
-0	2021-11-17	Test-Competition	50000	t	2022-06-17	3
+COPY public.competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) FROM stdin;
+0	2021-11-17	Test-Competition	50000	t	2022-06-17	3	7H9OBF01YM
+1	2021-12-01	Test-Competiion-2	25000	t	2022-12-01	2	3LB81ZCVYD
+2	2021-12-02	Test-3	100000	t	\N	2	CJMTUDLUOT
+10	2021-12-02	CRUD-POST-Competition	20000	t	2022-12-01	4	V12FO3FWNY
 \.
 
 
@@ -380,49 +422,57 @@ devall.s03@htlwienwest.at	Sebastian	de Vall	qHV3#ctbt	2
 alfred.reisenberger@htlwienwest.at	Alfred	Reisenberger	1Rrj?xKZL	3
 tina.jankowetz@htlwienwest.at	Tina	Jankowtz	@6o4#hwWQ	4
 gocic.g02@htlwienwest.at	Gabriel	Gocic-Bogic	$iA?fmE9t	5
+wolfsberger.r03@htlwienwest.at	Raphael	Wolfsberger	test123	8
 \.
-
-
---
--- Name: CompetitionMembers_DepotID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."CompetitionMembers_DepotID_seq"', 2, true);
-
-
---
--- Name: CompetitionStocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."CompetitionStocks_id_seq"', 2, true);
-
-
---
--- Name: DepotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."DepotRecords_depot_records_id_seq"', 1, true);
-
-
---
--- Name: Users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."Users_id_seq"', 5, true);
 
 
 --
 -- Name: all_stocks_stock_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.all_stocks_stock_id_seq', 1, true);
+SELECT pg_catalog.setval('public.all_stocks_stock_id_seq', 2, true);
+
+
+--
+-- Name: competitionMembers_DepotID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."competitionMembers_DepotID_seq"', 3, true);
+
+
+--
+-- Name: competitionStocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 
 
 --
 -- Name: competition_member_depot_lines_depot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 2, true);
+SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 9, true);
+
+
+--
+-- Name: competitions_competition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.competitions_competition_id_seq', 10, true);
+
+
+--
+-- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 1, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 10, true);
 
 
 --
@@ -479,6 +529,13 @@ ALTER TABLE ONLY public.all_stocks
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pk PRIMARY KEY (user_id);
+
+
+--
+-- Name: competitions_competition_code_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX competitions_competition_code_uindex ON public.competitions USING btree (competition_code);
 
 
 --
@@ -576,43 +633,19 @@ ALTER TABLE ONLY public.competition_member_depot_lines
 
 
 --
+-- Name: competition_member_depot_lines competition_member_depot_lines_isin_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_member_depot_lines
+    ADD CONSTRAINT competition_member_depot_lines_isin_fkey1 FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
+
+
+--
 -- Name: depot_records depot_records_isin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.depot_records
     ADD CONSTRAINT depot_records_isin_fkey FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
-
-
---
--- Name: TABLE competition_members; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT SELECT ON TABLE public.competition_members TO read_only;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_members TO read_write;
-
-
---
--- Name: TABLE competition_stocks; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT SELECT ON TABLE public.competition_stocks TO read_only;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_stocks TO read_write;
-
-
---
--- Name: TABLE depot_records; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT SELECT ON TABLE public.depot_records TO read_only;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.depot_records TO read_write;
-
-
---
--- Name: TABLE users; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT SELECT ON TABLE public.users TO read_only;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.users TO read_write;
 
 
 --
@@ -624,6 +657,43 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.all_stocks TO read_write;
 
 
 --
+-- Name: SEQUENCE all_stocks_stock_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public.all_stocks_stock_id_seq TO read_write;
+
+
+--
+-- Name: TABLE competition_members; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT ON TABLE public.competition_members TO read_only;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_members TO read_write;
+
+
+--
+-- Name: SEQUENCE "competitionMembers_DepotID_seq"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public."competitionMembers_DepotID_seq" TO read_write;
+
+
+--
+-- Name: TABLE competition_stocks; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT ON TABLE public.competition_stocks TO read_only;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_stocks TO read_write;
+
+
+--
+-- Name: SEQUENCE "competitionStocks_id_seq"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public."competitionStocks_id_seq" TO read_write;
+
+
+--
 -- Name: TABLE competition_member_depot_lines; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -632,11 +702,55 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_member_depot_lines
 
 
 --
+-- Name: SEQUENCE competition_member_depot_lines_depot_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public.competition_member_depot_lines_depot_id_seq TO read_write;
+
+
+--
 -- Name: TABLE competitions; Type: ACL; Schema: public; Owner: postgres
 --
 
 GRANT SELECT ON TABLE public.competitions TO read_only;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competitions TO read_write;
+
+
+--
+-- Name: SEQUENCE competitions_competition_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public.competitions_competition_id_seq TO read_write;
+
+
+--
+-- Name: TABLE depot_records; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT ON TABLE public.depot_records TO read_only;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.depot_records TO read_write;
+
+
+--
+-- Name: SEQUENCE "depotRecords_depot_records_id_seq"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public."depotRecords_depot_records_id_seq" TO read_write;
+
+
+--
+-- Name: TABLE users; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT ON TABLE public.users TO read_only;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.users TO read_write;
+
+
+--
+-- Name: SEQUENCE users_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT USAGE ON SEQUENCE public.users_id_seq TO read_write;
 
 
 --

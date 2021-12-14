@@ -5,11 +5,14 @@
     <div align="center">
       <v-data-table
         :headers="headers"
-        :items="desserts"
-        :items-per-page="5"
+        :items="akData"
+        :items-per-page="10"
         class="elevation-1"
-        height="500px"
-      ></v-data-table>
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-btn :to="`/akDetail/${item.isin}`" class="primary">Details</v-btn>
+        </template>
+      </v-data-table>
     </div>
     <v-spacer></v-spacer>
     <div class="d-none d-xl-flex a"></div>
@@ -17,107 +20,52 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  name: "Market",
+  name: 'Market',
   data() {
     return {
+      akInfo: [],
+      akKurs: [],
+      akData: [],
+
       headers: [
         {
-          text: "Dessert (100g serving)",
-          align: "start",
-          sortable: false,
-          value: "name",
-          width: "40vh",
+          text: 'Name',
+          align: 'center',
+          sortable: true,
+          value: 'name',
         },
-        { text: "Calories", value: "calories", width: "50%" },
-        { text: "Fat (g)", value: "fat", width: "50%" },
-        { text: "Carbs (g)", value: "carbs", width: "50%" },
-        { text: "Protein (g)", value: "protein", width: "50%" },
-        { text: "Iron (%)", value: "iron", width: "50%" },
-      ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
+        { text: 'ISIN', value: 'isin', sortable: false },
+        { text: 'WKN', value: 'wkn', sortable: false },
+        { text: 'Kurs', value: 'kurs' },
+        { text: 'Aktionen', value: 'actions' },
       ],
     };
+  },
+  methods: {
+    createAktie() {
+      // console.log(this.akInfo);
+      for (let elm of this.akInfo) {
+        let aktie = { name: elm.title, isin: elm.isin, wkn: elm.wkn, kurs: 1 };
+        this.akData.push(aktie);
+      }
+      for (let el of this.akData) {
+        console.log(el);
+        let wert = this.akKurs.find((e) => e.isin == el.isin);
+        if (wert == undefined) {
+          wert = { wert: 1 };
+        }
+        el.kurs = wert.wert;
+      }
+      // console.log(this.akData);
+    },
+  },
+  async created() {
+    this.akInfo = (await axios.get('http://localhost:3000/akInfo')).data;
+    this.akKurs = (await axios.get('http://localhost:3000/akKurs')).data;
+    this.createAktie();
   },
 };
 </script>

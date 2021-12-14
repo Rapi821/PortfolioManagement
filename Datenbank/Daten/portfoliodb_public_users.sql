@@ -4,3 +4,4 @@ INSERT INTO public.users (email, firstname, lastname, password, user_id) VALUES 
 INSERT INTO public.users (email, firstname, lastname, password, user_id) VALUES ('alfred.reisenberger@htlwienwest.at', 'Alfred', 'Reisenberger', '1Rrj?xKZL', 3);
 INSERT INTO public.users (email, firstname, lastname, password, user_id) VALUES ('tina.jankowetz@htlwienwest.at', 'Tina', 'Jankowtz', '@6o4#hwWQ', 4);
 INSERT INTO public.users (email, firstname, lastname, password, user_id) VALUES ('gocic.g02@htlwienwest.at', 'Gabriel', 'Gocic-Bogic', '$iA?fmE9t', 5);
+INSERT INTO public.users (email, firstname, lastname, password, user_id) VALUES ('wolfsberger.r03@htlwienwest.at', 'Raphael', 'Wolfsberger', 'test123', 8);
