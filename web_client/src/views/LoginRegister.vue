@@ -50,7 +50,8 @@
                           Passwort vergessen?
                         </h3>
                       </v-card-text>
-                      <div class="text-center mt-3 mb-12">
+                      <div class="text-center mt-3 mb-12"> 
+                        <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
                         <v-btn rounded color="primary" to="MainMenu" dark
                           >SIGN IN</v-btn
                         >
@@ -66,6 +67,7 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
+                        <!-- Button um zum Dialog für account erstellen -->
                         <v-btn
                           rounded
                           outlined
@@ -89,6 +91,7 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
+                        <!-- Button um zum Dialog für anmelden -->
                         <v-btn
                           rounded
                           outlined
@@ -160,6 +163,7 @@
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
+                        <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
                         <v-btn rounded color="primary" dark to="MainMenu">SIGN UP</v-btn>
                       </div>
                     </v-col>

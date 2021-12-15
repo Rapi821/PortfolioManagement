@@ -9,6 +9,7 @@
         :items-per-page="10"
         class="elevation-1"
       >
+      <!-- Detailpage der einzelnen Aktien -->
         <template v-slot:item.actions="{ item }">
           <v-btn :to="`/akDetail/${item.isin}`" class="primary">Details</v-btn>
         </template>
@@ -46,7 +47,8 @@ export default {
   },
   methods: {
     createAktie() {
-      // console.log(this.akInfo);
+      // Funktion die alle Aktein mit deren Kruse bekommt
+      // Für Datatable werden Manuell Objekte für die einzelnen Aktein erstellt
       for (let elm of this.akInfo) {
         let aktie = { name: elm.title, isin: elm.isin, wkn: elm.wkn, kurs: 1 };
         this.akData.push(aktie);

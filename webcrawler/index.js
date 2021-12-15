@@ -77,7 +77,7 @@ app.listen(process.env.PORT);
 
 // Webcrawler
 process.setMaxListeners(Infinity);
-// Cron Jede Minute crawlen
+// Cron Jede Stunde crawlen
 
 let job = new CronJob(
   '0 * * * *',
@@ -191,6 +191,7 @@ async function insertData(obj) {
   );
 }
 
+//Crawling function
 async function crawling() {
   console.log('crawling');
   for (let elm of aktien) {
