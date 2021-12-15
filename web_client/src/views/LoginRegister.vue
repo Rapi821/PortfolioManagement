@@ -71,7 +71,6 @@
                           outlined
                           dark
                           @click="step++"
-                          to="MainMenu"
                           >SIGN UP</v-btn
                         >
                       </div>
@@ -95,7 +94,6 @@
                           outlined
                           dark
                           @click="step--"
-                          to="MainMenu"
                           >Sign in</v-btn
                         >
                       </div>
@@ -162,7 +160,7 @@
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
-                        <v-btn rounded color="primary" dark>SIGN UP</v-btn>
+                        <v-btn rounded color="primary" dark to="MainMenu">SIGN UP</v-btn>
                       </div>
                     </v-col>
                   </v-row>
