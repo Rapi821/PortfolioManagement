@@ -15,16 +15,19 @@ const routes = [
     component: Home,
   },
   {
+    // Anmelde und Account erstellen
     path: '/LoginRegister',
     name: 'LoginRegister',
     component: LoginRegister,
   },
   {
+    // Alle verfpgbaren Aktien Market
     path: '/Market',
     name: 'Market',
     component: Market,
   },
   {
+    // Chart.js angezeigt
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -34,12 +37,14 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
+    // DetailPage
     path: '/akDetail/:isin',
     props: true,
     name: 'Detail',
     component: DetailAktie,
   },
   {
+    // MainMenu Dashboard
     path: '/mainmenu',
     props: true,
     name: 'MainMenu',
