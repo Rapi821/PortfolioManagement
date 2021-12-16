@@ -1,5 +1,6 @@
 <template>
   <div class="fill-height">
+    <TopBar />
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
     <v-container class="fill-height mt-n16" fluid>
@@ -13,6 +14,7 @@
             class="elevation-1"
           >
             <!-- Detailpage der einzelnen Aktien -->
+            /* eslint-disable */
             <template v-slot:item.actions="{ item }">
               <v-btn :to="`/akDetail/${item.isin}`" class="primary"
                 >Details</v-btn
@@ -29,9 +31,10 @@
 
 <script>
 import axios from "axios";
-
+import TopBar from "../components/TopBar.vue";
 export default {
   name: "Market",
+  components: { TopBar },
   data() {
     return {
       akInfo: [],
