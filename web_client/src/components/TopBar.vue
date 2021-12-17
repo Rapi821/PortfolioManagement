@@ -6,9 +6,13 @@
     >
 
     <v-spacer></v-spacer>
-    <v-btn outlined>Button2</v-btn>
-    <v-btn outlined class="mx-3">Button3</v-btn>
-    <v-btn outlined>Button4</v-btn>
+    <v-btn outlined active-class="white primary--text" to="/Market"
+      >Button2</v-btn
+    >
+    <v-btn outlined active-class="white primary--text" class="mx-3"
+      >Button3</v-btn
+    >
+    <v-btn outlined active-class="white primary--text">Button4</v-btn>
 
     <div class="d-none d-xl-flex a"></div>
   </v-app-bar>

@@ -1,17 +1,17 @@
 <template>
-    <div>
-        <v-card>
-            
-        </v-card>
-    </div>
+  <div>
+      <TopBar/>
+    <v-card> </v-card>
+  </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+import TopBar from "../components/TopBar.vue";
+export default {
+  components: {
+    TopBar,
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
