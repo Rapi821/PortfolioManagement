@@ -52,7 +52,7 @@
                           Passwort vergessen?
                         </h3>
                       </v-card-text>
-                      <div class="text-center mt-3 mb-12"> 
+                      <div class="text-center mt-3 mb-12">
                         <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
                         <v-btn rounded color="primary" dark @click="loginUser"
                           >SIGN IN</v-btn
@@ -70,11 +70,7 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für account erstellen -->
-                        <v-btn
-                          rounded
-                          outlined
-                          dark
-                          @click="step++"
+                        <v-btn rounded outlined dark @click="step++"
                           >SIGN UP</v-btn
                         >
                       </div>
@@ -94,11 +90,7 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für anmelden -->
-                        <v-btn
-                          rounded
-                          outlined
-                          dark
-                          @click="step--"
+                        <v-btn rounded outlined dark @click="step--"
                           >Sign in</v-btn
                         >
                       </div>
@@ -166,7 +158,7 @@
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
                         <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
-                        <v-btn rounded color="primary" dark >SIGN UP</v-btn>
+                        <v-btn rounded color="primary" dark>SIGN UP</v-btn>
                       </div>
                     </v-col>
                   </v-row>
@@ -182,7 +174,7 @@
 
 <script>
 // import axios from 'axios';
-import server from '@/serverInterface'
+import server from '@/serverInterface';
 export default {
   data: () => ({
     step: 1,
@@ -195,16 +187,16 @@ export default {
   methods: {
     async loginUser() {
       console.log(this.email);
-      let user = (await server.get(`http://localhost:3000/user/${this.email}`)).data;
-      if(user.password == this.password){
+      let user = (await server.get(`http://localhost:3000/user/${this.email}`))
+        .data;
+      if (user.password == this.password) {
         console.log('richtiger passswort');
         this.$router.replace('/mainmenu');
         // Router.beforeach machen
-        
-      }else{
+      } else {
         alert('falsches passwort');
       }
-    }
+    },
   },
 };
 </script>
