@@ -35,6 +35,7 @@
                             prepend-icon="mdi-email"
                             type="text"
                             color="primary"
+                            v-model="email"
                           />
 
                           <v-text-field
@@ -44,6 +45,7 @@
                             prepend-icon="mdi-lock"
                             type="password"
                             color="primary"
+                            v-model="password"
                           />
                         </v-form>
                         <h3 class="text-center font-weight-light mt-4">
@@ -52,7 +54,7 @@
                       </v-card-text>
                       <div class="text-center mt-3 mb-12"> 
                         <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
-                        <v-btn rounded color="primary" to="MainMenu" dark
+                        <v-btn rounded color="primary" dark @click="loginUser"
                           >SIGN IN</v-btn
                         >
                       </div>
@@ -164,7 +166,7 @@
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
                         <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
-                        <v-btn rounded color="primary" dark to="MainMenu">SIGN UP</v-btn>
+                        <v-btn rounded color="primary" dark >SIGN UP</v-btn>
                       </div>
                     </v-col>
                   </v-row>
@@ -179,12 +181,30 @@
 </template>
 
 <script>
+// import axios from 'axios';
+import server from '@/serverInterface'
 export default {
   data: () => ({
     step: 1,
+    email: '',
+    password: '',
   }),
   props: {
     source: String,
+  },
+  methods: {
+    async loginUser() {
+      console.log(this.email);
+      let user = (await server.get(`http://localhost:3000/user/${this.email}`)).data;
+      if(user.password == this.password){
+        console.log('richtiger passswort');
+        this.$router.replace('/mainmenu');
+        // Router.beforeach machen
+        
+      }else{
+        alert('falsches passwort');
+      }
+    }
   },
 };
 </script>

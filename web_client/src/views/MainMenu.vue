@@ -11,6 +11,11 @@ export default {
   components: {
     TopBar,
   },
+  props: {
+    user: {
+      type: Object,
+    },
+  },
 };
 </script>
 
