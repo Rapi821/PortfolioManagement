@@ -294,6 +294,22 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.user_id;
 -- Name: all_stocks stock_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
+---
+--- Table für session
+---
+
+CREATE TABLE "user_sessions" (
+  "sid" varchar NOT NULL COLLATE "default",
+	"sess" json NOT NULL,
+	"expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
 ALTER TABLE ONLY public.all_stocks ALTER COLUMN stock_id SET DEFAULT nextval('public.all_stocks_stock_id_seq'::regclass);
 
 

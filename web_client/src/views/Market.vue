@@ -1,29 +1,40 @@
 <template>
-  <div class="flex-row mx-auto d-flex mb-6 justify-center fill-height">
-    <div class="d-none d-xl-flex a"></div>
-    <v-spacer></v-spacer>
-    <div align="center">
-      <v-data-table
-        :headers="headers"
-        :items="akData"
-        :items-per-page="10"
-        class="elevation-1"
-      >
-        <template v-slot:item.actions="{ item }">
-          <v-btn :to="`/akDetail/${item.isin}`">Details</v-btn>
-        </template>
-      </v-data-table>
-    </div>
-    <v-spacer></v-spacer>
-    <div class="d-none d-xl-flex a"></div>
+  <div class="fill-height">
+    <TopBar />
+    <!-- <div class="d-none d-xl-flex a"></div> -->
+    <!-- <v-spacer></v-spacer> -->
+    <v-container class="fill-height mt-n16" fluid>
+      <v-row align="center" justify="center">
+        <v-col cols="12" sm="8">
+          <v-data-table
+            dense
+            :headers="headers"
+            :items="akData"
+            :items-per-page="10"
+            class="elevation-1"
+          >
+            <!-- Detailpage der einzelnen Aktien -->
+            /* eslint-disable */
+            <template v-slot:item.actions="{ item }">
+              <v-btn :to="`/akDetail/${item.isin}`" class="primary"
+                >Details</v-btn
+              >
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- <v-spacer></v-spacer> -->
+    <!-- <div class="d-none d-xl-flex a"></div> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
+import axios from "axios";
+import TopBar from "../components/TopBar.vue";
 export default {
-  name: 'Market',
+  name: "Market",
+  components: { TopBar },
   data() {
     return {
       akInfo: [],
@@ -32,21 +43,22 @@ export default {
 
       headers: [
         {
-          text: 'Name',
-          align: 'center',
+          text: "Name",
+          align: "center",
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'WKN', value: 'wkn', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: 'Aktionen', value: 'actions' },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "WKN", value: "wkn", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "Aktionen", value: "actions" },
       ],
     };
   },
   methods: {
     createAktie() {
-      // console.log(this.akInfo);
+      // Funktion die alle Aktein mit deren Kruse bekommt
+      // Für Datatable werden Manuell Objekte für die einzelnen Aktein erstellt
       for (let elm of this.akInfo) {
         let aktie = { name: elm.title, isin: elm.isin, wkn: elm.wkn, kurs: 1 };
         this.akData.push(aktie);
@@ -63,8 +75,8 @@ export default {
     },
   },
   async created() {
-    this.akInfo = (await axios.get('http://localhost:3000/akInfo')).data;
-    this.akKurs = (await axios.get('http://localhost:3000/akKurs')).data;
+    this.akInfo = (await axios.get("http://localhost:3000/akInfo")).data;
+    this.akKurs = (await axios.get("http://localhost:3000/akKurs")).data;
     this.createAktie();
   },
 };
@@ -73,4 +85,7 @@ export default {
 .a {
   width: 300px;
 }
+</style>
+<style lang="sass">
+@import '~vuetify/src/styles/styles.sass'
 </style>

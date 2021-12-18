@@ -35,6 +35,7 @@
                             prepend-icon="mdi-email"
                             type="text"
                             color="primary"
+                            v-model="email"
                           />
 
                           <v-text-field
@@ -44,6 +45,7 @@
                             prepend-icon="mdi-lock"
                             type="password"
                             color="primary"
+                            v-model="password"
                           />
                         </v-form>
                         <h3 class="text-center font-weight-light mt-4">
@@ -51,7 +53,10 @@
                         </h3>
                       </v-card-text>
                       <div class="text-center mt-3 mb-12">
-                        <v-btn rounded color="primary" dark>SIGN IN</v-btn>
+                        <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
+                        <v-btn rounded color="primary" dark @click="loginUser"
+                          >SIGN IN</v-btn
+                        >
                       </div>
                     </v-col>
                     <v-col cols="12" md="4" class=" grad1">
@@ -64,6 +69,7 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
+                        <!-- Button um zum Dialog für account erstellen -->
                         <v-btn rounded outlined dark @click="step++"
                           >SIGN UP</v-btn
                         >
@@ -83,6 +89,7 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
+                        <!-- Button um zum Dialog für anmelden -->
                         <v-btn rounded outlined dark @click="step--"
                           >Sign in</v-btn
                         >
@@ -110,28 +117,27 @@
                           Gib deine Daten ein und erstelle einen Account
                         </h4>
                         <v-form>
-                          <v-layout >
-                          <v-flex xs6>
-                            <v-text-field
-                            label="Vorname"
-                            name="Vorname"
-                            prepend-icon="mdi-account"
-                            type="text"
-                            color="primary"
-                          />
-                          </v-flex>
-                          
-                          <v-flex xs6>
-                            <v-text-field
-                            class="ml-1"
-                            label="Nachname"
-                            name="Nachname"
-                           
-                            type="text"
-                            color="primary"
-                          />
-                          </v-flex>
-                           </v-layout>
+                          <v-layout>
+                            <v-flex xs6>
+                              <v-text-field
+                                label="Vorname"
+                                name="Vorname"
+                                prepend-icon="mdi-account"
+                                type="text"
+                                color="primary"
+                              />
+                            </v-flex>
+
+                            <v-flex xs6>
+                              <v-text-field
+                                class="ml-1"
+                                label="Nachname"
+                                name="Nachname"
+                                type="text"
+                                color="primary"
+                              />
+                            </v-flex>
+                          </v-layout>
                           <v-text-field
                             label="Email"
                             name="Email"
@@ -151,6 +157,7 @@
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
+                        <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
                         <v-btn rounded color="primary" dark>SIGN UP</v-btn>
                       </div>
                     </v-col>
@@ -166,12 +173,30 @@
 </template>
 
 <script>
+// import axios from 'axios';
+import server from '@/serverInterface';
 export default {
   data: () => ({
     step: 1,
+    email: '',
+    password: '',
   }),
   props: {
     source: String,
+  },
+  methods: {
+    async loginUser() {
+      console.log(this.email);
+      let user = (await server.get(`http://localhost:3000/user/${this.email}`))
+        .data;
+      if (user.password == this.password) {
+        console.log('richtiger passswort');
+        this.$router.replace('/mainmenu');
+        // Router.beforeach machen
+      } else {
+        alert('falsches passwort');
+      }
+    },
   },
 };
 </script>
