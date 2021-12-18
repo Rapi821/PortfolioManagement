@@ -243,6 +243,11 @@ async function crawling() {
           '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
         );
       }
+      if (el == undefined) {
+        [el] = await page.$x(
+          '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+        );
+      }
       const isinData = await el.getProperty('textContent');
       const isin = await isinData.jsonValue();
       let info = isin.split(' / ');
@@ -279,6 +284,11 @@ async function crawling() {
           '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
         );
       }
+       if (ku == undefined) {
+        [ku] = await page.$x(
+          '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+        );
+      }
       const kursData = await ku.getProperty('textContent');
       let kurs = await kursData.jsonValue();
       kurs = kurs.split('E');
@@ -304,6 +314,11 @@ async function crawling() {
           '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
         );
       }
+      if (n == undefined) {
+        [n] = await page.$x(
+          '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[1]/h1'
+        );
+      }
       const nameData = await n.getProperty('textContent');
       let name = await nameData.jsonValue();
       name = name.split(' Aktie');
@@ -320,4 +335,4 @@ async function crawling() {
   }
 }
 
-// crawling();
+crawling();
