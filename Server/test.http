@@ -6,7 +6,7 @@ POST http://localhost:3000/user/createNewOne
 content-Type: application/json
 
 {
-    "email": "woalfsberger.r03@htlwienwest.at",
+    "email": "wolfsberger.r03@htlwienwest.at",
     "firstname": "Raphael",
     "lastname": "Wolfsberger",
     "password": "test123"

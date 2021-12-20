@@ -194,7 +194,7 @@ export default {
         this.$router.replace('/mainmenu');
         // Router.beforeach machen
       } else {
-        alert('falsches passwort');
+        this.password = 'falsches Passwort';
       }
     },
   },
