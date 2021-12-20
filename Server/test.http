@@ -25,3 +25,6 @@ content-Type: application/json
 }
 ###
 GET http://localhost:3000/competitions/0
+
+###
+GET http://localhost:3000/users/0

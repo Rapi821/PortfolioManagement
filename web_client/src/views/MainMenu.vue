@@ -3,6 +3,7 @@
     <TopBar :user_id="user_id" />
     <v-card>
       <v-card-title>Deine Competitions</v-card-title>
+      <v-card-text>{{user.firstname}} {{user.lastname}}</v-card-text>
       <v-card-actions
         ><v-btn>Competition Beitreten</v-btn
         ><v-btn @click="compCreate">Competition Erstellen</v-btn>
@@ -90,6 +91,7 @@ export default {
   data() {
     return {
       competetions: [],
+      user: {},
       dialog: false,
       competetion: {
         title: '',
@@ -113,6 +115,9 @@ export default {
   },
   async created() {
     this.getComps();
+    this.user = (
+      await server.get(`http://localhost:3000/users/${this.user_id}`)
+    ).data;
   },
 };
 </script>

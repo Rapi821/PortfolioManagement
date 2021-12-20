@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
 const { query } = require('../db/index');
 
 //Test Routen
 const getUsers = async () => (await query('SELECT * FROM users')).rows;
+const getUserById = async (user_id) =>
+  (await query('SELECT * FROM users WHERE user_id= $1', [user_id])).rows;
 const getUserByEmail = async (email) =>
   (await query('SELECT * FROM users WHERE email= $1', [email])).rows;
 //Neuen User registrieren
@@ -47,6 +50,7 @@ const getStocksFromDepot = async (member_id) =>
 
 module.exports = {
   getUsers,
+  getUserById,
   getUserByEmail,
   registerNewUser,
   getCompetitionsByUser,

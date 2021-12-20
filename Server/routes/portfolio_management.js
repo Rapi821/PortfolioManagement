@@ -2,6 +2,7 @@ const express = require('express');
 const {
   getUsers,
   getUserByEmail,
+  getUserById,
   registerNewUser,
   getCompetitionsByUser,
   createNewCompetition,
@@ -13,6 +14,7 @@ const router = express.Router();
 // Test Routen
 router.get('/users', getUsers);
 router.get('/user/:email', getUserByEmail);
+router.get('/users/:user_id', getUserById);
 // Neuen User registrieren
 router.post('/user/createNewOne', registerNewUser);
 // Alle Competitions von einem User

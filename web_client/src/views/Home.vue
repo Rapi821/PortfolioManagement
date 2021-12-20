@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-auto" max-width="344">
+    <v-card class="mx-auto" max-width="600">
       <v-card-title>Willkomen zu Portfolio-Management</v-card-title>
       <v-card-text>Starte das Abenteuer</v-card-text>
       <v-card-actions>
