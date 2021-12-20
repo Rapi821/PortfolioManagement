@@ -4,7 +4,7 @@
     <v-card>
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-actions
-        ><v-btn>+</v-btn> <v-btn>Neue Competition</v-btn></v-card-actions
+        ><v-btn>Competition Beitreten</v-btn> <v-btn>Neue Competition</v-btn></v-card-actions
       >
     </v-card>
   </div>
@@ -17,9 +17,10 @@ export default {
     TopBar,
   },
   props: {
-    user: {
-      type: Object,
-    },
+    user_id: Number,
+  },
+  created () {
+    console.log(this.user_id);
   },
 };
 </script>
