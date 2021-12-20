@@ -195,7 +195,7 @@ export default {
   }),
   props: {
     source: String,
-    user_id: Number,
+    user_id: String,
   },
   methods: {
     async loginUser() {
@@ -204,7 +204,7 @@ export default {
         .data;
       if (user.password == this.password) {
         console.log('richtiges passwort');
-        this.user_id = Number(user.user_id);
+        this.user_id = user.user_id;
         this.$router.replace(`/mainmenu/${this.user_id}`);
         // Router.beforeach machen
       } else {
@@ -220,7 +220,7 @@ export default {
       });
       let user = (await server.get(`http://localhost:3000/user/${this.email}`))
         .data;
-      this.user_id = Number(user.user_id);
+      this.user_id = user.user_id;
       this.$router.replace(`/mainmenu/${this.user_id}`);
     },
   },

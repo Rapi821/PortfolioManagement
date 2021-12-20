@@ -1,10 +1,11 @@
 <template>
   <div>
-    <TopBar />
+    <TopBar :user_id="user_id" />
     <v-card>
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-actions
-        ><v-btn>Competition Beitreten</v-btn> <v-btn>Neue Competition</v-btn></v-card-actions
+        ><v-btn>Competition Beitreten</v-btn>
+        <v-btn>Neue Competition</v-btn></v-card-actions
       >
     </v-card>
   </div>
@@ -17,10 +18,10 @@ export default {
     TopBar,
   },
   props: {
-    user_id: Number,
+    user_id: String,
   },
-  created () {
-    console.log(this.user_id);
+  created() {
+   
   },
 };
 </script>

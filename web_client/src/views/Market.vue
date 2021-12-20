@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <TopBar />
+    <TopBar :user_id="user_id" />
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
     <v-container class="fill-height mt-n16" fluid>
@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import TopBar from "../components/TopBar.vue";
+import axios from 'axios';
+import TopBar from '../components/TopBar.vue';
 export default {
-  name: "Market",
+  name: 'Market',
   components: { TopBar },
   data() {
     return {
@@ -43,15 +43,15 @@ export default {
 
       headers: [
         {
-          text: "Name",
-          align: "center",
+          text: 'Name',
+          align: 'center',
           sortable: true,
-          value: "name",
+          value: 'name',
         },
-        { text: "ISIN", value: "isin", sortable: false },
-        { text: "WKN", value: "wkn", sortable: false },
-        { text: "Kurs", value: "kurs" },
-        { text: "Aktionen", value: "actions" },
+        { text: 'ISIN', value: 'isin', sortable: false },
+        { text: 'WKN', value: 'wkn', sortable: false },
+        { text: 'Kurs', value: 'kurs' },
+        { text: 'Aktionen', value: 'actions' },
       ],
     };
   },
@@ -74,9 +74,14 @@ export default {
       // console.log(this.akData);
     },
   },
+  props: {
+    user_id: {
+      type: String,
+    },
+  },
   async created() {
-    this.akInfo = (await axios.get("http://localhost:3000/akInfo")).data;
-    this.akKurs = (await axios.get("http://localhost:3000/akKurs")).data;
+    this.akInfo = (await axios.get('http://localhost:3000/akInfo')).data;
+    this.akKurs = (await axios.get('http://localhost:3000/akKurs')).data;
     this.createAktie();
   },
 };

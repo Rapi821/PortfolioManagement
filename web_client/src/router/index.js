@@ -22,7 +22,8 @@ const routes = [
   },
   {
     // Alle verfpgbaren Aktien Market
-    path: '/Market',
+    path: '/Market/:user_id',
+    props: true,
     name: 'Market',
     component: Market,
   },
