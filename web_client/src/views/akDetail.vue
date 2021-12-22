@@ -31,14 +31,14 @@ export default {
     async getKurs() {
       this.akKurs = (
         await axios.get(
-          `http://localhost:3000/akDetailKurs/${this.akInfo.isin}`
+          `http://localhost:5000/akDetailKurs/${this.akInfo.isin}`
         )
       ).data;
     },
   },
   async created() {
     this.akInfo = (
-      await axios.get(`http://localhost:3000/akDetail/${this.isin}`)
+      await axios.get(`http://localhost:5000/akDetail/${this.isin}`)
     ).data[0];
     this.getKurs();
   },

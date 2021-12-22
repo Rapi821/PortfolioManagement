@@ -3,9 +3,9 @@
     <TopBar :user_id="user_id" />
     <v-card>
       <v-card-title>Deine Competitions</v-card-title>
-      <v-card-text>{{user.firstname}} {{user.lastname}}</v-card-text>
+      <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
       <v-card-actions
-        ><v-btn>Competition Beitreten</v-btn
+        ><v-btn @click="compEnter">Competition Beitreten</v-btn
         ><v-btn @click="compCreate">Competition Erstellen</v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
@@ -45,6 +45,35 @@
                 Create
               </v-btn>
             </v-card-actions>
+          </v-card> </v-dialog
+        ><v-dialog v-model="dialog_enter" max-width="500px">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Competition Beitreten</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="compCode"
+                      label="Competition Code"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="competetionEnter">
+                Enter
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-dialog></v-card-actions
       >
@@ -67,9 +96,16 @@ export default {
   methods: {
     close() {
       this.dialog = false;
+      this.dialog_enter = false;
     },
     compCreate() {
       this.dialog = true;
+    },
+    compEnter() {
+      this.dialog_enter = true;
+    },
+    competetionEnter() {
+      //Do something
     },
     async getComps() {
       this.competetions = (
@@ -93,6 +129,8 @@ export default {
       competetions: [],
       user: {},
       dialog: false,
+      dialog_enter: false,
+      compCode: '',
       competetion: {
         title: '',
         starting_money: 0,

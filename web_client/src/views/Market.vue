@@ -80,8 +80,8 @@ export default {
     },
   },
   async created() {
-    this.akInfo = (await axios.get('http://localhost:3000/akInfo')).data;
-    this.akKurs = (await axios.get('http://localhost:3000/akKurs')).data;
+    this.akInfo = (await axios.get('http://localhost:5000/akInfo')).data;
+    this.akKurs = (await axios.get('http://localhost:5000/akKurs')).data;
     this.createAktie();
   },
 };
