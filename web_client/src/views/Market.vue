@@ -3,7 +3,7 @@
     <TopBar :user_id="user_id" />
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
-    <v-container class="fill-height mt-n16" fluid>
+    <v-container class="fill-height " fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8">
           <v-data-table
@@ -16,7 +16,8 @@
             <!-- Detailpage der einzelnen Aktien -->
             /* eslint-disable */
             <template v-slot:item.actions="{ item }">
-              <v-btn :to="`/akDetail/${item.isin}`" class="primary"
+
+              <v-btn :to="`/akDetail/${item.isin}`" small plain class="primary  mt-2 mb-2" 
                 >Details</v-btn
               >
             </template>
