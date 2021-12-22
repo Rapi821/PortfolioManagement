@@ -15,7 +15,7 @@
 
       <div class="d-none d-xl-flex a"></div>
     </v-app-bar> -->
-    <TopBar class="d-none"></TopBar>
+    <!-- <TopBar class="d-none"></TopBar> -->
 
     <v-main>
       <router-view />
@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import TopBar from "./components/TopBar.vue";
+// import TopBar from "./components/TopBar.vue";
 
 export default {
   name: "App",
-  components: { TopBar },
+  components: {  },
   data: () => ({
     //
   }),

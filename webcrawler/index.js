@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const logger = require('morgan');
+const helmet = require('helmet');
 
 const app = express();
 const routes = require('./routes');
@@ -65,6 +66,7 @@ let akObj = {
 };
 
 //Server API Setup
+app.use(helmet());
 app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
@@ -75,98 +77,160 @@ app.use('/', routes);
 
 app.listen(process.env.PORT);
 
-// Webcrawler
 process.setMaxListeners(Infinity);
-// Cron Jede Stunde crawlen
 
+// Webcrawler
+
+// Cron Jede Stunde crawlen
 let job = new CronJob(
   '0 * * * *',
   function () {
     for (let elm of aktien) {
-      (async () => {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(0);
-        await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`, {
-          waitUntil: 'load',
-          // Remove the timeout
-          timeout: 0,
-        });
+    (async () => {
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.setDefaultNavigationTimeout(0);
+      await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`, {
+        waitUntil: 'load',
+        // Remove the timeout
+        timeout: 0,
+      });
 
-        // ISIN, WKN, Symbol holen
-        let [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
-        );
-        if (el == undefined) {
-          [el] = await page.$x(
-            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
-          );
-        }
-        if (el == undefined) {
-          [el] = await page.$x(
-            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
-          );
-        }
-        if (el == undefined) {
-          [el] = await page.$x(
-            '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
-          );
-        }
-        const isinData = await el.getProperty('textContent');
-        const isin = await isinData.jsonValue();
-        let info = isin.split(' / ');
-        console.log(info);
-        let wkn = info[0].split(': ');
-        let is = info[1].split(': ');
-        let sym;
-        if (info.length < 3) {
-          sym = ['', ''];
-        } else {
-          sym = info[2].split(': ');
-        }
+      // ISIN, WKN, Symbol holen /html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span
+      let [el] = await page.$x(
+        '//*[@class="instrument-id"]'
+      );
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      const isinData = await el.getProperty('textContent');
+      const isin = await isinData.jsonValue();
+      let info = isin.split(' / ');
+      // console.log(info);
+      let wkn = info[0].split(': ');
+      let is = info[1].split(': ');
+      let sym;
+      if (info.length < 3) {
+        sym = ['', ''];
+      } else {
+        sym = info[2].split(': ');
+      }
 
-        akObj.isin = is[1];
-        akObj.wkn = wkn[1];
-        akObj.symbol = sym[1];
+      akObj.isin = is[1];
+      akObj.wkn = wkn[1];
+      akObj.symbol = sym[1];
 
-        // Derzeitigen Kurs bekommen
-        let [ku] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
-        );
-        if (ku == undefined) {
-          [ku] = await page.$x(
-            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
-          );
-        }
-        const kursData = await ku.getProperty('textContent');
-        let kurs = await kursData.jsonValue();
-        kurs = kurs.split('E');
-        akObj.kurs = parseFloat(kurs[0]).toFixed(2);
-        akObj.waehrung = 'E' + kurs[1];
+      // Derzeitigen Kurs bekommen 
+      let [ku] = await page.$x(
+        '//*[@colspan="4"]'
+      );
+      // let [ku] = await page.$x(
+      //   '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      // );
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      //  if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      const kursData = await ku.getProperty('textContent');
+      let kurs = await kursData.jsonValue();
+      kurs = kurs.split(' ');
+      akObj.kurs = parseFloat(kurs[0]).toFixed(2);
+      akObj.waehrung = kurs[1];
 
-        // Aktien namen bekommen
-        let [n] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
-        );
-        if (n == undefined) {
-          [n] = await page.$x(
-            '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
-          );
-        }
-        const nameData = await n.getProperty('textContent');
-        let name = await nameData.jsonValue();
-        name = name.split(' Aktie');
-        akObj.name = name[0];
+      // Aktien namen bekommen 
+      let [n] = await page.$x(
+        '//*[@class="line-height-fix"]'
+      );
+      // let [n] = await page.$x(
+      //   '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+      // );
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      const nameData = await n.getProperty('textContent');
+      let name = await nameData.jsonValue();
+      name = name.split(' Aktie');
+      akObj.name = name[0];
 
-        // Derzeitiges Datum & Zeit zum Objekt hinzufügen
-        akObj.time = getTime();
+      // Derzeitiges Datum & Zeit zum Objekt hinzufügen
+      akObj.time = getTime();
 
-        console.log(akObj);
-        insertData(akObj);
+      console.log(akObj);
+      insertData(akObj);
 
-        browser.close();
-      })();
-    }
+      browser.close();
+    })();
+  }
   },
   'Americas/Vancouver'
 );
@@ -205,45 +269,50 @@ async function crawling() {
         timeout: 0,
       });
 
-      // ISIN, WKN, Symbol holen
+      // ISIN, WKN, Symbol holen /html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span
       let [el] = await page.$x(
-        '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
+        '//*[@class="instrument-id"]'
       );
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
-        );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
-        );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
-        );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
-        );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
-        );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
-        );
-      }
-      if (el == undefined) {
-        [el] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
-        );
-      }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
       const isinData = await el.getProperty('textContent');
       const isin = await isinData.jsonValue();
       let info = isin.split(' / ');
@@ -261,50 +330,66 @@ async function crawling() {
       akObj.wkn = wkn[1];
       akObj.symbol = sym[1];
 
-      // Derzeitigen Kurs bekommen
+      // Derzeitigen Kurs bekommen 
       let [ku] = await page.$x(
-        '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+        '//*[@colspan="4"]'
       );
-      if (ku == undefined) {
-        [ku] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
-        );
-      }
-      if (ku == undefined) {
-        [ku] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
-        );
-      }
-      if (ku == undefined) {
-        [ku] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
-        );
-      }
+      // let [ku] = await page.$x(
+      //   '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      // );
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      //  if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
       const kursData = await ku.getProperty('textContent');
       let kurs = await kursData.jsonValue();
-      kurs = kurs.split('E');
+      kurs = kurs.split(' ');
       akObj.kurs = parseFloat(kurs[0]).toFixed(2);
-      akObj.waehrung = 'E' + kurs[1];
+      akObj.waehrung = kurs[1];
 
-      // Aktien namen bekommen
+      // Aktien namen bekommen 
       let [n] = await page.$x(
-        '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+        '//*[@class="line-height-fix"]'
       );
-      if (n == undefined) {
-        [n] = await page.$x(
-          '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
-        );
-      }
-      if (n == undefined) {
-        [n] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
-        );
-      }
-      if (n == undefined) {
-        [n] = await page.$x(
-          '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
-        );
-      }
+      // let [n] = await page.$x(
+      //   '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+      // );
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
       const nameData = await n.getProperty('textContent');
       let name = await nameData.jsonValue();
       name = name.split(' Aktie');

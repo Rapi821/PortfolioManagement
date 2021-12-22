@@ -7,13 +7,13 @@ async function getAktienInfo() {
   return x;
 }
 
-// Alle Kurse 
+// Alle Kurse
 async function getAktienKurs() {
   return (await query('SELECT * FROM "public"."aktienKurs" ORDER BY zeit DESC'))
     .rows;
 }
 
-// Einzelne Aktie 
+// Einzelne Aktie
 async function getDetailAk(isin) {
   return (
     await query(`SELECT * FROM "public"."aktienInfo" WHERE isin=$1`, [isin])

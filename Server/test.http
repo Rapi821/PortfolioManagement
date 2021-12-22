@@ -6,13 +6,13 @@ POST http://localhost:3000/user/createNewOne
 content-Type: application/json
 
 {
-    "email": "woalfsberger.r03@htlwienwest.at",
+    "email": "wolfsberger.r03@htlwienwest.at",
     "firstname": "Raphael",
     "lastname": "Wolfsberger",
     "password": "test123"
 }
 ###
-GET http://localhost:3000/getCompetitions/1
+GET http://localhost:3000/getCompetitions/0
 ###
 POST http://localhost:3000/createNewCompetition
 content-Type: application/json
@@ -21,7 +21,10 @@ content-Type: application/json
     "title": "CRUD-POST-Competition",
     "starting_money": 20000,
     "end_date": "2022-12-1",
-    "user_id": "4"
+    "user_id": "0"
 }
 ###
 GET http://localhost:3000/competitions/0
+
+###
+GET http://localhost:3000/users/0

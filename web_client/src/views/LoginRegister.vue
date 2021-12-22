@@ -52,7 +52,7 @@
                           Passwort vergessen?
                         </h3>
                       </v-card-text>
-                      <div class="text-center mt-3 mb-12"> 
+                      <div class="text-center mt-3 mb-12">
                         <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
                         <v-btn rounded color="primary" dark @click="loginUser"
                           >SIGN IN</v-btn
@@ -70,11 +70,7 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für account erstellen -->
-                        <v-btn
-                          rounded
-                          outlined
-                          dark
-                          @click="step++"
+                        <v-btn rounded outlined dark @click="step++"
                           >SIGN UP</v-btn
                         >
                       </div>
@@ -94,11 +90,7 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für anmelden -->
-                        <v-btn
-                          rounded
-                          outlined
-                          dark
-                          @click="step--"
+                        <v-btn rounded outlined dark @click="step--"
                           >Sign in</v-btn
                         >
                       </div>
@@ -133,6 +125,7 @@
                                 prepend-icon="mdi-account"
                                 type="text"
                                 color="primary"
+                                v-model="firstname"
                               />
                             </v-flex>
 
@@ -143,6 +136,7 @@
                                 name="Nachname"
                                 type="text"
                                 color="primary"
+                                v-model="lastname"
                               />
                             </v-flex>
                           </v-layout>
@@ -152,6 +146,7 @@
                             prepend-icon="mdi-email"
                             type="text"
                             color="primary"
+                            v-model="email"
                           />
 
                           <v-text-field
@@ -161,12 +156,19 @@
                             prepend-icon="mdi-lock"
                             type="password"
                             color="primary"
+                            v-model="password"
                           />
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
                         <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
-                        <v-btn rounded color="primary" dark >SIGN UP</v-btn>
+                        <v-btn
+                          rounded
+                          color="primary"
+                          dark
+                          @click="createAccount"
+                          >SIGN UP</v-btn
+                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -182,29 +184,45 @@
 
 <script>
 // import axios from 'axios';
-import server from '@/serverInterface'
+import server from '@/serverInterface';
 export default {
   data: () => ({
     step: 1,
     email: '',
     password: '',
+    firstname: '',
+    lastname: '',
   }),
   props: {
     source: String,
+    user_id: String,
   },
   methods: {
     async loginUser() {
       console.log(this.email);
-      let user = (await server.get(`http://localhost:3000/user/${this.email}`)).data;
-      if(user.password == this.password){
-        console.log('richtiger passswort');
-        this.$router.replace('/mainmenu');
+      let user = (await server.get(`http://localhost:3000/user/${this.email}`))
+        .data;
+      if (user.password == this.password) {
+        console.log('richtiges passwort');
+        this.user_id = user.user_id;
+        this.$router.replace(`/mainmenu/${this.user_id}`);
         // Router.beforeach machen
-        
-      }else{
-        alert('falsches passwort');
+      } else {
+        this.password = 'falsches Passwort';
       }
-    }
+    },
+    async createAccount() {
+      await server.post(`http://localhost:3000/user/createNewOne`, {
+        email: this.email,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        password: this.password,
+      });
+      let user = (await server.get(`http://localhost:3000/user/${this.email}`))
+        .data;
+      this.user_id = user.user_id;
+      this.$router.replace(`/mainmenu/${this.user_id}`);
+    },
   },
 };
 </script>

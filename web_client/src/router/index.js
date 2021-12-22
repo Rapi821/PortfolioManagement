@@ -22,19 +22,20 @@ const routes = [
   },
   {
     // Alle verfpgbaren Aktien Market
-    path: '/Market',
+    path: '/Market/:user_id',
+    props: true,
     name: 'Market',
     component: Market,
   },
   {
     // Chart.js angezeigt
-    path: '/about',
-    name: 'About',
+    path: '/ChartExp',
+    name: 'ChartExp',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
+      import(/* webpackChunkName: "about" */ '../views/ChartExp.vue'),
   },
   {
     // DetailPage
@@ -45,7 +46,7 @@ const routes = [
   },
   {
     // MainMenu Dashboard
-    path: '/mainmenu',
+    path: '/mainmenu/:user_id',
     props: true,
     name: 'MainMenu',
     component: MainMenu,
