@@ -79,6 +79,10 @@ app.listen(process.env.PORT);
 
 process.setMaxListeners(Infinity);
 
+// ErrorListener
+process.on('unhandledRejection', (err) => errorData(err)
+);
+
 // Webcrawler
 
 // Cron Jede Stunde crawlen
@@ -171,6 +175,18 @@ async function insertData(obj) {
   );
 }
 
+// Error Logger in Datenbank
+async function errorData(err) {
+  console.log('ERROPR:');
+  console.log(err);
+  let time = getTime();
+  await query(
+    `INSERT INTO "error" (err, time) VALUES ($1,$2)`,
+    [String(err), time]
+  );
+  console.log('DONE');
+}
+
 //Crawling function
 async function crawling() {
   console.log('crawling');
@@ -238,4 +254,4 @@ async function crawling() {
   }
 }
 
-// crawling();
+crawling();
