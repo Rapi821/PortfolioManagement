@@ -82,7 +82,7 @@ process.setMaxListeners(Infinity);
 // ErrorListener
 process.on('unhandledRejection', (err) => errorData(err)
 );
-process.on('uncaughtException', (err) => errorData(err));
+// process.on('uncaughtException', (err) => errorData(err));
 
 // Webcrawler
 
