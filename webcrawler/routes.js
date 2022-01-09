@@ -22,4 +22,9 @@ router.get('/akDetailKurs/:isin', async function (req, res, next) {
     res.send(await data.getDetailAkKurs(req.params.isin));
 });
 
+// Kurs zwischen Zeitrahmen
+router.get('/kursByTime/:isin', async function (req, res, next) {
+    res.send(await data.getKursbyTime(req.params.isin, req.query.date));
+});
+
 module.exports = router;
