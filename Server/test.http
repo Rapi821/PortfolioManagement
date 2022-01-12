@@ -28,3 +28,14 @@ GET http://localhost:3000/competitions/0
 
 ###
 GET http://localhost:3000/users/0
+###
+POST http://localhost:3000/user/buyStocks
+content-Type: application/json
+
+{
+    "isin": "US5949181045",
+    "buy_price": 298.76,
+    "count": 5,
+    "competition_id": 0,
+    "buy_date": "2022-01-12"
+}

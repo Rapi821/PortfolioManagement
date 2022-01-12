@@ -20,9 +20,7 @@ const registerNewUser = asyncHandler(async (req, res) => {
 });
 // Alle Competitions von einem User
 const getUserCompetitions = asyncHandler(async (req, res) => {
-  res
-    .status(200)
-    .json(await persons.getCompetitionsByUser(req.session.user.user_id));
+  res.status(200).json(await persons.getCompetitionsByUser(req.session.user.user_id));
 });
 // Erstellen einer neuen Competition
 const createNewCompetition = asyncHandler(async (req, res) => {
@@ -55,6 +53,9 @@ const getUserData = asyncHandler(async (req, res) => {
   console.log(req.session.user);
   res.status(200).json(req.session.user);
 });
+const buyStocks = asyncHandler(async (req, res) => {
+  res.status(200).json(await persons.buyStocks(req.body, req.session.user.user_id));
+});
 
 module.exports = {
   getUsers,
@@ -66,4 +67,5 @@ module.exports = {
   loginUser,
   getUserData,
   getUserCompetitions,
+  buyStocks
 };
