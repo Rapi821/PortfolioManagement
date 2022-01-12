@@ -46,7 +46,13 @@
       <v-card>
         <div class="d-flex justify-space-around">
           <div v-on:click="stepc0" :disabled="step == 0">Kaufen</div>
+
+          <v-divider vertical></v-divider>
           <div v-on:click="stepc1" :disabled="step == 1">Verkaufen</div>
+        </div>
+        <div class="d-flex flex-row">
+          <v-divider v-if="step == 0"></v-divider>
+          <v-divider v-if="step == 1"></v-divider>
         </div>
         <v-window v-model="step">
           <v-window-item :value="0">
