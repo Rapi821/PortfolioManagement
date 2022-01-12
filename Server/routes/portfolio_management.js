@@ -9,6 +9,7 @@ const {
   getStocksFromDepot,
   loginUser,
   getUserData,
+  buyStocks,
 } = require('../controllers/portfolio_management');
 
 const router = express.Router();
@@ -28,5 +29,6 @@ router.get('/competitions/:member_id', getStocksFromDepot);
 // Login Route
 router.post('/user/login', loginUser);
 router.get('/user/data', getUserData);
-router.get('/user/competitions', getUserCompetitions);
+router.get('/user/competitions', getUserCompetitions); 
+router.post('/user/buyStocks', buyStocks);
 module.exports = router;

@@ -60,6 +60,20 @@
           ></v-data-table></v-col
       ></v-row>
     </v-container>
+
+
+
+    <!-- TEST BUTTONS FÜR ROUTEN -->
+    <v-btn color="blue darken-1" text @click="buyStock({
+    isin: 'US5949181045',
+    buy_price: 298.76,
+    count: 5,
+    competition_id: 0,
+    buy_date: '2022-01-12'
+})">
+      Kaufe Aktien
+    </v-btn>
+
   </div>
 </template>
 
@@ -98,6 +112,9 @@ export default {
       this.close();
       this.getComps();
     },
+    async buyStock(obj){
+      await server.post(`http://localhost:3000/user/buyStocks`, obj)
+    }
   },
   data() {
     return {

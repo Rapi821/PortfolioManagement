@@ -61,6 +61,10 @@ const loginUser = async (user) => {
   }
   return res[0];
 };
+// Aktien kaufen
+const buyStocks = async (newData, user_id) =>{ (await query('insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id, buy_date) VALUES ($1, $2, $3, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4), $6)', [newData.isin, newData.buy_price, newData.count, newData.competition_id, user_id ,newData.buy_date])).rows;
+// (await query ("update competition_member_depot_lines set buy_price= $1 WHERE isin='0000' and member_id= (select member_id from competition_members where user_id=$2 and competition_id=$3)"))
+}
 
 module.exports = {
   getUsers,
@@ -71,4 +75,5 @@ module.exports = {
   createNewCompetition,
   getStocksFromDepot,
   loginUser,
+  buyStocks,
 };
