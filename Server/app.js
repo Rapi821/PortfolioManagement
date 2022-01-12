@@ -43,7 +43,7 @@ const isDevelopment = true; // Restservice on LocalHost 3000 and Client on Local
 app.use(helmet());
 if (isDevelopment) {
   corsOption = {
-    origin: 'http://localhost:8081',
+    origin: 'http://localhost:8080',
     credentials: true,
   };
   const cors = require('cors');

@@ -29,10 +29,23 @@ async function getDetailAkKurs(isin) {
     )
   ).rows;
 }
+//
+async function getKursbyTime(isin, timestamp) {
+  let today = new Date();
+  let date =
+    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+ return (
+    await query(
+      `SELECT * FROM "public"."aktienKurs" WHERE isin='$1' AND zeit BETWEEN '$2' AND '$3' ORDER BY zeit DESC`,
+      [isin, timestamp, date]
+    )
+  ).rows;
+}
 
 module.exports = {
   getAktienInfo,
   getAktienKurs,
   getDetailAk,
   getDetailAkKurs,
+  getKursbyTime,
 };

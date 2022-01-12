@@ -5,6 +5,7 @@ import LoginRegister from '../views/LoginRegister.vue';
 import Market from '../views/Market.vue';
 import DetailAktie from '../views/akDetail.vue';
 import MainMenu from '../views/MainMenu.vue';
+import Dashboard from '../views/Dashboard.vue';
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+  },
+
+  {
+    path:'/Dashboard',
+    name:'Dashboard',
+    component: Dashboard,
   },
   {
     // Anmelde und Account erstellen

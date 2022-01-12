@@ -14,10 +14,13 @@
             class="elevation-1"
           >
             <!-- Detailpage der einzelnen Aktien -->
-            /* eslint-disable */
-            <template v-slot:item.actions="{ item }">
 
-              <v-btn :to="`/akDetail/${item.isin}`" small plain class="primary  mt-2 mb-2" 
+            <template v-slot:item.actions="{ item }">
+              <v-btn
+                :to="`/akDetail/${item.isin}`"
+                small
+                plain
+                class="primary  mt-2 mb-2"
                 >Details</v-btn
               >
             </template>
@@ -81,8 +84,16 @@ export default {
     },
   },
   async created() {
-    this.akInfo = (await axios.get('http://localhost:5000/akInfo')).data;
-    this.akKurs = (await axios.get('http://localhost:5000/akKurs')).data;
+    this.akInfo = (
+      await axios.get(
+        'https://hello-worls-azure-crawler.azurewebsites.net/akInfo'
+      )
+    ).data;
+    this.akKurs = (
+      await axios.get(
+        'https://hello-worls-azure-crawler.azurewebsites.net/akKurs'
+      )
+    ).data;
     this.createAktie();
   },
 };

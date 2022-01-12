@@ -16,7 +16,7 @@
       :to="`/mainmenu`"
       >Main Menu</v-btn
     >
-    <v-btn outlined active-class="white primary--text">Dashboard</v-btn>
+    <v-btn outlined active-class="white primary--text" to="/Dashboard">Dashboard</v-btn>
 
     <div class="d-none d-xl-flex a"></div>
   </v-app-bar>

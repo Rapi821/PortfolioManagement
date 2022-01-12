@@ -1,0 +1,95 @@
+ISIN:
+
+/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span
+ // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[4]/div/span'
+      //   );
+      // }
+      // if (el == undefined) {
+      //   [el] = await page.$x(
+      //     '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[3]/div/span'
+      //   );
+      // }
+
+
+Kurs:
+
+// let [ku] = await page.$x(
+      //   '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      // );
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      // if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+      //  if (ku == undefined) {
+      //   [ku] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[2]/div[1]/div[1]'
+      //   );
+      // }
+
+Name:
+ // let [n] = await page.$x(
+      //   '/html/body/div[2]/div[1]/div[2]/div[9]/div[1]/div[1]/div[1]/h1'
+      // );
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[2]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[1]/div[2]/div[11]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
+      // if (n == undefined) {
+      //   [n] = await page.$x(
+      //     '/html/body/div[1]/div[2]/div[3]/div[9]/div[1]/div[1]/div[1]/h1'
+      //   );
+      // }
