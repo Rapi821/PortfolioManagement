@@ -45,20 +45,49 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <div class="d-flex justify-space-around">
-          <div class="" v-on:click="stepc0" :disabled="step == 0">Kaufen</div>
-
-          <v-divider class="ml-5" vertical></v-divider
-          ><!-- ml-5 nicht clean -->
-          <div v-on:click="stepc1" :disabled="step == 1">Verkaufen</div>
+          <v-container
+            fluid
+            :style="[
+              !visible
+                ? {
+                    'border-bottom': '1px solid #fff',
+                  }
+                : {
+                    'border-bottom': '1px solid #000',
+                  },
+            ]"
+            style="border-right:1px solid #000"
+          >
+            <div v-on:click="stepc0" :disabled="step == 0">
+              Kaufen
+            </div>
+          </v-container>
+          <!-- <v-divider class="ml-5" vertical></v-divider> -->
+          <!-- ml-5 nicht clean -->
+          <v-container
+            fluid
+            :style="[
+              visible
+                ? {
+                    'border-bottom': '1px solid #fff',
+                  }
+                : {
+                    'border-bottom': '1px solid #000',
+                  },
+            ]"
+          >
+            <div v-on:click="stepc1" :disabled="step == 1">Verkaufen</div>
+          </v-container>
         </div>
-        <div class="d-flex flex-row">
+        <!-- Nicht löschen -->
+        <!-- <div class="d-flex flex-row">
           <v-divider
             :style="{ visibility: visible ? 'visible' : 'hidden' }"
           ></v-divider>
           <v-divider
             :style="{ visibility: !visible ? 'visible' : 'hidden' }"
           ></v-divider>
-        </div>
+        </div> -->
         <v-window v-model="step">
           <v-window-item :value="0">
             <v-form
