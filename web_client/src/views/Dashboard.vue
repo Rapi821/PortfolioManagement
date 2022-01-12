@@ -45,14 +45,19 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <div class="d-flex justify-space-around">
-          <div v-on:click="stepc0" :disabled="step == 0">Kaufen</div>
+          <div class="" v-on:click="stepc0" :disabled="step == 0">Kaufen</div>
 
-          <v-divider vertical></v-divider>
+          <v-divider class="ml-5" vertical></v-divider
+          ><!-- ml-5 nicht clean -->
           <div v-on:click="stepc1" :disabled="step == 1">Verkaufen</div>
         </div>
         <div class="d-flex flex-row">
-          <v-divider v-if="step == 0"></v-divider>
-          <v-divider v-if="step == 1"></v-divider>
+          <v-divider
+            :style="{ visibility: visible ? 'visible' : 'hidden' }"
+          ></v-divider>
+          <v-divider
+            :style="{ visibility: !visible ? 'visible' : 'hidden' }"
+          ></v-divider>
         </div>
         <v-window v-model="step">
           <v-window-item :value="0">
@@ -196,15 +201,18 @@ export default {
     },
     stepc0() {
       this.step = 0;
+      this.visible = false;
     },
     stepc1() {
       this.step = 1;
+      this.visible = true;
     },
   },
   data() {
     return {
       dialog: false,
       step: 0,
+      visible: false,
       competetion: {},
     };
   },
