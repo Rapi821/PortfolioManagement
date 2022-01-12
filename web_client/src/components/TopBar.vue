@@ -6,14 +6,14 @@
     >
 
     <v-spacer></v-spacer>
-    <v-btn outlined active-class="white primary--text" :to="`/Market/${this.user_id}`"
+    <v-btn outlined active-class="white primary--text" :to="`/Market`"
       >Market</v-btn
     >
     <v-btn
       outlined
       active-class="white primary--text"
       class="mx-3"
-      :to="`/mainmenu/${this.user_id}`"
+      :to="`/mainmenu`"
       >Main Menu</v-btn
     >
     <v-btn outlined active-class="white primary--text">Dashboard</v-btn>
@@ -29,11 +29,6 @@ export default {
   data: () => ({
     //
   }),
-  props: {
-    user_id: {
-      type: String,
-    },
-  },
 };
 </script>
 <style>

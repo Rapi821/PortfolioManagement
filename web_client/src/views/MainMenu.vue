@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar :user_id="user_id" />
+    <TopBar />
     <v-card>
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
@@ -13,46 +13,42 @@
               <span class="text-h5">Competition erstellen</span>
             </v-card-title>
 
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="competetion.title"
-                            label="Titel"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="competetion.starting_money"
-                            label="Startgeld"
-                          ></v-text-field> </v-col
-                        ><v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="competetion.end_date"
-                            label="End Datum"
-                          ></v-text-field> </v-col
-                      ></v-row>
-                    </v-container>
-                  </v-card-text>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="competetion.title"
+                      label="Titel"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="competetion.starting_money"
+                      label="Startgeld"
+                    ></v-text-field> </v-col
+                  ><v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="competetion.end_date"
+                      label="End Datum"
+                    ></v-text-field> </v-col
+                ></v-row>
+              </v-container>
+            </v-card-text>
 
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close">
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="createCompetition"
-                    >
-                      Create
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog></v-card-actions
-            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="createCompetition">
+                Create
+              </v-btn>
+            </v-card-actions>
           </v-card>
+        </v-dialog></v-card-actions
+      >
+    </v-card>
 
     <v-container class="fill-height " fluid>
       <v-row align="center" justify="center">
@@ -68,14 +64,11 @@
 </template>
 
 <script>
-import TopBar from "../components/TopBar.vue";
-import server from "@/serverInterface";
+import TopBar from '../components/TopBar.vue';
+import server from '@/serverInterface';
 export default {
   components: {
     TopBar,
-  },
-  props: {
-    user_id: String,
   },
   methods: {
     close() {
@@ -93,9 +86,7 @@ export default {
     },
     async getComps() {
       this.competetions = (
-        await server.get(
-          `http://localhost:3000/getCompetitions/${this.user_id}`
-        )
+        await server.get(`http://localhost:3000/user/competitions`)
       ).data;
     },
     async createCompetition() {
@@ -116,30 +107,28 @@ export default {
       dialog_enter: false,
       compCode: '',
       competetion: {
-        title: "",
+        title: '',
         starting_money: 0,
-        end_date: "",
-        user_id: this.user_id,
+        end_date: '',
       },
       headers: [
         {
-          text: "titel",
-          align: "start",
+          text: 'titel',
+          align: 'start',
           sortable: false,
-          value: "title",
+          value: 'title',
         },
-        { text: "Portfoliowert", value: "portfolio_value" },
-        { text: "Cash", value: "cash" },
-        { text: "Total", value: "total" },
-        { text: "Status", value: "active" },
+        { text: 'Portfoliowert', value: 'portfolio_value' },
+        { text: 'Cash', value: 'cash' },
+        { text: 'Total', value: 'total' },
+        { text: 'Status', value: 'active' },
       ],
     };
   },
   async created() {
+    this.user = (await server.get(`http://localhost:3000/user/data`)).data;
+    console.log(this.user);
     this.getComps();
-    this.user = (
-      await server.get(`http://localhost:3000/users/${this.user_id}`)
-    ).data;
   },
 };
 </script>

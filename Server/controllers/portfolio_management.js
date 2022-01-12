@@ -19,8 +19,10 @@ const registerNewUser = asyncHandler(async (req, res) => {
   res.status(200).json(await persons.registerNewUser(req.body));
 });
 // Alle Competitions von einem User
-const getCompetitionsByUser = asyncHandler(async (req, res) => {
-  res.status(200).json(await persons.getCompetitionsByUser(req.params.user_id));
+const getUserCompetitions = asyncHandler(async (req, res) => {
+  res
+    .status(200)
+    .json(await persons.getCompetitionsByUser(req.session.user.user_id));
 });
 // Erstellen einer neuen Competition
 const createNewCompetition = asyncHandler(async (req, res) => {
@@ -35,13 +37,33 @@ const createNewCompetition = asyncHandler(async (req, res) => {
 const getStocksFromDepot = asyncHandler(async (req, res) => {
   res.status(200).json(await persons.getStocksFromDepot(req.params.member_id));
 });
+// Login Route
+const loginUser = asyncHandler(async (req, res) => {
+  const user = await persons.loginUser(req.body);
+  if (!user) {
+    req.session.user = null;
+    res.status(402).json('User not Found');
+    return;
+  }
+  console.log('user Logged in');
+  console.log(user);
+  req.session.user = user;
+  res.status(200).json(user);
+});
+
+const getUserData = asyncHandler(async (req, res) => {
+  console.log(req.session.user);
+  res.status(200).json(req.session.user);
+});
 
 module.exports = {
   getUsers,
   getUserById,
   getUserByEmail,
   registerNewUser,
-  getCompetitionsByUser,
   createNewCompetition,
   getStocksFromDepot,
+  loginUser,
+  getUserData,
+  getUserCompetitions,
 };

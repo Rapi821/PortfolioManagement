@@ -48,6 +48,20 @@ const getStocksFromDepot = async (member_id) =>
     )
   ).rows;
 
+const loginUser = async (user) => {
+  // User password hashen
+  const res = (
+    await query('SELECT * FROM users WHERE email= $1 AND password=$2', [
+      user.email,
+      user.password,
+    ])
+  ).rows;
+  if (res.length === 0) {
+    return false;
+  }
+  return res[0];
+};
+
 module.exports = {
   getUsers,
   getUserById,
@@ -56,4 +70,5 @@ module.exports = {
   getCompetitionsByUser,
   createNewCompetition,
   getStocksFromDepot,
+  loginUser,
 };

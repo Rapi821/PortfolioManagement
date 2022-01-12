@@ -46,8 +46,8 @@ const routes = [
   },
   {
     // MainMenu Dashboard
-    path: '/mainmenu/:user_id',
-    props: true,
+    path: '/mainmenu',
+    props: false,
     name: 'MainMenu',
     component: MainMenu,
   },
