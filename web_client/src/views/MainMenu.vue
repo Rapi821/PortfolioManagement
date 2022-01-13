@@ -113,7 +113,8 @@ export default {
       this.getComps();
     },
     async buyStock(obj){
-      await server.post(`http://localhost:3000/user/buyStocks`, obj)
+      await server.post(`http://localhost:3000/user/buyStocks`, obj);
+      this.getComps();
     }
   },
   data() {
