@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="fill-height">
+    <TopBar />
     <v-card elevation="1" outlined max.width="300" class="mx-auto">
       <v-card-title align="center">{{ this.akInfo.title }}</v-card-title>
       <v-card-text>
@@ -13,6 +14,10 @@
           <div><b>Wert: </b> {{ this.akKurs[0].wert }}</div>
         </v-row>
       </v-card-text>
+      <v-card-actions>
+        <v-btn class="me-2 mx-auto" color="primary">Kaufen</v-btn>
+        <v-btn class="me-2 mx-auto" color="primary">Verkaufen</v-btn>
+      </v-card-actions>
     </v-card>
   </div>
 </template>

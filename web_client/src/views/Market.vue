@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <TopBar :user_id="user_id" />
+    <TopBar />
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
     <v-container class="fill-height " fluid>
@@ -76,11 +76,6 @@ export default {
         el.kurs = wert.wert;
       }
       // console.log(this.akData);
-    },
-  },
-  props: {
-    user_id: {
-      type: String,
     },
   },
   async created() {

@@ -2,3 +2,5 @@ node_modules/
 Server/.env
 Server/.env
 Server/.env
+
+.env
