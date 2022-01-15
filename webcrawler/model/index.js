@@ -32,11 +32,12 @@ async function getDetailAkKurs(isin) {
 //
 async function getKursbyTime(isin, timestamp) {
   let today = new Date();
-  let date =
-    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const tomorrow = today.getDate() + 1;
+      const date =
+    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + tomorrow;
  return (
     await query(
-      `SELECT * FROM "public"."aktienKurs" WHERE isin='$1' AND zeit BETWEEN '$2' AND '$3' ORDER BY zeit DESC`,
+      `SELECT * FROM "public"."aktienKurs" WHERE isin=$1 AND zeit BETWEEN $2 AND $3 ORDER BY zeit DESC`,
       [isin, timestamp, date]
     )
   ).rows;

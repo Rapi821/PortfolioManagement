@@ -15,7 +15,7 @@
           >
             <!-- Detailpage der einzelnen Aktien -->
 
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
               <v-btn
                 :to="`/akDetail/${item.isin}`"
                 small
@@ -79,16 +79,8 @@ export default {
     },
   },
   async created() {
-    this.akInfo = (
-      await axios.get(
-        'https://hello-worls-azure-crawler.azurewebsites.net/akInfo'
-      )
-    ).data;
-    this.akKurs = (
-      await axios.get(
-        'https://hello-worls-azure-crawler.azurewebsites.net/akKurs'
-      )
-    ).data;
+    this.akInfo = (await axios.get('http://localhost:5000/akInfo')).data;
+    this.akKurs = (await axios.get('http://localhost:5000/akKurs')).data;
     this.createAktie();
   },
 };
