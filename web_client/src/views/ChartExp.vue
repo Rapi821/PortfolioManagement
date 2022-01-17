@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex  justify-center align-center">
-    <Chart :chartdata="chartData" :options="chartOptions" />
+    <Chart :chartdata="chartData" />
   </div>
 </template>
 <script>
@@ -12,12 +12,12 @@ export default {
       test: [],
       chartOptions: {},
       chartData: {
-        labels: this.test,
+        labels: ["this.test", "asd", "asd"],
         datasets: [
           {
             backgroundColor: "#f87979",
 
-            data: [23, 234, 34434, 443],
+            data: [2323, 23233, 23],
           },
         ],
       },
@@ -32,17 +32,18 @@ export default {
       ).data;
       // this.chartData.labels.push(labelss[0].zeit);
       // console.log(this.chartData.labels);
-      this.chartData.labels.push("Testb");
+
       for (let elm of labelss) {
-        this.chartData.labels.push(elm.zeit);
+        // this.chartData.labels.push(elm.zeit);
 
         this.test.push(elm.zeit);
-        // console.log(elm.zeit);
+        console.log(elm.zeit);
       }
       // console.log(labelss);
-      // console.log(this.labels);
+      console.log(this.labels);
       console.log(this.test);
     },
+
     async getData() {
       let dataa = (
         await axios.get(
@@ -57,7 +58,7 @@ export default {
 
   async created() {
     this.getLabels();
-    // this.getData();
+    this.getData();
     // console.log("Test");
   },
 

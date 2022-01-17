@@ -13,7 +13,7 @@ export default {
     }
   },
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+    this.renderChart(this.chartdata)
   }
 }
 // import axios from 'axios';
