@@ -32,6 +32,8 @@ export default {
       console.log("Test11");
       for (let elm of labelss) {
         this.chartData.labels.push(elm.zeit);
+        console.log(labelss);
+        console.log(this.labels);
       }
     },
     async getData() {
