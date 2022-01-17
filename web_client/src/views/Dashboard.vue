@@ -275,7 +275,6 @@ export default {
 }
 .textfields {
   margin-top: 1%;
-  margin-bottom: ;
 }
 .divider_style {
   margin-top: 3%;

@@ -1,11 +1,57 @@
 <template>
   <div class="d-flex  justify-center align-center">
-    <Chart class="a " />
+    <Chart :chartdata="chartData" :options="chartOptions" />
   </div>
 </template>
 <script>
 import Chart from "../components/Chart";
+import axios from "axios";
 export default {
+  data() {
+    return {
+      chartOptions: {},
+      chartData: {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: "#f87979",
+
+            data: [],
+          },
+        ],
+      },
+    };
+  },
+  methods: {
+    async getLabels() {
+      let labelss = (
+        await axios.get(
+          `http://localhost:5000/kursByTime/DE000A1EWWW0?date=2022-01-01`
+        )
+      ).data;
+      console.log("Test11");
+      for (let elm of labelss) {
+        this.labels.push(elm.zeit);
+      }
+    },
+    async getData() {
+      let dataa = (
+        await axios.get(
+          `http://localhost:5000/kursByTime/DE000A1EWWW0?date=2022-01-01`
+        )
+      ).data;
+      for (let elm of dataa) {
+        this.datasets.data.push(elm.wert);
+      }
+    },
+  },
+
+  async created() {
+    this.getLabels();
+    this.getData();
+    // console.log("Test");
+  },
+
   components: {
     Chart,
   },
