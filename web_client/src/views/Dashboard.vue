@@ -53,10 +53,10 @@
                     'border-bottom': '1px solid #fff',
                   }
                 : {
-                    'border-bottom': '1px solid #000',
+                    'border-bottom': '1px solid rgba(0,0,0,0.12)',
                   },
             ]"
-            style="border-right:1px solid #000"
+            style="border-right:1px solid rgba(0,0,0,0.12)"
           >
             <div v-on:click="stepc0" :disabled="step == 0">
               Kaufen
@@ -72,7 +72,7 @@
                     'border-bottom': '1px solid #fff',
                   }
                 : {
-                    'border-bottom': '1px solid #000',
+                    'border-bottom': '1px solid rgba(0,0,0,0.12)',
                   },
             ]"
           >
@@ -89,122 +89,128 @@
           ></v-divider>
         </div> -->
         <v-window v-model="step">
-          <v-window-item :value="0">
-            <v-form
-              ><v-text-field
-                label="Anzahl"
-                name="Anzahl"
-                type="text"
-                color="primary"
-            /></v-form>
-            <div class="d-flex justify-space-around">
-              <v-btn>Plus</v-btn>
-              <v-btn>Minus</v-btn>
-            </div>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Verfügbares Geld:
+          <v-container class="buysellwindow">
+            <v-window-item :value="0">
+              <v-form
+                ><v-text-field
+                  label="Anzahl"
+                  name="Anzahl"
+                  type="text"
+                  color="primary"
+              /></v-form>
+              <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
+                <v-btn width="45%">Plus</v-btn>
+                <v-btn width="45%">Minus</v-btn>
               </div>
-              <div class="h5">
-                2345
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld:
+                </div>
+                <div class="h5">
+                  2345
+                </div>
               </div>
-            </div>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Preis pro Aktie:
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis pro Aktie:
+                </div>
+                <div class="h5">
+                  743
+                </div>
               </div>
-              <div class="h5">
-                743
-              </div>
-            </div>
 
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Preis insgesamt:
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis insgesamt:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
               </div>
-              <div class="h5">
-                2344
+              <v-divider class="divider_style"></v-divider>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis insgesamt:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
               </div>
-            </div>
-            <v-divider></v-divider>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Preis insgesamt:
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld nach Kauf:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
               </div>
-              <div class="h5">
-                2344
+              <div class="mb-n3 mt-3 textfields d-flex ">
+                <v-btn width="100%">Kaufe Appleasd</v-btn>
               </div>
-            </div>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Verfügbares Geld nach Kauf:
+            </v-window-item>
+            <!-- Verkauf -->
+            <v-window-item :value="1">
+              <v-form
+                ><v-text-field
+                  label="Anzahl verkaufen"
+                  name="Anzahl"
+                  type="text"
+                  color="primary"
+              /></v-form>
+              <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
+                <v-btn width="45%">Plus</v-btn>
+                <v-btn width="45%">Minus</v-btn>
               </div>
-              <div class="h5">
-                2344
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld:
+                </div>
+                <div class="h5">
+                  2345
+                </div>
               </div>
-            </div>
-            <v-btn>Kauf -Aktie-</v-btn>
-          </v-window-item>
-          <!-- Verkauf -->
-          <v-window-item :value="1">
-            <v-form
-              ><v-text-field
-                label="Anzahl verkaufen"
-                name="Anzahl"
-                type="text"
-                color="primary"
-            /></v-form>
-            <div class="d-flex justify-space-around">
-              <v-btn>Plus</v-btn>
-              <v-btn>Minus</v-btn>
-            </div>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Verfügbares Geld:
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis pro Aktie:
+                </div>
+                <div class="h5">
+                  743
+                </div>
               </div>
-              <div class="h5">
-                2345
-              </div>
-            </div>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Preis pro Aktie:
-              </div>
-              <div class="h5">
-                743
-              </div>
-            </div>
 
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Preis insgesamt:
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis insgesamt:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
               </div>
-              <div class="h5">
-                2344
+              <v-divider class="divider_style"></v-divider>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis insgesamt:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
               </div>
-            </div>
-            <v-divider></v-divider>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Preis insgesamt:
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld nach Kauf:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
               </div>
-              <div class="h5">
-                2344
-              </div>
-            </div>
-            <div class="d-flex justify-space-between">
-              <div class="h5">
-                Verfügbares Geld nach Kauf:
-              </div>
-              <div class="h5">
-                2344
-              </div>
-            </div>
-            <v-btn>Kauf -Aktie-</v-btn></v-window-item
-          >
+              <div class="mb-n3 mt-3 textfields d-flex ">
+                <v-btn width="100%">Kaufe Appleasd</v-btn>
+              </div></v-window-item
+            >
+          </v-container>
         </v-window>
 
-        <v-card-actions>
+        <!-- <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="close">
             Cancel
@@ -212,7 +218,7 @@
           <v-btn color="blue darken-1" text @click="createCompetition">
             Create
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-dialog>
   </div>
@@ -263,5 +269,16 @@ export default {
 }
 .mar2 {
   margin-right: 630px;
+}
+.buysellwindow {
+  padding: 7%;
+}
+.textfields {
+  margin-top: 1%;
+  margin-bottom: ;
+}
+.divider_style {
+  margin-top: 3%;
+  margin-bottom: 3%;
 }
 </style>
