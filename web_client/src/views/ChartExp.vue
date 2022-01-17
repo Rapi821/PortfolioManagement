@@ -57,7 +57,7 @@ export default {
 
   async created() {
     this.getLabels();
-    this.getData();
+    // this.getData();
     // console.log("Test");
   },
 
