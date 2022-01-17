@@ -12,12 +12,12 @@ export default {
       test: [],
       chartOptions: {},
       chartData: {
-        labels: [],
+        labels: ["asd", "asdasd", "asdasd, ", "asdds"],
         datasets: [
           {
             backgroundColor: "#f87979",
 
-            data: [],
+            data: [32, 23, 23, 23],
           },
         ],
       },
@@ -33,6 +33,7 @@ export default {
       // this.chartData.labels.push(labelss[0].zeit);
       console.log("Test11");
       this.chartData.labels.push("Testb");
+
       for (let elm of labelss) {
         this.chartData.labels.push(elm.zeit);
 
