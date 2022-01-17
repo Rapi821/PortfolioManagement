@@ -31,7 +31,7 @@ export default {
       ).data;
       console.log("Test11");
       for (let elm of labelss) {
-        this.labels.push(elm.zeit);
+        this.chartData.labels.push(elm.zeit);
       }
     },
     async getData() {
@@ -41,7 +41,7 @@ export default {
         )
       ).data;
       for (let elm of dataa) {
-        this.datasets.data.push(elm.wert);
+        this.chartData.datasets.data.push(elm.wert);
       }
     },
   },
