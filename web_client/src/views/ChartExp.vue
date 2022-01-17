@@ -9,6 +9,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      test: [],
       chartOptions: {},
       chartData: {
         labels: [],
@@ -29,12 +30,18 @@ export default {
           `http://localhost:5000/kursByTime/DE000A1EWWW0?date=2022-01-01`
         )
       ).data;
+      // this.chartData.labels.push(labelss[0].zeit);
       console.log("Test11");
+      this.chartData.labels.push("Testb");
       for (let elm of labelss) {
         this.chartData.labels.push(elm.zeit);
-        console.log(labelss);
-        console.log(this.labels);
+
+        this.test.push(elm.zeit);
+        console.log(elm.zeit);
       }
+      console.log(labelss);
+      console.log(this.labels);
+      console.log(this.test);
     },
     async getData() {
       let dataa = (
