@@ -17,7 +17,7 @@ export default {
           {
             backgroundColor: '#f87979',
 
-            data: [],
+            data: [32, 23, 23, 23],
           },
         ],
       },
