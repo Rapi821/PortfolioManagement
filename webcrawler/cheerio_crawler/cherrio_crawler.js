@@ -1,0 +1,1 @@
+// Im Notfall falls puppeteer mit Azure nicht funkioniert wird ein Crawler mit Cheerio Implementiert
