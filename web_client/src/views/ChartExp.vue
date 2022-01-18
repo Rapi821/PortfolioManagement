@@ -4,20 +4,20 @@
   </div>
 </template>
 <script>
-import Chart from "../components/Chart";
-import axios from "axios";
+import Chart from '../components/Chart';
+import axios from 'axios';
 export default {
   data() {
     return {
       test: [],
       chartOptions: {},
       chartData: {
-        labels: ["this.test", "asd", "asd"],
+        labels: [],
         datasets: [
           {
-            backgroundColor: "#f87979",
+            backgroundColor: '#f87979',
 
-            data: [2323, 23233, 23],
+            data: [],
           },
         ],
       },
@@ -32,16 +32,9 @@ export default {
       ).data;
       // this.chartData.labels.push(labelss[0].zeit);
       // console.log(this.chartData.labels);
-
       for (let elm of labelss) {
-        // this.chartData.labels.push(elm.zeit);
-
-        this.test.push(elm.zeit);
-        console.log(elm.zeit);
+        this.chartData.labels.push(elm.zeit);
       }
-      // console.log(labelss);
-      console.log(this.labels);
-      console.log(this.test);
     },
 
     async getData() {
@@ -51,8 +44,10 @@ export default {
         )
       ).data;
       for (let elm of dataa) {
-        this.chartData.datasets.data.push(elm.wert);
+        // this.chartData.datasets.data.push(elm.wert);
+        this.test.push(elm.wert);
       }
+      this.chartData.datasets[0].data = this.test;
     },
   },
 

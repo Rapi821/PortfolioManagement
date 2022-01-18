@@ -2,7 +2,7 @@
   <v-app-bar app color="primary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
     <v-btn color="black" active-class="white black--text" to="/LoginRegister"
-      >Login</v-btn
+      >Logout</v-btn
     >
 
     <v-spacer></v-spacer>
