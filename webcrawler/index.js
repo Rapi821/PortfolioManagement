@@ -6,6 +6,8 @@ const cors = require('cors');
 const path = require('path');
 const logger = require('morgan');
 const helmet = require('helmet');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 const app = express();
 const routes = require('./routes');
@@ -90,66 +92,50 @@ let job = new CronJob(
   '0 * * * *',
   function () {
     for (let elm of aktien) {
-      (async () => {
-        // const browser = await puppeteer.connect();
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(0);
-        await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`, {
-          waitUntil: 'load',
-          // Remove the timeout
-          timeout: 0,
-        });
+    (async () => {
+      //  Seitenaufruf
+      let res = await axios(`https://www.finanzen.net/aktien/${elm}-aktie`);
+      const html = res.data;
+      const $ = cheerio.load(html);
 
-        // ISIN, WKN, Symbol holen
-        let [el] = await page.$x('//*[@class="instrument-id"]');
-        const isinData = await el.getProperty('textContent');
-        const isin = await isinData.jsonValue();
-        let info = isin.split(' / ');
-        // console.log(info);
-        let wkn = info[0].split(': ');
-        let is = info[1].split(': ');
-        let sym;
-        if (info.length < 3) {
-          sym = ['', ''];
-        } else {
-          sym = info[2].split(': ');
-        }
+      // ISIN, WKN, Symbol holen
 
-        akObj.isin = is[1];
-        akObj.wkn = wkn[1];
-        akObj.symbol = sym[1];
+       const isin = $('.instrument-id', html).text();
+      let info = isin.split(' / ');
+      let wkn = info[0].split(': ');
+      let is = info[1].split(': ');
+      if (info.length < 3) {
+        sym = ['', ''];
+      } else {
+        sym = info[2].split(': ');
+      }
 
-        // Derzeitigen Kurs bekommen
-        let [ku] = await page.$x('//*[@colspan="4"]');
+      akObj.isin = is[1];
+      akObj.wkn = wkn[1];
+      akObj.symbol = '';
 
-        const kursData = await ku.getProperty('textContent');
-        let kurs = await kursData.jsonValue();
-        kurs = kurs.split(' ');
-        akObj.kurs = parseFloat(kurs[0]).toFixed(2);
-        akObj.waehrung = kurs[1];
+      const kursData = $('.quotebox', html).text();
+      let kurs = kursData.split('E');
+      akObj.kurs = kurs[0];
+      akObj.waehrung = 'EUR';
 
-        // Aktien namen bekommen
-        let [n] = await page.$x('//*[@class="line-height-fix"]');
 
-        const nameData = await n.getProperty('textContent');
-        let name = await nameData.jsonValue();
-        name = name.split(' Aktie');
-        akObj.name = name[0];
+      let name = $('.line-height-fix', html).text();
+      name = name.split(' Aktie');
+      akObj.name = name[0];
 
-        // Derzeitiges Datum & Zeit zum Objekt hinzufügen
-        akObj.time = getTime();
+      // Derzeitiges Datum & Zeit zum Objekt hinzufügen
+      akObj.time = getTime();
 
-        console.log(akObj);
-        insertData(akObj);
+      console.log(akObj);
+      // insertData(akObj);
 
-        browser.close();
-      })();
-    }
+    })();
+  }
   },
   'Americas/Vancouver'
 );
-// job.start();
+job.start();
 
 // Function um Datum & Zeit zu bekommen
 function getTime() {
@@ -187,24 +173,17 @@ async function crawling() {
   console.log('crawling');
   for (let elm of aktien) {
     (async () => {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await page.setDefaultNavigationTimeout(0);
-      await page.goto(`https://www.finanzen.net/aktien/${elm}-aktie`, {
-        waitUntil: 'load',
-        // Remove the timeout
-        timeout: 0,
-      });
+      //  Seitenaufruf
+      let res = await axios(`https://www.finanzen.net/aktien/${elm}-aktie`);
+      const html = res.data;
+      const $ = cheerio.load(html);
 
       // ISIN, WKN, Symbol holen
-      let [el] = await page.$x('//*[@class="instrument-id"]');
-      const isinData = await el.getProperty('textContent');
-      const isin = await isinData.jsonValue();
+
+       const isin = $('.instrument-id', html).text();
       let info = isin.split(' / ');
-      // console.log(info);
       let wkn = info[0].split(': ');
       let is = info[1].split(': ');
-      let sym;
       if (info.length < 3) {
         sym = ['', ''];
       } else {
@@ -213,22 +192,15 @@ async function crawling() {
 
       akObj.isin = is[1];
       akObj.wkn = wkn[1];
-      akObj.symbol = sym[1];
+      akObj.symbol = '';
 
-      // Derzeitigen Kurs bekommen
-      let [ku] = await page.$x('//*[@colspan="4"]');
+      const kursData = $('.quotebox', html).text();
+      let kurs = kursData.split('E');
+      akObj.kurs = kurs[0];
+      akObj.waehrung = 'EUR';
 
-      const kursData = await ku.getProperty('textContent');
-      let kurs = await kursData.jsonValue();
-      kurs = kurs.split(' ');
-      akObj.kurs = parseFloat(kurs[0]).toFixed(2);
-      akObj.waehrung = kurs[1];
 
-      // Aktien namen bekommen
-      let [n] = await page.$x('//*[@class="line-height-fix"]');
-
-      const nameData = await n.getProperty('textContent');
-      let name = await nameData.jsonValue();
+      let name = $('.line-height-fix', html).text();
       name = name.split(' Aktie');
       akObj.name = name[0];
 
@@ -236,9 +208,8 @@ async function crawling() {
       akObj.time = getTime();
 
       console.log(akObj);
-      insertData(akObj);
+      // insertData(akObj);
 
-      browser.close();
     })();
   }
 }
