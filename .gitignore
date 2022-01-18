@@ -4,3 +4,4 @@ Server/.env
 Server/.env
 
 .env
+webcrawler/package-lock.json

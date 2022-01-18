@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex  justify-center align-center">
-    <Chart :chartdata="chartData" />
+    <Chart v-if="loaded" :chartdata="chartData" :options="options" />
   </div>
 </template>
 <script>
@@ -9,6 +9,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      loaded:false,
       test: [],
       chartOptions: {},
       chartData: {
@@ -23,6 +24,20 @@ export default {
       },
     };
   },
+  async mounted () {
+    this.loaded = false
+    try {
+     
+        await axios.get(
+          `http://localhost:5000/kursByTime/DE000A1EWWW0?date=2022-01-01`
+        )
+      
+      // this.chartdata = userlist
+      this.loaded = true
+    } catch (e) {
+      console.error(e)
+    }
+  },
   methods: {
     async getLabels() {
       let labelss = (
@@ -31,10 +46,11 @@ export default {
         )
       ).data;
       // this.chartData.labels.push(labelss[0].zeit);
-      // console.log(this.chartData.labels);
+     
       for (let elm of labelss) {
         this.chartData.labels.push(elm.zeit);
       }
+       console.log(this.chartData.labels);
     },
 
     async getData() {
