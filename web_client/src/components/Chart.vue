@@ -12,9 +12,8 @@ export default {
       default: null,
     },
   },
-  async mounted() {
-    console.log(this.chartdata);
-    await this.renderChart(this.chartdata);
+  mounted() {
+    this.renderChart(this.chartdata);
   },
 };
 // import axios from 'axios';
