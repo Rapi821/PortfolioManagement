@@ -32,20 +32,52 @@
       </v-card-actions>
     </v-card>
     <span>{{ akByTimeWert }}</span>
+    <div class="d-flex  justify-center align-center">
+    <Chart :v-if="loaded" :chartdata="chartData" :options="options" />
+  </div>
   </div>
 </template>
 
 <script>
+import Chart from '../components/Chart';
+
 import axios from 'axios';
 export default {
   name: 'Market',
   data() {
     return {
+      datum:new Date(),
+      loaded:false,
+      chartOptions: {},
+      chartData: {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: '#f87979',
+
+            data: [],
+          },
+        ],
+      },
       akInfo: [],
       akKurs: [],
       akByTime: [],
       akByTimeWert: [],
     };
+  },
+  async mounted () {
+    this.loaded = false
+    try {
+     
+        await axios.get(
+          `http://localhost:5000/kursByTime/${this.akInfo.isin}?date=${this.date}`
+        )
+      
+      // this.chartdata = userlist
+      this.loaded = true
+    } catch (e) {
+      console.error(e)
+    }
   },
   methods: {
     async getKurs() {
@@ -56,32 +88,39 @@ export default {
       ).data;
     },
     async oneDay() {
+   
       const today = new Date();
       const yesterday = today.getDate() - 1;
       const yesterdayDate =
         today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
-      console.log(yesterdayDate);
+      // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
           `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
         )
       ).data;
       this.wertExtraktion();
+      this.datum=yesterdayDate;
+      console.log(this.datum);
     },
     async oneWeek() {
+     
       const today = new Date();
       const yesterday = today.getDate() - 7;
       const yesterdayDate =
         today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
-      console.log(yesterdayDate);
+      // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
           `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
         )
       ).data;
       this.wertExtraktion();
+      this.datum=yesterdayDate;
+      console.log(this.datum);
     },
     async oneMonth() {
+       
       const today = new Date();
       // const yesterday = today.getDate() - 31;
       let lastMonth;
@@ -90,7 +129,8 @@ export default {
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
           lastYear + '-' + lastMonth + '-' + today.getDate();
-        console.log(yesterdayDate);
+        this.datum=yesterdayDate;
+        // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
             `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
@@ -99,7 +139,7 @@ export default {
       } else {
         const yesterdayDate =
           today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
-        console.log(yesterdayDate);
+        // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
             `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
@@ -107,6 +147,7 @@ export default {
         ).data;
       }
       this.wertExtraktion();
+      console.log(this.datum);
     },
     wertExtraktion() {
       this.akByTimeWert = [];
@@ -115,12 +156,46 @@ export default {
       }
       console.log(this.akByTimeWert);
     },
+
+
+
+    async getLabels() {
+      let labelss = (
+        await axios.get(
+          `http://localhost:5000/kursByTime/${this.akInfo.isin}?date=${this.date}`
+        )
+      ).data;
+      // this.chartData.labels.push(labelss[0].zeit);
+     
+      for (let elm of labelss) {
+        this.chartData.labels.push(elm.zeit);
+      }
+       console.log(this.chartData.labels);
+    },
+
+    async getData() {
+      let dataa = (
+        await axios.get(
+          `http://localhost:5000/kursByTime/${this.akInfo.isin}?date=${this.date}`
+        )
+      ).data;
+      for (let elm of dataa) {
+        // this.chartData.datasets.data.push(elm.wert);
+        this.test.push(elm.wert);
+      }
+      this.chartData.datasets[0].data = this.test;
+    },
+  },
+   components: {
+    Chart,
   },
   async created() {
     this.akInfo = (
       await axios.get(`http://localhost:5000/akDetail/${this.isin}`)
     ).data[0];
     this.getKurs();
+    this.getLabels();
+    this.getData();
   },
 
   props: {

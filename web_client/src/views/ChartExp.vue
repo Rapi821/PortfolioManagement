@@ -80,8 +80,8 @@ export default {
 </script>
 <style scoped>
 .a {
-  min-width: 500px;
-  max-width: 800px;
-  max-height: 500px;
+  /* min-width: 900px;
+  max-width: 1600px;
+  max-height: 900px; */
 }
 </style>
