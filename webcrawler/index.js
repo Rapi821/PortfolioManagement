@@ -116,7 +116,7 @@ let job = new CronJob(
 
       const kursData = $('.quotebox', html).text();
       let kurs = kursData.split('E');
-      akObj.kurs = kurs[0];
+      akObj.kurs = Number(kurs[0]);
       akObj.waehrung = 'EUR';
 
 
@@ -128,7 +128,7 @@ let job = new CronJob(
       akObj.time = getTime();
 
       console.log(akObj);
-      // insertData(akObj);
+      insertData(akObj);
 
     })();
   }
