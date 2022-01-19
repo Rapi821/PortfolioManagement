@@ -19,7 +19,7 @@ const registerNewUser = async (newData) =>
 const getCompetitionsByUser = async (user_id) =>
   (
     await query(
-      "select cm.member_id, c.title, (select sum(buy_price) from competition_member_depot_lines where member_id= 1 and isin != '0000') as portfolio_value, cmdl.buy_price as cash, (select sum(buy_price) from competition_member_depot_lines where member_id= 1) as total, c.active from competition_members cm JOIN competitions c on c.competition_id= cm.competition_id JOIN competition_member_depot_lines cmdl on c.competition_id = cmdl.competition_id where cm.user_id=$1 and cmdl.isin= '0000';",
+      "select cm.member_id, c.title, (select sum(buy_price) from competition_member_depot_lines where member_id= $1 and isin != '0000') as portfolio_value, cmdl.buy_price as cash, (select sum(buy_price) from competition_member_depot_lines where member_id= 1) as total, c.active from competition_members cm JOIN competitions c on c.competition_id= cm.competition_id JOIN competition_member_depot_lines cmdl on c.competition_id = cmdl.competition_id where cm.user_id=$1 and cmdl.isin= '0000';",
       [user_id]
     )
   ).rows;
@@ -61,11 +61,23 @@ const loginUser = async (user) => {
   }
   return res[0];
 };
-// Aktien kaufen  
-const buyStocks = async (newData, user_id) =>{ (await query('insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id, buy_date) VALUES ($1, $2, $3, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4), $6)', [newData.isin, newData.buy_price, newData.count, newData.competition_id, user_id ,newData.buy_date])).rows;
-(await query ("update competition_member_depot_lines set buy_price= (select buy_price from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin='0000')-$3 WHERE isin='0000' and member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2)", [user_id, newData.competition_id, newData.buy_price*newData.count])).rows;
-(await query ("")); //insert into depot_records
-}
+// Neue aktien kaufen 
+const buyNewStocks = async (newData, user_id) =>((await query('insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id, buy_date) VALUES ($1, $2, $3, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4), $6)', [newData.isin, newData.buy_price, newData.count, newData.competition_id, user_id ,newData.buy_date])).rows);
+
+// Geld von den gekauften Aktien abziehen
+const removeMoney = async (newData, user_id) => (await query ("update competition_member_depot_lines set buy_price= (select buy_price from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin='0000')-$3 WHERE isin='0000' and member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2)", [user_id, newData.competition_id, newData.buy_price*newData.count])).rows;
+
+// Die gekauften Aktien in die Records eintragen
+const addToRecords = async (newData, user_id) => (await query ("insert into depot_records (member_id, date, price, count, buy_sell, isin) VALUES ((select member_id from competition_members where user_id=$1 and competition_id=$2), $3, $4, 10, 'buy', $5)", [user_id, newData.competition_id, newData.buy_date, newData.buy_price, newData.isin]));
+
+// Überprüfung ob die Aktien bereits im Depot sind und nachgekauft wird oder 
+// ob es die ersten Aktien mit dem isin in dem Depot sind
+const checkStockBought = async (newData, user_id) => (await query("select COUNT(*) from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3"), [user_id, newData.competition_id, newData.isin]).rows;
+
+// Bereits gekaufte Aktie nachkaufen
+const rebuyStocks = async (newData, user_id) => (await query('SELECT * FROM users')).rows;
+
+const getCompetition = async (newData, user_id) => (await query('SELECT * FROM users')).rows;
 
 module.exports = {
   getUsers,
@@ -76,5 +88,9 @@ module.exports = {
   createNewCompetition,
   getStocksFromDepot,
   loginUser,
-  buyStocks,
+  buyNewStocks,
+  checkStockBought,
+  rebuyStocks,
+  removeMoney,
+  addToRecords
 };

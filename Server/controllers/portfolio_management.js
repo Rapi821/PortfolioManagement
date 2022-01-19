@@ -56,9 +56,14 @@ const getUserData = asyncHandler(async (req, res) => {
   res.status(200).json(req.session.user);
 });
 const buyStocks = asyncHandler(async (req, res) => {
-  res
-    .status(200)
-    .json(await persons.buyStocks(req.body, req.session.user.user_id));
+  if((persons.checkStockBought(req.body, req.session.user.user_id)) != 1){
+    res.status(200).json(await persons.buyNewStocks(req.body, req.session.user.user_id));
+  }
+  else{
+    res.status(200).json(await persons.rebuyStocks(req.body, req.session.user.user_id));
+  } 
+  res.status(200).json(await persons.removeMoney(req.body, req.session.user.user_id));
+  res.status(200).json(await persons.addToRecords(req.body, req.session.user.user_id));
 });
 
 module.exports = {

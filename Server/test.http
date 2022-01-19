@@ -39,3 +39,5 @@ content-Type: application/json
     "competition_id": 0,
     "buy_date": "2022-01-12"
 }
+###
+GET http://localhost:3000/user/competitions
