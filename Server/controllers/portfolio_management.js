@@ -35,10 +35,13 @@ const getUserCompetitions = asyncHandler(async (req, res) => {
 const createNewCompetition = asyncHandler(async (req, res) => {
   req.body.code = help_functions.getRandomCode();
   req.body.creation_date = help_functions.getCurrentDate();
-  if (req.body.starting_money == null) {
-    req.body.starting_money = 'DEFAULT';
+  if (req.body.starting_money < 100) {
+    req.body.starting_money = DEFAULT;
   }
-  res.status(200).json(await persons.createNewCompetition(req.body));
+  if (req.body.end_date == undefined || req.body.end_date == "") {
+    req.body.end_date = null;
+  }
+  res.status(200).json(await persons.createNewCompetition(req.body, req.session.user.user_id));
 });
 // Alle Aktien in einem Depot
 const getStocksFromDepot = asyncHandler(async (req, res) => {

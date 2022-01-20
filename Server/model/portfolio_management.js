@@ -29,18 +29,16 @@ const getCash = async (user_id) => (await query("select sum(buy_price*count) as 
 
 const getstockValue = async (user_id) => (await query("select sum(buy_price*count) as stocksValue from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin != '0000'", [user_id])).rows;
 
-//Erstellen einer neuen Competition
-const createNewCompetition = async (newData) =>
+//Erstellen einer neuen Competition wenn alles gegeben
+const createNewCompetition = async (newData, user_id) =>
   (
-    await query(
-      'INSERT INTO competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (DEFAULT, $1, $2,' +
-        newData.starting_money +
-        ', DEFAULT, $3, $4, $5) returning *',
+    await query("INSERT INTO competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (DEFAULT, $1, $2, $3, DEFAULT, $4, $5, $6)",
       [
         newData.creation_date,
         newData.title,
+        newData.starting_money,
         newData.end_date,
-        newData.user_id,
+        user_id,
         newData.code,
       ]
     )
