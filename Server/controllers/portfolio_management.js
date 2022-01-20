@@ -11,7 +11,7 @@ const getUserByEmail = asyncHandler(async (req, res) => {
   res.status(200).json((await persons.getUserByEmail(req.params.email))[0]);
 });
 const getUserById = asyncHandler(async (req, res) => {
-  console.log(req.params.user_id);
+  // console.log(req.params.user_id);
   res.status(200).json((await persons.getUserById(req.params.user_id))[0]);
 });
 // Neuen User registrieren
@@ -27,7 +27,7 @@ const getUserCompetitions = asyncHandler(async (req, res) => {
     base[i].cash= cash[i].cash;
     base[i].portfolio_value= stockValue[i].stocksvalue;
   }
-  console.log(base);
+  // console.log(base);
   res.status(200).json(base);
 
 });
@@ -41,7 +41,10 @@ const createNewCompetition = asyncHandler(async (req, res) => {
   if (req.body.end_date == undefined || req.body.end_date == "") {
     req.body.end_date = null;
   }
-  res.status(200).json(await persons.createNewCompetition(req.body, req.session.user.user_id));
+  await persons.createNewCompetition(req.body, req.session.user.user_id);
+  await persons.addUserToCompetition(req.body, req.session.user.user_id);
+  res.status(200);
+  console.log("test");
 });
 // Alle Aktien in einem Depot
 const getStocksFromDepot = asyncHandler(async (req, res) => {
@@ -62,7 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getUserData = asyncHandler(async (req, res) => {
-  console.log(req.session.user);
+  // console.log(req.session.user);
   res.status(200).json(req.session.user);
 });
 const buyStocks = asyncHandler(async (req, res) => {
