@@ -211,7 +211,7 @@ ALTER SEQUENCE public.competitions_competition_id_seq OWNED BY public.competitio
 
 CREATE TABLE public.depot_records (
     depot_records_id integer NOT NULL,
-    depot_id integer NOT NULL,
+    member_id integer NOT NULL,
     date date NOT NULL,
     price numeric NOT NULL,
     count integer NOT NULL,
@@ -244,6 +244,19 @@ ALTER TABLE public."depotRecords_depot_records_id_seq" OWNER TO postgres;
 
 ALTER SEQUENCE public."depotRecords_depot_records_id_seq" OWNED BY public.depot_records.depot_records_id;
 
+
+--
+-- Name: user_sessions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_sessions (
+    sid character varying NOT NULL,
+    sess json NOT NULL,
+    expire timestamp(6) without time zone NOT NULL
+);
+
+
+ALTER TABLE public.user_sessions OWNER TO postgres;
 
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
@@ -293,22 +306,6 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.user_id;
 --
 -- Name: all_stocks stock_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
-
----
---- Table für session
----
-
-CREATE TABLE "user_sessions" (
-  "sid" varchar NOT NULL COLLATE "default",
-	"sess" json NOT NULL,
-	"expire" timestamp(6) NOT NULL
-)
-WITH (OIDS=FALSE);
-
-ALTER TABLE "user_sessions" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
-CREATE INDEX "IDX_session_expire" ON "user_sessions" ("expire");
-
 
 ALTER TABLE ONLY public.all_stocks ALTER COLUMN stock_id SET DEFAULT nextval('public.all_stocks_stock_id_seq'::regclass);
 
@@ -377,9 +374,31 @@ COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, coun
 3	US0378331005	140.15	5	0	0	2021-12-02
 4	US0378331005	132.12	8	0	1	2021-12-01
 5	US5949181045	295.45	3	1	3	2021-11-25
-7	0000	49704.55	1	1	3	2021-11-25
-8	0000	24624.24	1	0	1	2021-11-24
-9	0000	23123.94	1	0	0	2021-11-17
+10	US0378331005	140	3	0	0	2022-01-12
+11	US5949181045	298.76	5	0	2	2022-01-12
+7	0000	24600.12	1	1	3	2021-11-25
+12	US5949181045	298.76	5	0	0	2022-01-12
+13	US5949181045	298.76	5	0	0	2022-01-12
+14	US5949181045	298.76	5	0	0	2022-01-12
+15	US5949181045	298.76	5	0	0	2022-01-12
+16	US5949181045	298.76	5	0	0	2022-01-12
+17	US5949181045	298.76	5	0	0	2022-01-12
+18	US5949181045	298.76	5	0	0	2022-01-12
+19	US5949181045	298.76	5	0	0	2022-01-12
+20	US5949181045	298.76	5	0	0	2022-01-12
+21	US5949181045	298.76	5	0	0	2022-01-12
+22	US5949181045	298.76	5	0	0	2022-01-12
+23	US5949181045	298.76	5	0	0	2022-01-12
+24	US5949181045	298.76	5	0	1	2022-01-12
+25	US5949181045	298.76	5	0	1	2022-01-12
+26	US5949181045	298.76	5	0	1	2022-01-12
+27	US5949181045	298.76	5	0	1	2022-01-12
+8	0000	18724.92	1	0	1	2021-11-24
+28	US5949181045	298.76	5	0	0	2022-01-12
+29	US5949181045	298.76	5	0	0	2022-01-12
+9	0000	3286.92	1	0	0	2021-11-17
+31	US5949181045	298.76	5	0	2	2022-01-12
+30	0000	28506.2	1	0	2	2021-11-16
 \.
 
 
@@ -422,8 +441,18 @@ COPY public.competitions (competition_id, creation_date, title, starting_money, 
 -- Data for Name: depot_records; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.depot_records (depot_records_id, depot_id, date, price, count, buy_sell, isin) FROM stdin;
-1	1	2021-11-17	133.44	10	buy	US0378331005
+COPY public.depot_records (depot_records_id, member_id, date, price, count, buy_sell, isin) FROM stdin;
+4	0	2022-01-12	298.76	10	buy	US5949181045
+5	0	2022-01-12	298.76	10	buy	US5949181045
+\.
+
+
+--
+-- Data for Name: user_sessions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_sessions (sid, sess, expire) FROM stdin;
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-19T14:17:14.153Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"devall.s03@htlwienwest.at","firstname":"Sebastian","lastname":"de Vall","password":"qHV3#ctbt","user_id":2}}	2022-02-19 15:17:18
 \.
 
 
@@ -467,7 +496,7 @@ SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 -- Name: competition_member_depot_lines_depot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 9, true);
+SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 31, true);
 
 
 --
@@ -481,7 +510,7 @@ SELECT pg_catalog.setval('public.competitions_competition_id_seq', 10, true);
 -- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 5, true);
 
 
 --
@@ -532,6 +561,14 @@ ALTER TABLE ONLY public.depot_records
 
 
 --
+-- Name: user_sessions session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_sessions
+    ADD CONSTRAINT session_pkey PRIMARY KEY (sid);
+
+
+--
 -- Name: all_stocks table_name_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -545,6 +582,13 @@ ALTER TABLE ONLY public.all_stocks
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pk PRIMARY KEY (user_id);
+
+
+--
+-- Name: IDX_session_expire; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "IDX_session_expire" ON public.user_sessions USING btree (expire);
 
 
 --
@@ -633,14 +677,6 @@ ALTER TABLE ONLY public.competitions
 
 
 --
--- Name: depot_records DepotRecords_depot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.depot_records
-    ADD CONSTRAINT "DepotRecords_depot_id_fkey" FOREIGN KEY (depot_id) REFERENCES public.competition_member_depot_lines(depot_line_id);
-
-
---
 -- Name: competition_member_depot_lines competition_member_depot_lines_isin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -662,6 +698,14 @@ ALTER TABLE ONLY public.competition_member_depot_lines
 
 ALTER TABLE ONLY public.depot_records
     ADD CONSTRAINT depot_records_isin_fkey FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
+
+
+--
+-- Name: depot_records fk_member_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.depot_records
+    ADD CONSTRAINT fk_member_id FOREIGN KEY (member_id) REFERENCES public.competition_members(member_id);
 
 
 --
@@ -752,6 +796,13 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.depot_records TO read_write;
 --
 
 GRANT USAGE ON SEQUENCE public."depotRecords_depot_records_id_seq" TO read_write;
+
+
+--
+-- Name: TABLE user_sessions; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.user_sessions TO read_write;
 
 
 --
