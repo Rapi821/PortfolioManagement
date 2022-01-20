@@ -74,16 +74,6 @@
       Kaufe Aktien
     </v-btn>
 
-    <v-btn color="blue darken-1" text @click="buyStock({
-    isin: 'US5949181045',
-    buy_price: 298.76,
-    count: 5,
-    competition_id: 0,
-    buy_date: '2022-01-12'
-    })">
-      Get Competitions
-    </v-btn>
-
   </div>
 </template>
 
@@ -112,6 +102,7 @@ export default {
       this.competetions = (
         await server.get(`http://localhost:3000/user/competitions`)
       ).data;
+      console.log(this.competetions);
     },
     async createCompetition() {
       console.log(this.competetion);

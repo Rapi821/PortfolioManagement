@@ -16,13 +16,19 @@ const registerNewUser = async (newData) =>
     )
   ).rows;
 //Alle Competitions von einem User
-const getCompetitionsByUser = async (user_id) =>
-  (
-    await query(
-      "select cm.member_id, c.title, (select sum(buy_price) from competition_member_depot_lines where member_id= $1 and isin != '0000') as portfolio_value, cmdl.buy_price as cash, (select sum(buy_price) from competition_member_depot_lines where member_id= 1) as total, c.active from competition_members cm JOIN competitions c on c.competition_id= cm.competition_id JOIN competition_member_depot_lines cmdl on c.competition_id = cmdl.competition_id where cm.user_id=$1 and cmdl.isin= '0000';",
-      [user_id]
-    )
-  ).rows;
+const getCompetitionsByUser = async (user_id) => (
+  await query("select c.title, c.active, c.end_date ,sum(buy_price*count) as total from competition_member_depot_lines JOIN competitions c on c.competition_id = competition_member_depot_lines.competition_id GROUP BY member_id, c.title, c.end_date, c.active having member_id in (select member_id from competition_members where user_id=$1)", [user_id])).rows;
+  // (
+  //   await query(
+  //     "select cm.member_id, c.title, (select sum(buy_price) from competition_member_depot_lines where member_id= $1 and isin != '0000') as portfolio_value, cmdl.buy_price as cash, (select sum(buy_price) from competition_member_depot_lines where member_id= 1) as total, c.active from competition_members cm JOIN competitions c on c.competition_id= cm.competition_id JOIN competition_member_depot_lines cmdl on c.competition_id = cmdl.competition_id where cm.user_id=$1 and cmdl.isin= '0000';",
+  //     [user_id]
+  //   )
+  // ).rows;
+
+const getCash = async (user_id) => (await query("select sum(buy_price*count) as cash from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin = '0000'", [user_id])).rows;
+
+const getstockValue = async (user_id) => (await query("select sum(buy_price*count) as stocksValue from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin != '0000'", [user_id])).rows;
+
 //Erstellen einer neuen Competition
 const createNewCompetition = async (newData) =>
   (
@@ -85,6 +91,8 @@ module.exports = {
   getUserByEmail,
   registerNewUser,
   getCompetitionsByUser,
+  getCash,
+  getstockValue,
   createNewCompetition,
   getStocksFromDepot,
   loginUser,

@@ -20,9 +20,16 @@ const registerNewUser = asyncHandler(async (req, res) => {
 });
 // Alle Competitions von einem User
 const getUserCompetitions = asyncHandler(async (req, res) => {
-  res
-    .status(200)
-    .json(await persons.getCompetitionsByUser(req.session.user.user_id));
+  let base = await persons.getCompetitionsByUser(req.session.user.user_id); 
+  let cash = await persons.getCash(req.session.user.user_id);
+  let stockValue= await persons.getstockValue(req.session.user.user_id);
+  for (const i in base) {
+    base[i].cash= cash[i].cash;
+    base[i].portfolio_value= stockValue[i].stocksvalue;
+  }
+  console.log(base);
+  res.status(200).json(base);
+
 });
 // Erstellen einer neuen Competition
 const createNewCompetition = asyncHandler(async (req, res) => {
