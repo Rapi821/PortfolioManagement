@@ -23,9 +23,16 @@ const getUserCompetitions = asyncHandler(async (req, res) => {
   let base = await persons.getCompetitionsByUser(req.session.user.user_id); 
   let cash = await persons.getCash(req.session.user.user_id);
   let stockValue= await persons.getstockValue(req.session.user.user_id);
+  console.log(stockValue);
+  console.log(base);
   for (const i in base) {
     base[i].cash= cash[i].cash;
-    base[i].portfolio_value= stockValue[i].stocksvalue;
+    if(stockValue.length != 0){
+      base[i].portfolio_value= stockValue[i].stocksvalue;
+    }
+    else{
+      base[i].portfolio_value= 0;
+    }
   }
   // console.log(base);
   res.status(200).json(base);
@@ -36,15 +43,18 @@ const createNewCompetition = asyncHandler(async (req, res) => {
   req.body.code = help_functions.getRandomCode();
   req.body.creation_date = help_functions.getCurrentDate();
   if (req.body.starting_money < 100) {
-    req.body.starting_money = DEFAULT;
+    req.body.starting_money = 100000;
   }
   if (req.body.end_date == undefined || req.body.end_date == "") {
     req.body.end_date = null;
   }
   await persons.createNewCompetition(req.body, req.session.user.user_id);
-  await persons.addUserToCompetition(req.body, req.session.user.user_id);
-  res.status(200);
-  console.log("test");
+  res.status(200).json(await persons.addUserToCompetition(req.body, req.session.user.user_id));
+});
+// User einer neuen Competition hinzufügen
+const addUserToCompetition = asyncHandler(async (req, res) => {
+  req.body.creation_date = help_functions.getCurrentDate(); //creation_date ist der Tag an dem der User beitritt
+  res.status(200).json(await persons.addUserToCompetition(req.body, req.session.user.user_id));
 });
 // Alle Aktien in einem Depot
 const getStocksFromDepot = asyncHandler(async (req, res) => {
@@ -90,4 +100,5 @@ module.exports = {
   getUserData,
   getUserCompetitions,
   buyStocks,
+  addUserToCompetition
 };

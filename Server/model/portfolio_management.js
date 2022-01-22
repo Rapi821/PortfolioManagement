@@ -44,33 +44,10 @@ const createNewCompetition = async (newData, user_id) =>
     )
   ).rows;
 // User zu einer Competition hinzufügen und Startingmoney geben
-
-// Startingmoney funktioniert noch nicht
-
-
-
 const addUserToCompetition = async (newData ,user_id) => {
   (await query("insert into competition_members (member_id, user_id, competition_id) VALUES (DEFAULT, $1, (select competition_id from competitions where competition_code= $2))", [user_id, newData.code])).rows;
-  (await query("insert into competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (DEFAULT, '0000', $1, 1, (select competition_id from competitions where competition_code= $2), (select member_id from competition_members where user_id=$3 and competition_id=((select competition_id from competitions where competition_code= $2))), $4)", [newData.buy_price])).rows;
+  (await query("insert into competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (DEFAULT, '0000', (select starting_money from competitions where competition_code= $1), 1, (select competition_id from competitions where competition_code= $1), (select member_id from competition_members where user_id=$2 and competition_id=(select competition_id from competitions where competition_code= $1)), $3);", [newData.code, user_id, newData.creation_date])).rows;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Alle Aktien in einem Depot
 const getStocksFromDepot = async (member_id) =>
   (

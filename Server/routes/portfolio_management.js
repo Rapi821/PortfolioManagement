@@ -11,6 +11,7 @@ const {
   loginUser,
   getUserData,
   buyStocks,
+  addUserToCompetition,
 } = require('../controllers/portfolio_management');
 
 const router = express.Router();
@@ -29,7 +30,12 @@ router.post('/createNewCompetition', createNewCompetition);
 router.get('/competitions/:member_id', getStocksFromDepot);
 // Login Route
 router.post('/user/login', loginUser);
+// Route um Daten vonm eingeloggten User zu bekommen
 router.get('/user/data', getUserData);
+// Alle Competitions in denen der User bereits ist
 router.get('/user/competitions', getUserCompetitions);
+// Aktien kaufen
 router.post('/user/buyStocks', buyStocks);
+// Neuen User zu einer Competition hinzufügen
+router.post('/user/addUserToCompetition', addUserToCompetition);
 module.exports = router;

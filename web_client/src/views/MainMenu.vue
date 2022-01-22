@@ -72,6 +72,17 @@
       color="blue darken-1"
       text
       @click="
+        compEnter({
+          code: '7H9OBF01YM',
+        })
+      "
+    >
+      Competition Beitreten
+    </v-btn>
+    <v-btn
+      color="blue darken-1"
+      text
+      @click="
         buyStock({
           isin: 'US5949181045',
           buy_price: 298.76,
@@ -81,7 +92,7 @@
         })
       "
     >
-      Kaufe Aktien
+       Kaufe Aktien
     </v-btn>
   </div>
 </template>
@@ -101,8 +112,10 @@ export default {
     compCreate() {
       this.dialog = true;
     },
-    compEnter() {
+    async compEnter(obj) {
       this.dialog_enter = true;
+      await server.post(`http://localhost:3000/user/addUserToCompetition`, obj);
+      this.getComps();
     },
     competetionEnter() {
       //Do something
