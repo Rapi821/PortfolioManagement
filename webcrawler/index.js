@@ -55,6 +55,49 @@ const aktien = [
   'zalando',
 ];
 
+const aktienTest = [
+  ['adidas',
+  'airbus',
+  'allianz',
+  'basf',
+  'bayer',],[
+  'beiersdorf',
+  'bmw',
+  'brenntag',
+  'continental',
+  'covestro',],[
+  'daimler',
+  'delivery_hero',
+  'deutsche_bank',
+  'deutsche_boerse',
+  'deutsche_post',],[
+  'deutsche_telekom',
+  'eon',
+  'fresenius',
+  'fresenius_medical_care',
+  'heidelbergcement',],[
+  'hellofresh',
+  'henkel_vz',
+  'infineon',
+  'linde',
+  'merck',],[
+  'mtu',
+  'munich_re',
+  'porsche',
+  'puma',
+  'qiagen',],[
+  'rwe',
+  'sap',
+  'sartorius_vz',
+  'siemens',
+  'siemens_energy',],[
+  'siemens_healthineers',
+  'symrise',
+  'volkswagen_vz',
+  'vonovia',
+  'zalando',]
+];
+
 require('dotenv').config();
 
 let akObj = {
@@ -135,7 +178,7 @@ let job = new CronJob(
   },
   'Americas/Vancouver'
 );
-job.start();
+// job.start();
 
 // Function um Datum & Zeit zu bekommen
 function getTime() {
@@ -171,47 +214,49 @@ async function errorData(err) {
 //Crawling function
 async function crawling() {
   console.log('crawling');
-  for (let elm of aktien) {
-    (async () => {
-      //  Seitenaufruf
-      let res = await axios(`https://www.finanzen.net/aktien/${elm}-aktie`);
-      const html = res.data;
-      const $ = cheerio.load(html);
+  for (let elm of aktienTest) {
+    for (let el of elm) {
+      (async () => {
+        //  Seitenaufruf
+        let res = await axios(`https://www.finanzen.net/aktien/${el}-aktie`);
+        const html = res.data;
+        const $ = cheerio.load(html);
 
-      // ISIN, WKN, Symbol holen
+        // ISIN, WKN, Symbol holen
 
-       const isin = $('.instrument-id', html).text();
-      let info = isin.split(' / ');
-      let wkn = info[0].split(': ');
-      let is = info[1].split(': ');
-      if (info.length < 3) {
-        sym = ['', ''];
-      } else {
-        sym = info[2].split(': ');
-      }
+        const isin = $('.instrument-id', html).text();
+        let info = isin.split(' / ');
+        let wkn = info[0].split(': ');
+        let is = info[1].split(': ');
+        if (info.length < 3) {
+          sym = ['', ''];
+        } else {
+          sym = info[2].split(': ');
+        }
 
-      akObj.isin = is[1];
-      akObj.wkn = wkn[1];
-      akObj.symbol = '';
+        akObj.isin = is[1];
+        akObj.wkn = wkn[1];
+        akObj.symbol = '';
 
-      const kursData = $('.quotebox', html).text();
-      let kurs = kursData.split('E');
-      akObj.kurs = kurs[0];
-      akObj.waehrung = 'EUR';
+        const kursData = $('.quotebox', html).text();
+        let kurs = kursData.split('E');
+        akObj.kurs = parseFloat(kurs[0]).toFixed(2);
+        akObj.waehrung = 'EUR';
 
 
-      let name = $('.line-height-fix', html).text();
-      name = name.split(' Aktie');
-      akObj.name = name[0];
+        let name = $('.line-height-fix', html).text();
+        name = name.split(' Aktie');
+        akObj.name = name[0];
 
-      // Derzeitiges Datum & Zeit zum Objekt hinzufügen
-      akObj.time = getTime();
+        // Derzeitiges Datum & Zeit zum Objekt hinzufügen
+        akObj.time = getTime();
 
-      console.log(akObj);
-      // insertData(akObj);
+        console.log(akObj);
+        insertData(akObj);
 
-    })();
+      })();
+    }
   }
 }
 
-// crawling();
+crawling();
