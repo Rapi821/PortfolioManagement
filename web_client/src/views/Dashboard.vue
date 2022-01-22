@@ -224,7 +224,8 @@
   </div>
 </template>
 <script>
-import TopBar from "../components/TopBar.vue";
+import axios from 'axios';
+import TopBar from '../components/TopBar.vue';
 
 export default {
   components: {
@@ -242,6 +243,16 @@ export default {
       this.step = 1;
       this.visible = true;
     },
+    async getData() {
+      this.user = (await axios.get('http://localhost:3000/user/data')).data;
+    },
+    async getStocks() {
+      this.stocks = (
+        await axios.get(
+          `http://localhost:3000/competitions/${this.user.user_id}`
+        )
+      ).data;
+    },
   },
   data() {
     return {
@@ -249,6 +260,8 @@ export default {
       step: 0,
       visible: false,
       competetion: {},
+      user: {},
+      stocks: [],
     };
   },
 };

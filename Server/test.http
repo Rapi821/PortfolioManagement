@@ -21,7 +21,7 @@ content-Type: application/json
     "title": "CRUD-POST-Competition",
     "starting_money": 20000,
     "end_date": "2022-12-1",
-    "user_id": "0"
+    "user_id": "8"
 }
 ###
 GET http://localhost:3000/competitions/0

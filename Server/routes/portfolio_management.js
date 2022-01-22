@@ -1,6 +1,7 @@
 const express = require('express');
 const {
   getUsers,
+  // eslint-disable-next-line no-unused-vars
   getUserByEmail,
   getUserById,
   registerNewUser,
@@ -29,6 +30,6 @@ router.get('/competitions/:member_id', getStocksFromDepot);
 // Login Route
 router.post('/user/login', loginUser);
 router.get('/user/data', getUserData);
-router.get('/user/competitions', getUserCompetitions); 
+router.get('/user/competitions', getUserCompetitions);
 router.post('/user/buyStocks', buyStocks);
 module.exports = router;
