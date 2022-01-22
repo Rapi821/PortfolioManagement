@@ -88,6 +88,10 @@ const buyStocks = asyncHandler(async (req, res) => {
   res.status(200).json(await persons.removeMoney(req.body, req.session.user.user_id));
   res.status(200).json(await persons.addToRecords(req.body, req.session.user.user_id));
 });
+const getCompetition = asyncHandler(async (req, res) => {
+  res.status(200).json(await persons.getCompetition(req.params.competition_id, req.session.user.user_id));
+});
+
 
 module.exports = {
   getUsers,
@@ -100,5 +104,6 @@ module.exports = {
   getUserData,
   getUserCompetitions,
   buyStocks,
-  addUserToCompetition
+  addUserToCompetition,
+  getCompetition
 };
