@@ -98,7 +98,8 @@ CREATE TABLE public.competition_stocks (
     competition_stocks_id integer NOT NULL,
     isin character varying NOT NULL,
     competition_id integer,
-    stock_id integer
+    stock_id integer,
+    name character varying
 );
 
 
@@ -399,6 +400,10 @@ COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, coun
 9	0000	3286.92	1	0	0	2021-11-17
 31	US5949181045	298.76	5	0	2	2022-01-12
 30	0000	28506.2	1	0	2	2021-11-16
+32	0000	10000	1	19	5	2022-01-22
+33	0000	15000	1	20	6	2022-01-22
+34	0000	100000	1	21	7	2022-01-22
+36	0000	50000	1	0	8	2022-01-22
 \.
 
 
@@ -411,6 +416,10 @@ COPY public.competition_members (member_id, user_id, competition_id) FROM stdin;
 1	1	0
 2	2	0
 3	1	1
+5	8	19
+6	8	20
+7	8	21
+8	8	0
 \.
 
 
@@ -418,10 +427,10 @@ COPY public.competition_members (member_id, user_id, competition_id) FROM stdin;
 -- Data for Name: competition_stocks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.competition_stocks (competition_stocks_id, isin, competition_id, stock_id) FROM stdin;
-2	US5949181045	0	1
-1	US0378331005	0	0
-4	0000	1	3
+COPY public.competition_stocks (competition_stocks_id, isin, competition_id, stock_id, name) FROM stdin;
+4	0000	1	3	\N
+1	US0378331005	0	0	Apple
+2	US5949181045	0	1	Microsoft
 \.
 
 
@@ -434,6 +443,9 @@ COPY public.competitions (competition_id, creation_date, title, starting_money, 
 1	2021-12-01	Test-Competiion-2	25000	t	2022-12-01	2	3LB81ZCVYD
 2	2021-12-02	Test-3	100000	t	\N	2	CJMTUDLUOT
 10	2021-12-02	CRUD-POST-Competition	20000	t	2022-12-01	4	V12FO3FWNY
+19	2022-01-22	Raphis Aktien Game	10000	t	2023-01-01	8	KZ39K54T8J
+20	2022-01-22	Competition ohne Enddatum	15000	t	\N	8	44DJ71ETN0
+21	2022-01-22	Competition mit zu wenig Startgeld	100000	t	\N	8	NMXR6K7EYH
 \.
 
 
@@ -452,7 +464,7 @@ COPY public.depot_records (depot_records_id, member_id, date, price, count, buy_
 --
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
-WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-19T14:17:14.153Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"devall.s03@htlwienwest.at","firstname":"Sebastian","lastname":"de Vall","password":"qHV3#ctbt","user_id":2}}	2022-02-19 15:17:18
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-21T15:35:12.344Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"bilge.m01@htlwienwest.at","firstname":"Mohammed Elyesa","lastname":"Bilge","password":"yu30e?NV!","user_id":0}}	2022-02-21 16:36:28
 \.
 
 
@@ -482,7 +494,7 @@ SELECT pg_catalog.setval('public.all_stocks_stock_id_seq', 2, true);
 -- Name: competitionMembers_DepotID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."competitionMembers_DepotID_seq"', 3, true);
+SELECT pg_catalog.setval('public."competitionMembers_DepotID_seq"', 8, true);
 
 
 --
@@ -496,14 +508,14 @@ SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 -- Name: competition_member_depot_lines_depot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 31, true);
+SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 36, true);
 
 
 --
 -- Name: competitions_competition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competitions_competition_id_seq', 10, true);
+SELECT pg_catalog.setval('public.competitions_competition_id_seq', 21, true);
 
 
 --
@@ -589,6 +601,13 @@ ALTER TABLE ONLY public.users
 --
 
 CREATE INDEX "IDX_session_expire" ON public.user_sessions USING btree (expire);
+
+
+--
+-- Name: all_stocks_name_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX all_stocks_name_uindex ON public.all_stocks USING btree (name);
 
 
 --
@@ -706,6 +725,14 @@ ALTER TABLE ONLY public.depot_records
 
 ALTER TABLE ONLY public.depot_records
     ADD CONSTRAINT fk_member_id FOREIGN KEY (member_id) REFERENCES public.competition_members(member_id);
+
+
+--
+-- Name: competition_stocks fk_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_stocks
+    ADD CONSTRAINT fk_name FOREIGN KEY (name) REFERENCES public.all_stocks(name);
 
 
 --
