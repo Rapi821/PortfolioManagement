@@ -46,13 +46,13 @@ const createNewCompetition = async (newData, user_id) =>
 // User zu einer Competition hinzufügen und Startingmoney geben
 const addUserToCompetition = async (newData ,user_id) => {
   (await query("insert into competition_members (member_id, user_id, competition_id) VALUES (DEFAULT, $1, (select competition_id from competitions where competition_code= $2))", [user_id, newData.code])).rows;
-  (await query("insert into competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) VALUES (DEFAULT, '0000', (select starting_money from competitions where competition_code= $1), 1, (select competition_id from competitions where competition_code= $1), (select member_id from competition_members where user_id=$2 and competition_id=(select competition_id from competitions where competition_code= $1)), $3);", [newData.code, user_id, newData.creation_date])).rows;
+  (await query("insert into competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id) VALUES (DEFAULT, '0000', (select starting_money from competitions where competition_code= $1), 1, (select competition_id from competitions where competition_code= $1), (select member_id from competition_members where user_id=$2 and competition_id=(select competition_id from competitions where competition_code= $1)));", [newData.code, user_id])).rows;
 }
 //Alle Aktien in einem Depot
 const getStocksFromDepot = async (member_id) =>
   (
     await query(
-      "select isin, buy_price, count, (buy_price* count) as total, buy_date from competition_member_depot_lines where member_id= $1 and isin !='0000'",
+      "select isin, buy_price, count, (buy_price* count) as total from competition_member_depot_lines where member_id= $1 and isin !='0000'",
       [member_id]
     )
   ).rows;
@@ -71,20 +71,20 @@ const loginUser = async (user) => {
   return res[0];
 };
 // Neue aktien kaufen 
-const buyNewStocks = async (newData, user_id) =>((await query('insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id, buy_date) VALUES ($1, $2, $3, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4), $6)', [newData.isin, newData.buy_price, newData.count, newData.competition_id, user_id ,newData.buy_date])).rows);
+const buyNewStocks = async (newData, user_id) =>((await query('insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id) VALUES ($1, $2, $3, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4))', [newData.isin, newData.buy_price, newData.count, newData.competition_id, user_id])).rows);
 
 // Geld von den gekauften Aktien abziehen
 const removeMoney = async (newData, user_id) => (await query ("update competition_member_depot_lines set buy_price= (select buy_price from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin='0000')-$3 WHERE isin='0000' and member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2)", [user_id, newData.competition_id, newData.buy_price*newData.count])).rows;
 
 // Die gekauften Aktien in die Records eintragen
-const addToRecords = async (newData, user_id) => (await query ("insert into depot_records (member_id, date, price, count, buy_sell, isin) VALUES ((select member_id from competition_members where user_id=$1 and competition_id=$2), $3, $4, 10, 'buy', $5)", [user_id, newData.competition_id, newData.buy_date, newData.buy_price, newData.isin]));
+const addToRecords = async (newData, user_id) => (await query ("insert into depot_records (member_id, date, price, count, buy_sell, isin) VALUES ((select member_id from competition_members where user_id=$1 and competition_id=$2), $3, $4, $5, 'buy', $6)", [user_id, newData.competition_id, newData.buy_date, newData.buy_price, newData.count ,newData.isin]));
 
 // Überprüfung ob die Aktien bereits im Depot sind und nachgekauft wird oder 
 // ob es die ersten Aktien mit dem isin in dem Depot sind
 const checkStockBought = async (newData, user_id) => (await query("select COUNT(*) from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3"), [user_id, newData.competition_id, newData.isin]).rows;
 
 // Bereits gekaufte Aktie nachkaufen
-const rebuyStocks = async (newData, user_id) => (await query('SELECT * FROM users')).rows;
+const rebuyStocks = async (newData, user_id) => (await query("update competition_member_depot_lines set buy_price=((select (buy_price* count) as old_total from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+ $4*$5), count=((select count from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+ $5) where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3", [user_id, newData.competition_id, newData.isin, newData.buy_price, newData.count])).rows;
 
 const getCompetition = async (comp_id, user_id) => (await query("select cs.name, cmdl.isin, cmdl.buy_price, cmdl.count from competition_member_depot_lines cmdl join competition_stocks cs on cs.isin = cmdl.isin where cmdl.member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and cmdl.isin != '0000'", [user_id, comp_id])).rows;
 

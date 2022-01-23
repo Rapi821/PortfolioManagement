@@ -89,7 +89,6 @@
           buy_price: 298.76,
           count: 5,
           competition_id: 0,
-          buy_date: '2022-01-12',
         })
       "
     >
@@ -137,7 +136,7 @@ export default {
       this.competetions = (
         await server.get(`http://localhost:3000/user/competitions`)
       ).data;
-      console.log(this.competetions);
+      // console.log(this.competetions);
     },
     async createCompetition() {
       console.log(this.competetion);
