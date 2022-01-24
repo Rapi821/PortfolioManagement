@@ -137,8 +137,7 @@ CREATE TABLE public.competition_member_depot_lines (
     buy_price numeric NOT NULL,
     count integer NOT NULL,
     competition_id integer,
-    member_id integer,
-    buy_date date NOT NULL
+    member_id integer
 );
 
 
@@ -213,11 +212,11 @@ ALTER SEQUENCE public.competitions_competition_id_seq OWNED BY public.competitio
 CREATE TABLE public.depot_records (
     depot_records_id integer NOT NULL,
     member_id integer NOT NULL,
-    date date NOT NULL,
     price numeric NOT NULL,
     count integer NOT NULL,
     buy_sell character varying NOT NULL,
     isin character varying,
+    date date,
     CONSTRAINT check_if_buy_or_sell CHECK ((((buy_sell)::text ~~ 'buy'::text) OR ((buy_sell)::text ~~ 'sell'::text)))
 );
 
@@ -369,41 +368,50 @@ COPY public.all_stocks (stock_id, isin, name) FROM stdin;
 -- Data for Name: competition_member_depot_lines; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) FROM stdin;
-1	US0378331005	133.44	10	0	0	2021-11-17
-2	US5949181045	300.10	5	0	2	2021-11-17
-3	US0378331005	140.15	5	0	0	2021-12-02
-4	US0378331005	132.12	8	0	1	2021-12-01
-5	US5949181045	295.45	3	1	3	2021-11-25
-10	US0378331005	140	3	0	0	2022-01-12
-11	US5949181045	298.76	5	0	2	2022-01-12
-7	0000	24600.12	1	1	3	2021-11-25
-12	US5949181045	298.76	5	0	0	2022-01-12
-13	US5949181045	298.76	5	0	0	2022-01-12
-14	US5949181045	298.76	5	0	0	2022-01-12
-15	US5949181045	298.76	5	0	0	2022-01-12
-16	US5949181045	298.76	5	0	0	2022-01-12
-17	US5949181045	298.76	5	0	0	2022-01-12
-18	US5949181045	298.76	5	0	0	2022-01-12
-19	US5949181045	298.76	5	0	0	2022-01-12
-20	US5949181045	298.76	5	0	0	2022-01-12
-21	US5949181045	298.76	5	0	0	2022-01-12
-22	US5949181045	298.76	5	0	0	2022-01-12
-23	US5949181045	298.76	5	0	0	2022-01-12
-24	US5949181045	298.76	5	0	1	2022-01-12
-25	US5949181045	298.76	5	0	1	2022-01-12
-26	US5949181045	298.76	5	0	1	2022-01-12
-27	US5949181045	298.76	5	0	1	2022-01-12
-8	0000	18724.92	1	0	1	2021-11-24
-28	US5949181045	298.76	5	0	0	2022-01-12
-29	US5949181045	298.76	5	0	0	2022-01-12
-9	0000	3286.92	1	0	0	2021-11-17
-31	US5949181045	298.76	5	0	2	2022-01-12
-30	0000	28506.2	1	0	2	2021-11-16
-32	0000	10000	1	19	5	2022-01-22
-33	0000	15000	1	20	6	2022-01-22
-34	0000	100000	1	21	7	2022-01-22
-36	0000	50000	1	0	8	2022-01-22
+COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id) FROM stdin;
+1	US0378331005	133.44	10	0	0
+2	US5949181045	300.10	5	0	2
+3	US0378331005	140.15	5	0	0
+4	US0378331005	132.12	8	0	1
+5	US5949181045	295.45	3	1	3
+10	US0378331005	140	3	0	0
+11	US5949181045	298.76	5	0	2
+7	0000	24600.12	1	1	3
+12	US5949181045	298.76	5	0	0
+13	US5949181045	298.76	5	0	0
+14	US5949181045	298.76	5	0	0
+15	US5949181045	298.76	5	0	0
+16	US5949181045	298.76	5	0	0
+17	US5949181045	298.76	5	0	0
+18	US5949181045	298.76	5	0	0
+19	US5949181045	298.76	5	0	0
+20	US5949181045	298.76	5	0	0
+21	US5949181045	298.76	5	0	0
+22	US5949181045	298.76	5	0	0
+23	US5949181045	298.76	5	0	0
+24	US5949181045	298.76	5	0	1
+25	US5949181045	298.76	5	0	1
+26	US5949181045	298.76	5	0	1
+27	US5949181045	298.76	5	0	1
+28	US5949181045	298.76	5	0	0
+29	US5949181045	298.76	5	0	0
+9	0000	3286.92	1	0	0
+31	US5949181045	298.76	5	0	2
+30	0000	28506.2	1	0	2
+32	0000	10000	1	19	5
+33	0000	15000	1	20	6
+34	0000	100000	1	21	7
+37	US5949181045	298.76	5	0	1
+38	US5949181045	298.76	5	0	1
+39	US5949181045	298.76	5	0	1
+40	US5949181045	298.76	5	0	1
+41	US5949181045	298.76	5	0	1
+42	US5949181045	298.76	5	0	1
+43	US5949181045	298.76	5	0	1
+44	US5949181045	298.76	5	0	1
+8	0000	6774.52	1	0	1
+46	US5949181045	298.76	5	0	8
+36	0000	45518.6	1	0	8
 \.
 
 
@@ -453,9 +461,15 @@ COPY public.competitions (competition_id, creation_date, title, starting_money, 
 -- Data for Name: depot_records; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.depot_records (depot_records_id, member_id, date, price, count, buy_sell, isin) FROM stdin;
-4	0	2022-01-12	298.76	10	buy	US5949181045
-5	0	2022-01-12	298.76	10	buy	US5949181045
+COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, isin, date) FROM stdin;
+4	0	298.76	10	buy	US5949181045	\N
+5	0	298.76	10	buy	US5949181045	\N
+6	1	298.76	10	buy	US5949181045	\N
+7	1	298.76	5	buy	US5949181045	\N
+8	1	298.76	5	buy	US5949181045	\N
+9	1	298.76	5	buy	US5949181045	\N
+10	1	298.76	5	buy	US5949181045	2022-01-23
+11	8	298.76	5	buy	US5949181045	2022-01-23
 \.
 
 
@@ -464,7 +478,7 @@ COPY public.depot_records (depot_records_id, member_id, date, price, count, buy_
 --
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
-WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-21T15:35:12.344Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"bilge.m01@htlwienwest.at","firstname":"Mohammed Elyesa","lastname":"Bilge","password":"yu30e?NV!","user_id":0}}	2022-02-21 16:36:28
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-22T13:37:21.956Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-02-22 15:02:39
 \.
 
 
@@ -508,7 +522,7 @@ SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 -- Name: competition_member_depot_lines_depot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 36, true);
+SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 47, true);
 
 
 --
@@ -522,7 +536,7 @@ SELECT pg_catalog.setval('public.competitions_competition_id_seq', 21, true);
 -- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 5, true);
+SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 13, true);
 
 
 --
