@@ -1,10 +1,13 @@
 <script>
-import { Line } from '../../node_modules/vue-chartjs/es/BaseCharts';
-import {mixins} from 'vue-chartjs'
-const { reactiveProp } = mixins
+// import { Line } from "vue-chartjs";
+// // ../../node_modules/vue-chartjs/es/BaseCharts     Falls das obere nicht geht
+// import { mixins } from "vue-chartjs";
+import { Line, mixins } from "vue-chartjs";
+const { reactiveProp } = mixins;
+
 export default {
   extends: Line,
-  mixins:[reactiveProp],
+  mixins: [reactiveProp],
   props: {
     chartdata: {
       type: Object,
@@ -18,9 +21,12 @@ export default {
   mounted() {
     this.renderChart(this.chartdata, this.options);
   },
+  // watch: {
+  //   chartData() {
+  //     this.renderChart().update();
+  //   },
+  // },
 };
-
-
 
 // import axios from 'axios';
 // export default {
