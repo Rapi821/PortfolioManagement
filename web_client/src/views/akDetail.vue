@@ -33,28 +33,37 @@
     </v-card>
     <span>{{ akByTimeWert }}</span>
     <div class="d-flex  justify-center align-center">
-    <Chart  :chartdata="chartData" :options="options" />
-  </div>
+      <Chart
+        :chartdata="chartData"
+        :options="options"
+        :key="componentRefreshKey"
+      />
+    </div>
+    <!-- weggeben -->
+    <!-- <div class="d-flex  justify-center align-center">
+      <Chart v-if="!loaded" :chartdata="chartData" :options="options" />
+    </div> -->
   </div>
 </template>
 
 <script>
-import Chart from '../components/Chart';
+import Chart from "../components/Chart";
 
-import axios from 'axios';
+import axios from "axios";
 export default {
-  name: 'Market',
+  name: "Market",
   data() {
     return {
-      datum:new Date(),
-      test:[],
-      loaded:false,
+      componentRefreshKey: 0,
+      datum: new Date(),
+      test: [],
+      loaded: false,
       chartOptions: {},
       chartData: {
         labels: [],
         datasets: [
           {
-            backgroundColor: '#f87979',
+            backgroundColor: "#f87979",
 
             data: [],
           },
@@ -66,26 +75,25 @@ export default {
       akByTimeWert: [],
     };
   },
-  async mounted () {
+  async mounted() {
     // this.loaded = false
     // try {
-     
     //     await axios.get(
     //       `http://localhost:5000/akDetailKurs/${this.akInfo.isin}`
     //     )
-      
     //   // this.chartdata = userlist
     //   this.loaded = true
     // } catch (e) {
     //   console.error(e)
     // }
-
-    
     // this.oneDay();
     // this.oneWeek();
     // this.oneMonth();
   },
   methods: {
+    forceRerender() {
+      this.componentRefreshKey += 1;
+    },
     async getKurs() {
       this.akKurs = (
         await axios.get(
@@ -94,11 +102,10 @@ export default {
       ).data;
     },
     async oneDay() {
-   
       const today = new Date();
       const yesterday = today.getDate() - 1;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -106,7 +113,7 @@ export default {
         )
       ).data;
       this.wertExtraktion();
-      
+
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
@@ -114,11 +121,10 @@ export default {
       this.chartData.datasets[0].data = this.test;
     },
     async oneWeek() {
-     
       const today = new Date();
       const yesterday = today.getDate() - 7;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -126,11 +132,10 @@ export default {
         )
       ).data;
       this.wertExtraktion();
-      this.datum=yesterdayDate;
+      this.datum = yesterdayDate;
       console.log(this.datum);
     },
     async oneMonth() {
-       
       const today = new Date();
       // const yesterday = today.getDate() - 31;
       let lastMonth;
@@ -138,8 +143,8 @@ export default {
         lastMonth = 12;
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
-          lastYear + '-' + lastMonth + '-' + today.getDate();
-        this.datum=yesterdayDate;
+          lastYear + "-" + lastMonth + "-" + today.getDate();
+        this.datum = yesterdayDate;
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
@@ -148,7 +153,7 @@ export default {
         ).data;
       } else {
         const yesterdayDate =
-          today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+          today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
@@ -156,33 +161,29 @@ export default {
           )
         ).data;
       }
-      this.chartData.datasets[0].data=[];
-      this.chartData.labels=[];
+      this.chartData.datasets[0].data = [];
+      this.chartData.labels = [];
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
         this.chartData.labels.push(elm.zeit);
-        
       }
       this.chartData.datasets[0].data = this.test;
       console.log(this.chartData.labels);
       console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
       console.log(this.datum);
+      this.loaded = true;
+      this.forceRerender();
     },
     wertExtraktion() {
       this.akByTimeWert = [];
       for (let elm of this.akByTime) {
         this.akByTimeWert.push(elm.wert);
       }
-      
     },
-
-
-
-    
   },
-   components: {
+  components: {
     Chart,
   },
   async created() {
@@ -190,7 +191,6 @@ export default {
       await axios.get(`http://localhost:5000/akDetail/${this.isin}`)
     ).data[0];
     this.getKurs();
-   
   },
 
   props: {
