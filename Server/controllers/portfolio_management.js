@@ -20,23 +20,21 @@ const registerNewUser = asyncHandler(async (req, res) => {
 });
 // Alle Competitions von einem User
 const getUserCompetitions = asyncHandler(async (req, res) => {
-  let base = await persons.getCompetitionsByUser(req.session.user.user_id); 
+  let base = await persons.getCompetitionsByUser(req.session.user.user_id);
   let cash = await persons.getCash(req.session.user.user_id);
-  let stockValue= await persons.getstockValue(req.session.user.user_id);
+  let stockValue = await persons.getstockValue(req.session.user.user_id);
   console.log(stockValue);
   console.log(base);
   for (const i in base) {
-    base[i].cash= cash[i].cash;
-    if(stockValue[i] != undefined){
-      base[i].portfolio_value= stockValue[i].stocksvalue;
-    }
-    else{
-      base[i].portfolio_value= 0;
+    base[i].cash = cash[i].cash;
+    if (stockValue[i] != undefined) {
+      base[i].portfolio_value = stockValue[i].stocksvalue;
+    } else {
+      base[i].portfolio_value = 0;
     }
   }
   // console.log(base);
   res.status(200).json(base);
-
 });
 // Erstellen einer neuen Competition
 const createNewCompetition = asyncHandler(async (req, res) => {
@@ -45,16 +43,25 @@ const createNewCompetition = asyncHandler(async (req, res) => {
   if (req.body.starting_money < 100) {
     req.body.starting_money = 100000;
   }
-  if (req.body.end_date == undefined || req.body.end_date == "") {
+  if (req.body.end_date == undefined || req.body.end_date == '') {
     req.body.end_date = null;
   }
+  console.log(req.session);
   await persons.createNewCompetition(req.body, req.session.user.user_id);
-  res.status(200).json(await persons.addUserToCompetition(req.body, req.session.user.user_id));
+  res
+    .status(200)
+    .json(
+      await persons.addUserToCompetition(req.body, req.session.user.user_id)
+    );
 });
 // User einer neuen Competition hinzufügen
 const addUserToCompetition = asyncHandler(async (req, res) => {
   req.body.creation_date = help_functions.getCurrentDate(); //creation_date ist der Tag an dem der User beitritt
-  res.status(200).json(await persons.addUserToCompetition(req.body, req.session.user.user_id));
+  res
+    .status(200)
+    .json(
+      await persons.addUserToCompetition(req.body, req.session.user.user_id)
+    );
 });
 // Alle Aktien in einem Depot
 const getStocksFromDepot = asyncHandler(async (req, res) => {
@@ -80,22 +87,30 @@ const getUserData = asyncHandler(async (req, res) => {
 });
 const buyStocks = asyncHandler(async (req, res) => {
   req.body.buy_date = help_functions.getCurrentDate();
-  if(await (persons.checkStockBought(req.body, req.session.user.user_id)) != 1){
-    (await persons.buyNewStocks(req.body, req.session.user.user_id));
+  if (
+    (await persons.checkStockBought(req.body, req.session.user.user_id)) != 1
+  ) {
+    await persons.buyNewStocks(req.body, req.session.user.user_id);
+  } else {
+    console.log('nice');
+    await persons.rebuyStocks(req.body, req.session.user.user_id);
   }
-  else{
-    console.log("nice");
-    (await persons.rebuyStocks(req.body, req.session.user.user_id));
-  } 
-  (await persons.removeMoney(req.body, req.session.user.user_id));
-  res.status(200).json(await persons.addToRecords(req.body, req.session.user.user_id));
+  await persons.removeMoney(req.body, req.session.user.user_id);
+  res
+    .status(200)
+    .json(await persons.addToRecords(req.body, req.session.user.user_id));
 });
-
 
 const getCompetition = asyncHandler(async (req, res) => {
-  res.status(200).json(await persons.getCompetition(req.params.competition_id, req.session.user.user_id));
+  res
+    .status(200)
+    .json(
+      await persons.getCompetition(
+        req.params.competition_id,
+        req.session.user.user_id
+      )
+    );
 });
-
 
 module.exports = {
   getUsers,
@@ -109,5 +124,5 @@ module.exports = {
   getUserCompetitions,
   buyStocks,
   addUserToCompetition,
-  getCompetition
+  getCompetition,
 };

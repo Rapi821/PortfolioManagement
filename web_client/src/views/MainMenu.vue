@@ -67,7 +67,7 @@
       >
     </v-container>
 
-<h3>Testbuttons für Routen</h3>
+    <h3>Testbuttons für Routen</h3>
     <!-- TEST BUTTONS FÜR ROUTEN -->
     <v-btn
       color="blue darken-1"
@@ -92,15 +92,9 @@
         })
       "
     >
-       Kaufe Aktien
+      Kaufe Aktien
     </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        getCompetition('0')
-      "
-    >
+    <v-btn color="blue darken-1" text @click="getCompetition('0')">
       Get Data für eine Competition
     </v-btn>
   </div>
@@ -114,8 +108,10 @@ export default {
     TopBar,
   },
   methods: {
-    async getCompetition(x){
-      console.log((await server.get(`http://localhost:3000/competition/${x}`)).data);
+    async getCompetition(x) {
+      console.log(
+        (await server.get(`http://localhost:3000/competition/${x}`)).data
+      );
     },
     close() {
       this.dialog = false;

@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="primary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
-    <v-btn color="black" active-class="white black--text" to="/LoginRegister"
+    <v-btn color="black" active-class="white black--text" @click="logOut" 
       >Logout</v-btn
     >
 
@@ -31,6 +31,11 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    logOut() {
+      
+    }
+  },
 };
 </script>
 <style>

@@ -224,7 +224,7 @@ export default {
       let user = (await server.get(`http://localhost:3000/user/${this.email}`))
         .data;
       this.user_id = user.user_id;
-      this.$router.replace(`/mainmenu/${this.user_id}`);
+      this.$router.replace(`/mainmenu`);
     },
   },
 };
