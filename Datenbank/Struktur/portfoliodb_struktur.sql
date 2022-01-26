@@ -213,7 +213,7 @@ CREATE TABLE public.depot_records (
     depot_records_id integer NOT NULL,
     member_id integer NOT NULL,
     price numeric NOT NULL,
-    count integer NOT NULL,
+    count numeric NOT NULL,
     buy_sell character varying NOT NULL,
     isin character varying,
     date date,
