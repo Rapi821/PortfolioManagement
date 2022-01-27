@@ -137,7 +137,8 @@ CREATE TABLE public.competition_member_depot_lines (
     buy_price numeric NOT NULL,
     count integer NOT NULL,
     competition_id integer,
-    member_id integer
+    member_id integer,
+    buy_date date
 );
 
 
@@ -163,6 +164,45 @@ ALTER TABLE public.competition_member_depot_lines_depot_id_seq OWNER TO postgres
 --
 
 ALTER SEQUENCE public.competition_member_depot_lines_depot_id_seq OWNED BY public.competition_member_depot_lines.depot_line_id;
+
+
+--
+-- Name: competition_member_depots; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.competition_member_depots (
+    id integer NOT NULL,
+    isin character varying NOT NULL,
+    name character varying NOT NULL,
+    competition_id integer NOT NULL,
+    member_id integer NOT NULL,
+    count numeric NOT NULL,
+    value numeric NOT NULL
+);
+
+
+ALTER TABLE public.competition_member_depots OWNER TO postgres;
+
+--
+-- Name: competition_member_depots_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.competition_member_depots_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.competition_member_depots_id_seq OWNER TO postgres;
+
+--
+-- Name: competition_member_depots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.competition_member_depots_id_seq OWNED BY public.competition_member_depots.id;
 
 
 --
@@ -213,7 +253,7 @@ CREATE TABLE public.depot_records (
     depot_records_id integer NOT NULL,
     member_id integer NOT NULL,
     price numeric NOT NULL,
-    count numeric NOT NULL,
+    count integer NOT NULL,
     buy_sell character varying NOT NULL,
     isin character varying,
     date date,
@@ -318,6 +358,13 @@ ALTER TABLE ONLY public.competition_member_depot_lines ALTER COLUMN depot_line_i
 
 
 --
+-- Name: competition_member_depots id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_member_depots ALTER COLUMN id SET DEFAULT nextval('public.competition_member_depots_id_seq'::regclass);
+
+
+--
 -- Name: competition_members member_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -368,50 +415,58 @@ COPY public.all_stocks (stock_id, isin, name) FROM stdin;
 -- Data for Name: competition_member_depot_lines; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id) FROM stdin;
-1	US0378331005	133.44	10	0	0
-2	US5949181045	300.10	5	0	2
-3	US0378331005	140.15	5	0	0
-4	US0378331005	132.12	8	0	1
-5	US5949181045	295.45	3	1	3
-10	US0378331005	140	3	0	0
-11	US5949181045	298.76	5	0	2
-7	0000	24600.12	1	1	3
-12	US5949181045	298.76	5	0	0
-13	US5949181045	298.76	5	0	0
-14	US5949181045	298.76	5	0	0
-15	US5949181045	298.76	5	0	0
-16	US5949181045	298.76	5	0	0
-17	US5949181045	298.76	5	0	0
-18	US5949181045	298.76	5	0	0
-19	US5949181045	298.76	5	0	0
-20	US5949181045	298.76	5	0	0
-21	US5949181045	298.76	5	0	0
-22	US5949181045	298.76	5	0	0
-23	US5949181045	298.76	5	0	0
-24	US5949181045	298.76	5	0	1
-25	US5949181045	298.76	5	0	1
-26	US5949181045	298.76	5	0	1
-27	US5949181045	298.76	5	0	1
-28	US5949181045	298.76	5	0	0
-29	US5949181045	298.76	5	0	0
-9	0000	3286.92	1	0	0
-31	US5949181045	298.76	5	0	2
-30	0000	28506.2	1	0	2
-32	0000	10000	1	19	5
-33	0000	15000	1	20	6
-34	0000	100000	1	21	7
-37	US5949181045	298.76	5	0	1
-38	US5949181045	298.76	5	0	1
-39	US5949181045	298.76	5	0	1
-40	US5949181045	298.76	5	0	1
-41	US5949181045	298.76	5	0	1
-42	US5949181045	298.76	5	0	1
-43	US5949181045	298.76	5	0	1
-44	US5949181045	298.76	5	0	1
-8	0000	6774.52	1	0	1
-46	US5949181045	298.76	5	0	8
-36	0000	45518.6	1	0	8
+COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) FROM stdin;
+1	US0378331005	133.44	10	0	0	\N
+2	US5949181045	300.10	5	0	2	\N
+3	US0378331005	140.15	5	0	0	\N
+4	US0378331005	132.12	8	0	1	\N
+5	US5949181045	295.45	3	1	3	\N
+10	US0378331005	140	3	0	0	\N
+11	US5949181045	298.76	5	0	2	\N
+7	0000	24600.12	1	1	3	\N
+12	US5949181045	298.76	5	0	0	\N
+13	US5949181045	298.76	5	0	0	\N
+14	US5949181045	298.76	5	0	0	\N
+15	US5949181045	298.76	5	0	0	\N
+16	US5949181045	298.76	5	0	0	\N
+17	US5949181045	298.76	5	0	0	\N
+18	US5949181045	298.76	5	0	0	\N
+19	US5949181045	298.76	5	0	0	\N
+20	US5949181045	298.76	5	0	0	\N
+21	US5949181045	298.76	5	0	0	\N
+22	US5949181045	298.76	5	0	0	\N
+23	US5949181045	298.76	5	0	0	\N
+24	US5949181045	298.76	5	0	1	\N
+25	US5949181045	298.76	5	0	1	\N
+26	US5949181045	298.76	5	0	1	\N
+27	US5949181045	298.76	5	0	1	\N
+28	US5949181045	298.76	5	0	0	\N
+29	US5949181045	298.76	5	0	0	\N
+9	0000	3286.92	1	0	0	\N
+31	US5949181045	298.76	5	0	2	\N
+30	0000	28506.2	1	0	2	\N
+32	0000	10000	1	19	5	\N
+33	0000	15000	1	20	6	\N
+34	0000	100000	1	21	7	\N
+37	US5949181045	298.76	5	0	1	\N
+38	US5949181045	298.76	5	0	1	\N
+39	US5949181045	298.76	5	0	1	\N
+40	US5949181045	298.76	5	0	1	\N
+41	US5949181045	298.76	5	0	1	\N
+42	US5949181045	298.76	5	0	1	\N
+43	US5949181045	298.76	5	0	1	\N
+44	US5949181045	298.76	5	0	1	\N
+8	0000	6774.52	1	0	1	\N
+46	US5949181045	298.76	5	0	8	\N
+36	0000	45518.6	1	0	8	\N
+\.
+
+
+--
+-- Data for Name: competition_member_depots; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.competition_member_depots (id, isin, name, competition_id, member_id, count, value) FROM stdin;
 \.
 
 
@@ -478,7 +533,7 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 --
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
-WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-22T13:37:21.956Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-02-22 15:02:39
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-02-26T16:32:11.570Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"bilge.m01@htlwienwest.at","firstname":"Mohammed Elyesa","lastname":"Bilge","password":"yu30e?NV!","user_id":0}}	2022-02-26 17:33:10
 \.
 
 
@@ -526,6 +581,13 @@ SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 4
 
 
 --
+-- Name: competition_member_depots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.competition_member_depots_id_seq', 1, false);
+
+
+--
 -- Name: competitions_competition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -544,6 +606,14 @@ SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 13, true)
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 10, true);
+
+
+--
+-- Name: competition_member_depots competition_member_depots_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_member_depots
+    ADD CONSTRAINT competition_member_depots_pk PRIMARY KEY (id);
 
 
 --
@@ -710,14 +780,6 @@ ALTER TABLE ONLY public.competitions
 
 
 --
--- Name: competition_member_depot_lines competition_member_depot_lines_isin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_member_depot_lines
-    ADD CONSTRAINT competition_member_depot_lines_isin_fkey FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
-
-
---
 -- Name: competition_member_depot_lines competition_member_depot_lines_isin_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -726,11 +788,27 @@ ALTER TABLE ONLY public.competition_member_depot_lines
 
 
 --
+-- Name: competition_member_depots competition_member_depots_competition_members_member_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_member_depots
+    ADD CONSTRAINT competition_member_depots_competition_members_member_id_fk FOREIGN KEY (member_id) REFERENCES public.competition_members(member_id);
+
+
+--
 -- Name: depot_records depot_records_isin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.depot_records
     ADD CONSTRAINT depot_records_isin_fkey FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
+
+
+--
+-- Name: competition_member_depots fk_isin; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_member_depots
+    ADD CONSTRAINT fk_isin FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
 
 
 --

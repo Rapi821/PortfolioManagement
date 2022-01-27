@@ -23,8 +23,6 @@ const getUserCompetitions = asyncHandler(async (req, res) => {
   let base = await persons.getCompetitionsByUser(req.session.user.user_id);
   let cash = await persons.getCash(req.session.user.user_id);
   let stockValue = await persons.getstockValue(req.session.user.user_id);
-  console.log(stockValue);
-  console.log(base);
   for (const i in base) {
     base[i].cash = cash[i].cash;
     if (stockValue[i] != undefined) {
@@ -46,7 +44,6 @@ const createNewCompetition = asyncHandler(async (req, res) => {
   if (req.body.end_date == undefined || req.body.end_date == '') {
     req.body.end_date = null;
   }
-  console.log(req.session);
   await persons.createNewCompetition(req.body, req.session.user.user_id);
   res
     .status(200)
