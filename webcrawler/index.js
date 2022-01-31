@@ -194,7 +194,6 @@ async function errorData(err) {
 //Crawling function
 async function crawling() {
   console.log('crawling');
-  akArr = [];
   for (let elm of aktien) {
     (async () => {
       //  Seitenaufruf
@@ -230,11 +229,12 @@ async function crawling() {
       // Derzeitiges Datum & Zeit zum Objekt hinzufügen
       akObj.time = getTime();
       akArr.push(akObj);
-      console.log(akObj);
+      // console.log(akObj);
       console.log(akArr);
+      console.log(akArr.length);
       // insertData(akObj);
     })();
-    await insertDataArr(akArr);
+    insertDataArr(akArr);
   }
 }
 
@@ -245,5 +245,6 @@ async function insertDataArr(Arr) {
       [el.kurs, el.waehrung, el.time, el.isin]
     );
   }
+  akArr = [];
 }
 crawling();
