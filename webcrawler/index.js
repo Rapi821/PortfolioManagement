@@ -228,13 +228,13 @@ async function crawling() {
 
       // Derzeitiges Datum & Zeit zum Objekt hinzufügen
       akObj.time = getTime();
-      akArr.push(akObj);
+      // akArr.push(akObj);
       console.log(akObj);
       // console.log(akArr);
       // console.log(akArr.length);
       insertData(akObj);
     })();
-    insertDataArr(akArr);
+    // insertDataArr(akArr);
   }
 }
 
