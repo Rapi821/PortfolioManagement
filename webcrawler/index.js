@@ -160,6 +160,17 @@ let job = new CronJob(
 );
 // job.start();
 
+let jobHeroku = new CronJob(
+  '* * * * *',
+  async function () {
+   console.log('Yay');
+   let data = (await axios.get('https://heroku-porftolio-crawler.herokuapp.com')).data;
+   console.log(data);
+  }, 'Americas/Vancouver'
+);
+jobHeroku.start();
+
+
 // Function um Datum & Zeit zu bekommen
 function getTime() {
   let today = new Date();
