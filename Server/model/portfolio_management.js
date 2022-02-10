@@ -33,7 +33,7 @@ const getCompetitionsByUser = async (user_id) =>
 const getCash = async (user_id) =>
   (
     await query(
-      "select sum(buy_price*count) as cash from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin = '0000'",
+      "select sum(buy_price) as cash from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin = '0000'",
       [user_id]
     )
   ).rows;
@@ -41,7 +41,7 @@ const getCash = async (user_id) =>
 const getstockValue = async (user_id) =>
   (
     await query(
-      "select sum(buy_price*count) as stocksValue from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin != '0000'",
+      "select sum(buy_price) as stocksValue from competition_member_depot_lines group by member_id, isin having member_id in (select member_id from competition_members where user_id=$1) and isin != '0000'",
       [user_id]
     )
   ).rows;
@@ -80,7 +80,7 @@ const addUserToCompetition = async (newData, user_id) => {
 const getStocksFromDepot = async (member_id) =>
   (
     await query(
-      "select isin, buy_price, count, (buy_price* count) as total from competition_member_depot_lines where member_id= $1 and isin !='0000'",
+      "select isin, buy_price, count from competition_member_depot_lines where member_id= $1 and isin !='0000'",
       [member_id]
     )
   ).rows;
@@ -139,8 +139,10 @@ const addToRecords = async (newData, user_id) =>
 // Überprüfung ob die Aktien bereits im Depot sind und nachgekauft wird oder
 // ob es die ersten Aktien mit dem isin in dem Depot sind
 const checkStockBought = async (newData, user_id) =>
-  (await query(
-    'select COUNT(*) from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3'
+  (
+    // console.log(user_id, newData),
+    await query(
+    'select COUNT(*) from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id= $1 and competition_id=$2) and isin= $3'
   ),
   [user_id, newData.competition_id, newData.isin]).rows;
 
@@ -148,7 +150,7 @@ const checkStockBought = async (newData, user_id) =>
 const rebuyStocks = async (newData, user_id) =>
   (
     await query(
-      'update competition_member_depot_lines set buy_price=((select (buy_price* count) as old_total from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+ $4*$5), count=((select count from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+ $5) where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3',
+      'update competition_member_depot_lines set buy_price=((select (buy_price) as old_total from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+ $4*$5), count=((select count from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+ $5) where member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and isin= $3',
       [
         user_id,
         newData.competition_id,
