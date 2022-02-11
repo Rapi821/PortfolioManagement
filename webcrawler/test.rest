@@ -14,4 +14,4 @@ GET http://localhost:3000/akDetailKurs/DE000A1EWWW0
 
 ###
 
-GET http://localhost:5000/kursByTime/DE000A1EWWW0?date=2022-01-01
+GET http://localhost:5000/kursByTime/DE000A1EWWW0WKN?date=2022-02-02

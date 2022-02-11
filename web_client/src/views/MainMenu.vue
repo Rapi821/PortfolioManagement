@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBar />
-    <v-card>
+    <v-card max-width="700px" class="mx-auto mt-2 elevation-2">
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
       <v-card-actions
@@ -56,10 +56,10 @@
           ><v-data-table
             :headers="headers"
             :items="competetions"
-            class="elevation-1"
+            class="elevation-3"
             ><template v-slot:[`item.title`]="{ item }">
               <span
-                ><v-btn to="Dashboard">{{ item.title }}</v-btn></span
+                ><router-link to="Dashboard">{{ item.title }}</router-link></span
               >
             </template></v-data-table
           ></v-col
@@ -67,9 +67,9 @@
       >
     </v-container>
 
-    <h3>Testbuttons für Routen</h3>
+    <!-- <h3>Testbuttons für Routen</h3> -->
     <!-- TEST BUTTONS FÜR ROUTEN -->
-    <v-btn
+    <!-- <v-btn
       color="blue darken-1"
       text
       @click="
@@ -79,8 +79,8 @@
       "
     >
       Competition Beitreten
-    </v-btn>
-    <v-btn
+    </v-btn> -->
+    <!-- <v-btn
       color="blue darken-1"
       text
       @click="
@@ -96,7 +96,7 @@
     </v-btn>
     <v-btn color="blue darken-1" text @click="getCompetition('0')">
       Get Data für eine Competition
-    </v-btn>
+    </v-btn> -->
   </div>
 </template>
 

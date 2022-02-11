@@ -1,8 +1,10 @@
 <template>
   <div class="fill-height">
     <TopBar />
-    <v-card elevation="1" outlined max.width="300" class="mx-auto">
-      <v-card-title align="center">{{ akInfo.title }}</v-card-title>
+    <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
+      <v-card-title justify="center" class="mx-auto">{{
+        akInfo.title
+      }}</v-card-title>
       <v-card-text>
         <v-row>
           <div>
@@ -15,30 +17,32 @@
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn class="me-2 mx-auto" color="primary">Kaufen</v-btn>
-        <v-btn class="me-2 mx-auto" color="primary">Verkaufen</v-btn>
+        <div class="mx-auto">
+          <v-btn class="me-2" color="primary">Kaufen</v-btn>
+          <v-btn class="me-2" color="primary">Verkaufen</v-btn>
+        </div>
       </v-card-actions>
-      <v-spacer></v-spacer>
       <v-card-actions>
-        <v-btn class="me-2 mx-auto" color="success" @click="oneDay()"
-          >1 Tag</v-btn
-        >
-        <v-btn class="me-2 mx-auto" color="success" @click="oneWeek()"
-          >1 Woche</v-btn
-        >
-        <v-btn class="me-2 mx-auto" color="success" @click="oneMonth()"
-          >1 Monat</v-btn
-        >
+        <div class="d-flex  justify-center align-center">
+          <Chart
+            :chartdata="chartData"
+            :options="options"
+            :key="componentRefreshKey"
+          />
+        </div>
+      </v-card-actions>
+      <v-card-actions>
+        <div class="mx-auto">
+          <v-btn class="me-1" color="success" @click="oneDay()">1 Tag</v-btn>
+          <v-btn class="me-1" color="success" @click="oneWeek()">1 Woche</v-btn>
+          <v-btn class="me-1" color="success" @click="oneMonth()"
+            >1 Monat</v-btn
+          >
+        </div>
       </v-card-actions>
     </v-card>
     <span>{{ akByTimeWert }}</span>
-    <div class="d-flex  justify-center align-center">
-      <Chart
-        :chartdata="chartData"
-        :options="options"
-        :key="componentRefreshKey"
-      />
-    </div>
+
     <!-- weggeben -->
     <!-- <div class="d-flex  justify-center align-center">
       <Chart v-if="!loaded" :chartdata="chartData" :options="options" />

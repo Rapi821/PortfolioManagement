@@ -223,8 +223,8 @@ async function crawling() {
       } else {
         sym = info[2].split(': ');
       }
-
-      akObj.isin = is[1];
+      let is2 = is[1].split('WKN');
+      akObj.isin = is2[0];
       akObj.wkn = wkn[1];
       akObj.symbol = '';
 
@@ -243,7 +243,7 @@ async function crawling() {
       console.log(akObj);
       // console.log(akArr);
       // console.log(akArr.length);
-      insertData(akObj);
+      // insertData(akObj);
     })();
     // insertDataArr(akArr);
   }
