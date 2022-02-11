@@ -168,7 +168,7 @@ let jobHeroku = new CronJob(
    console.log(data);
   }, 'Americas/Vancouver'
 );
-jobHeroku.start();
+// jobHeroku.start();
 
 
 // Function um Datum & Zeit zu bekommen
@@ -258,4 +258,4 @@ async function insertDataArr(Arr) {
   }
   akArr = [];
 }
-crawling();
+// crawling();

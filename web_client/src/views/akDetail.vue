@@ -53,7 +53,6 @@ import TopBar from '../components/TopBar.vue';
 import axios from 'axios';
 export default {
   name: 'Market',
-  components: { TopBar },
   data() {
     return {
       componentRefreshKey: 0,
@@ -99,7 +98,7 @@ export default {
     async getKurs() {
       this.akKurs = (
         await axios.get(
-          `http://localhost:5000/akDetailKurs/${this.akInfo.isin}`
+          `https://heroku-porftolio-crawler.herokuapp.com/akDetailKurs/${this.akInfo.isin}`
         )
       ).data;
     },
@@ -111,7 +110,7 @@ export default {
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
-          `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
+          `https://heroku-porftolio-crawler.herokuapp.com/kursByTime/${this.isin}?date=${yesterdayDate}`
         )
       ).data;
       this.wertExtraktion();
@@ -130,7 +129,7 @@ export default {
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
-          `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
+          `https://heroku-porftolio-crawler.herokuapp.com/kursByTime/${this.isin}?date=${yesterdayDate}`
         )
       ).data;
       this.wertExtraktion();
@@ -150,7 +149,7 @@ export default {
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
-            `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
+            `https://heroku-porftolio-crawler.herokuapp.com/kursByTime/${this.isin}?date=${yesterdayDate}`
           )
         ).data;
       } else {
@@ -159,7 +158,7 @@ export default {
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
-            `http://localhost:5000/kursByTime/${this.isin}?date=${yesterdayDate}`
+            `https://heroku-porftolio-crawler.herokuapp.com/kursByTime/${this.isin}?date=${yesterdayDate}`
           )
         ).data;
       }
@@ -187,10 +186,13 @@ export default {
   },
   components: {
     Chart,
+    TopBar,
   },
   async created() {
     this.akInfo = (
-      await axios.get(`http://localhost:5000/akDetail/${this.isin}`)
+      await axios.get(
+        `https://heroku-porftolio-crawler.herokuapp.com/akDetail/${this.isin}`
+      )
     ).data[0];
     this.getKurs();
   },
