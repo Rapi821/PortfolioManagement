@@ -245,6 +245,7 @@ export default {
     },
     async getData() {
       this.user = (await axios.get('http://localhost:3000/user/data')).data;
+      // console.log(this.user);
     },
     async getStocks() {
       this.stocks = (
@@ -252,7 +253,12 @@ export default {
           `http://localhost:3000/competitions/${this.user.user_id}`
         )
       ).data;
+      // console.log(this.stocks);
     },
+  },
+  async created() {
+    await this.getData();
+    await this.getStocks();
   },
   data() {
     return {
