@@ -6,6 +6,7 @@ import Market from '../views/Market.vue';
 import DetailAktie from '../views/akDetail.vue';
 import MainMenu from '../views/MainMenu.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Ranking from '../views/Ranking.vue';
 
 Vue.use(VueRouter);
 
@@ -58,6 +59,13 @@ const routes = [
     props: false,
     name: 'MainMenu',
     component: MainMenu,
+  },
+  {
+    // Ranking einer Comp
+    path: '/ranking/:comp_id',
+    props: true,
+    name: 'Ranking',
+    component: Ranking,
   },
 ];
 

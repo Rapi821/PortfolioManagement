@@ -39,6 +39,9 @@
 
       <!-- <div class="d-none d-xl-flex b"></div> -->
     </div>
+    <div>
+      <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn>
+    </div>
     <!-- <v-btn @click="sellbuy">TestButton</v-btn> -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
