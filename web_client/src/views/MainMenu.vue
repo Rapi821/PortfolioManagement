@@ -59,7 +59,9 @@
             class="elevation-3"
             ><template v-slot:[`item.title`]="{ item }">
               <span
-                ><router-link to="Dashboard">{{ item.title }}</router-link></span
+                ><router-link :to="`/Dashboard/${item.competition_id}`">{{
+                  item.title
+                }}</router-link></span
               >
             </template></v-data-table
           ></v-col
@@ -171,6 +173,7 @@ export default {
         { text: 'Cash', value: 'cash' },
         { text: 'Total', value: 'total' },
         { text: 'Status', value: 'active' },
+        // { text: 'id', value: 'competition_id' },
       ],
     };
   },

@@ -29,9 +29,7 @@
       </div>
       <v-spacer></v-spacer>
       <div class="mar2">
-        <div class=" text-h5 mb-2">
-          Dein Aktien Gemma
-        </div>
+        <div class=" text-h5 mb-2">Dein Aktien Gemma</div>
         <v-data-table
           :headers="headers"
           :items="desserts"
@@ -41,7 +39,7 @@
 
       <!-- <div class="d-none d-xl-flex b"></div> -->
     </div>
-    <v-btn @click="sellbuy">TestButton</v-btn>
+    <!-- <v-btn @click="sellbuy">TestButton</v-btn> -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <div class="d-flex justify-space-around">
@@ -268,7 +266,22 @@ export default {
       competetion: {},
       user: {},
       stocks: [],
+      headers: [
+        {
+          text: 'Isin',
+          align: 'start',
+          sortable: false,
+          value: 'isin',
+        },
+        { text: 'Buy_Price', value: 'buy_price' },
+        { text: 'Count', value: 'count' },
+      ],
     };
+  },
+  props: {
+    comp_id: {
+      type: Number,
+    },
   },
 };
 </script>

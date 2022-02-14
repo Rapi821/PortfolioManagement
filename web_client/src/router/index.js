@@ -17,9 +17,10 @@ const routes = [
   },
 
   {
-    path: '/Dashboard',
+    path: '/Dashboard/:comp_id',
     name: 'Dashboard',
     component: Dashboard,
+    props: true,
   },
   {
     // Anmelde und Account erstellen

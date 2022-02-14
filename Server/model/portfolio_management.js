@@ -19,7 +19,7 @@ const registerNewUser = async (newData) =>
 const getCompetitionsByUser = async (user_id) =>
   (
     await query(
-      'select c.title, c.active, c.end_date ,sum(buy_price*count) as total from competition_member_depot_lines JOIN competitions c on c.competition_id = competition_member_depot_lines.competition_id GROUP BY member_id, c.title, c.end_date, c.active having member_id in (select member_id from competition_members where user_id=$1)',
+      'select c.competition_id, c.title, c.active, c.end_date ,sum(buy_price*count) as total from competition_member_depot_lines JOIN competitions c on c.competition_id = competition_member_depot_lines.competition_id GROUP BY member_id, c.competition_id, c.title, c.end_date, c.active having member_id in (select member_id from competition_members where user_id=$1)',
       [user_id]
     )
   ).rows;
