@@ -24,14 +24,16 @@ const getUserCompetitions = asyncHandler(async (req, res) => {
   let cash = await persons.getCash(req.session.user.user_id);
   let stockValue = await persons.getstockValue(req.session.user.user_id);
   for (const i in base) {
-    base[i].cash = cash[i].cash;
+    base.find(e=> e.competition_id == cash[i].competition_id).cash= cash[i].cash;
     if (stockValue[i] != undefined) {
-      base[i].portfolio_value = stockValue[i].stocksvalue;
-    } else {
-      base[i].portfolio_value = 0;
+      base.find(e=> e.competition_id == stockValue[i].competition_id).portfolio_value= stockValue[i].stocksvalue;
     }
   }
-  // console.log(base);
+  for (const i of base) {
+    if(!i.hasOwnProperty('portfolio_value')){
+      i.portfolio_value=0;
+    }
+  }
   res.status(200).json(base);
 });
 // Erstellen einer neuen Competition
@@ -92,7 +94,7 @@ const buyStocks = asyncHandler(async (req, res) => {
     console.log('in IF');
     await persons.buyNewStocks(req.body, req.session.user.user_id);
   } else {
-    console.log('in ELSE');
+    console.log(req.body);
     await persons.rebuyStocks(req.body, req.session.user.user_id);
   }
   await persons.removeMoney(req.body, req.session.user.user_id);

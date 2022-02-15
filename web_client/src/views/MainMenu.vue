@@ -86,8 +86,8 @@
       @click="
         buyStock({
           isin: 'US5949181045',
-          buy_price: 298.76,
-          count: 5,
+          buy_price: 100,
+          count: 10,
           competition_id: 0,
         })
       "
