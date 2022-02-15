@@ -69,17 +69,17 @@
 
     <!-- <h3>Testbuttons für Routen</h3> -->
     <!-- TEST BUTTONS FÜR ROUTEN -->
-    <!-- <v-btn
+    <v-btn
       color="blue darken-1"
       text
       @click="
         compEnter({
-          code: '7H9OBF01YM',
+          code: 'V12FO3FWNY',
         })
       "
     >
       Competition Beitreten
-    </v-btn> -->
+    </v-btn>
     <v-btn
       color="blue darken-1"
       text
@@ -121,7 +121,7 @@ export default {
       this.dialog = true;
     },
     async compEnter(obj) {
-      this.dialog_enter = true;
+      // this.dialog_enter = true;
       await server.post(`http://localhost:3000/user/addUserToCompetition`, obj);
       this.getComps();
     },

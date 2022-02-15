@@ -56,6 +56,7 @@ const createNewCompetition = asyncHandler(async (req, res) => {
 // User einer neuen Competition hinzufügen
 const addUserToCompetition = asyncHandler(async (req, res) => {
   req.body.creation_date = help_functions.getCurrentDate(); //creation_date ist der Tag an dem der User beitritt
+  console.log(req.body);
   res
     .status(200)
     .json(

@@ -61,8 +61,8 @@ ALTER SEQUENCE public.all_stocks_stock_id_seq OWNED BY public.all_stocks.stock_i
 
 CREATE TABLE public.competition_members (
     member_id integer NOT NULL,
-    user_id integer,
-    competition_id integer
+    user_id integer NOT NULL,
+    competition_id integer NOT NULL
 );
 
 
@@ -371,13 +371,15 @@ COPY public.all_stocks (stock_id, isin, name) FROM stdin;
 
 COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) FROM stdin;
 7	0000	24600.12	1	1	3	\N
+49	US5949181045	17987.60	160	0	8	\N
+36	0000	24543.4	1	0	8	\N
+51	0000	20000	1	10	18	\N
 9	0000	3286.92	1	0	0	\N
 30	0000	28506.2	1	0	2	\N
 32	0000	10000	1	19	5	\N
 33	0000	15000	1	20	6	\N
 34	0000	100000	1	21	7	\N
 8	0000	6774.52	1	0	1	\N
-36	0000	45518.6	1	0	8	\N
 \.
 
 
@@ -394,6 +396,7 @@ COPY public.competition_members (member_id, user_id, competition_id) FROM stdin;
 6	8	20
 7	8	21
 8	8	0
+18	8	10
 \.
 
 
@@ -436,6 +439,25 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 9	1	298.76	5	buy	US5949181045	\N
 10	1	298.76	5	buy	US5949181045	2022-01-23
 11	8	298.76	5	buy	US5949181045	2022-01-23
+14	8	298.76	5	buy	US5949181045	2022-02-15
+15	8	298.76	5	buy	US5949181045	2022-02-15
+16	8	298.76	5	buy	US5949181045	2022-02-15
+17	8	298.76	5	buy	US5949181045	2022-02-15
+18	8	100	10	buy	US5949181045	2022-02-15
+19	8	100	10	buy	US5949181045	2022-02-15
+20	8	100	10	buy	US5949181045	2022-02-15
+21	8	100	10	buy	US5949181045	2022-02-15
+22	8	100	10	buy	US5949181045	2022-02-15
+23	8	100	10	buy	US5949181045	2022-02-15
+24	8	100	10	buy	US5949181045	2022-02-15
+25	8	100	10	buy	US5949181045	2022-02-15
+26	8	100	10	buy	US5949181045	2022-02-15
+27	8	100	10	buy	US5949181045	2022-02-15
+28	8	100	10	buy	US5949181045	2022-02-15
+29	8	100	10	buy	US5949181045	2022-02-15
+30	8	100	10	buy	US5949181045	2022-02-15
+31	8	100	10	buy	US5949181045	2022-02-15
+32	8	100	10	buy	US5949181045	2022-02-15
 \.
 
 
@@ -444,7 +466,7 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 --
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
-WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-12 13:27:30
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-17 16:58:59
 \.
 
 
@@ -474,7 +496,7 @@ SELECT pg_catalog.setval('public.all_stocks_stock_id_seq', 2, true);
 -- Name: competitionMembers_DepotID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."competitionMembers_DepotID_seq"', 8, true);
+SELECT pg_catalog.setval('public."competitionMembers_DepotID_seq"', 21, true);
 
 
 --
@@ -488,7 +510,7 @@ SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 -- Name: competition_member_depot_lines_depot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 47, true);
+SELECT pg_catalog.setval('public.competition_member_depot_lines_depot_id_seq', 53, true);
 
 
 --
@@ -502,7 +524,7 @@ SELECT pg_catalog.setval('public.competitions_competition_id_seq', 21, true);
 -- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 13, true);
+SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 32, true);
 
 
 --
@@ -553,6 +575,14 @@ ALTER TABLE ONLY public.depot_records
 
 
 --
+-- Name: competition_member_depot_lines isin_member_comp_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_member_depot_lines
+    ADD CONSTRAINT isin_member_comp_unique UNIQUE (isin, member_id, competition_id);
+
+
+--
 -- Name: user_sessions session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -566,6 +596,14 @@ ALTER TABLE ONLY public.user_sessions
 
 ALTER TABLE ONLY public.all_stocks
     ADD CONSTRAINT table_name_pk PRIMARY KEY (stock_id);
+
+
+--
+-- Name: competition_members user_member_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.competition_members
+    ADD CONSTRAINT user_member_unique UNIQUE (user_id, competition_id);
 
 
 --
