@@ -142,9 +142,10 @@ const checkStockBought = async (newData, user_id) =>
   (
     // console.log(user_id, newData),
     await query(
-    'select COUNT(*) from competition_member_depot_lines where member_id= (select member_id from competition_members where user_id= $1 and competition_id=$2) and isin= $3'
-  ),
-  [user_id, newData.competition_id, newData.isin]).rows;
+    `select COUNT(*) from competition_member_depot_lines where 
+    member_id= (select member_id from competition_members where 
+      user_id= $1 and competition_id=$2) and isin= $3`,
+  [user_id, newData.competition_id, newData.isin])).rows[0];
 
 // Bereits gekaufte Aktie nachkaufen
 const rebuyStocks = async (newData, user_id) =>

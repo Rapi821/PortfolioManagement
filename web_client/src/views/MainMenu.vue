@@ -38,9 +38,7 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">
-                Cancel
-              </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
               <v-btn color="blue darken-1" text @click="createCompetition">
                 Create
               </v-btn>
@@ -50,7 +48,7 @@
       >
     </v-card>
 
-    <v-container class="fill-height " fluid>
+    <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8"
           ><v-data-table
@@ -82,7 +80,7 @@
     >
       Competition Beitreten
     </v-btn> -->
-    <!-- <v-btn
+    <v-btn
       color="blue darken-1"
       text
       @click="
@@ -94,8 +92,8 @@
         })
       "
     >
-      Kaufe Aktien
-    </v-btn>
+      Kaufe Aktien </v-btn
+    ><!--
     <v-btn color="blue darken-1" text @click="getCompetition('0')">
       Get Data für eine Competition
     </v-btn> -->
@@ -103,8 +101,8 @@
 </template>
 
 <script>
-import TopBar from '../components/TopBar.vue';
-import server from '@/serverInterface';
+import TopBar from "../components/TopBar.vue";
+import server from "@/serverInterface";
 export default {
   components: {
     TopBar,
@@ -156,23 +154,23 @@ export default {
       user: {},
       dialog: false,
       dialog_enter: false,
-      compCode: '',
+      compCode: "",
       competetion: {
-        title: '',
+        title: "",
         starting_money: 0,
-        end_date: '',
+        end_date: "",
       },
       headers: [
         {
-          text: 'titel',
-          align: 'start',
+          text: "titel",
+          align: "start",
           sortable: false,
-          value: 'title',
+          value: "title",
         },
-        { text: 'Portfoliowert', value: 'portfolio_value' },
-        { text: 'Cash', value: 'cash' },
-        { text: 'Total', value: 'total' },
-        { text: 'Status', value: 'active' },
+        { text: "Portfoliowert", value: "portfolio_value" },
+        { text: "Cash", value: "cash" },
+        { text: "Total", value: "total" },
+        { text: "Status", value: "active" },
         // { text: 'id', value: 'competition_id' },
       ],
     };

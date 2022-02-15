@@ -84,11 +84,14 @@ const getUserData = asyncHandler(async (req, res) => {
 });
 const buyStocks = asyncHandler(async (req, res) => {
   req.body.buy_date = help_functions.getCurrentDate();
-  if ((await persons.checkStockBought(req.body, req.session.user.user_id)) != 1) { //fehler bei checkStockBought
+  if (
+    (await persons.checkStockBought(req.body, req.session.user.user_id))
+      .count != 1
+  ) {
+    //fehler bei checkStockBought
     console.log('in IF');
     await persons.buyNewStocks(req.body, req.session.user.user_id);
-  } 
-  else {
+  } else {
     console.log('in ELSE');
     await persons.rebuyStocks(req.body, req.session.user.user_id);
   }
