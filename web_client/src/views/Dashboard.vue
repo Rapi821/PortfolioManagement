@@ -30,11 +30,11 @@
       <v-spacer></v-spacer>
       <div class="mar2">
         <div class=" text-h5 mb-2">Dein Aktien Gemma</div>
-        <v-data-table
+        <!-- <v-data-table
           :headers="headers"
           :items="desserts"
           class="elevation-0"
-        ></v-data-table>
+        ></v-data-table> -->
       </div>
 
       <!-- <div class="d-none d-xl-flex b"></div> -->
@@ -42,7 +42,7 @@
     <div>
       <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn>
     </div>
-    <!-- <v-btn @click="sellbuy">TestButton</v-btn> -->
+    <v-btn @click="sellbuy">Kaufen</v-btn>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <div class="d-flex justify-space-around">
@@ -92,62 +92,25 @@
         <v-window v-model="step">
           <v-container class="buysellwindow">
             <v-window-item :value="0">
-              <v-form
-                ><v-text-field
-                  label="Anzahl"
-                  name="Anzahl"
-                  type="text"
-                  color="primary"
-              /></v-form>
-              <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
-                <v-btn width="45%">Plus</v-btn>
-                <v-btn width="45%">Minus</v-btn>
-              </div>
-              <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Verfügbares Geld:
-                </div>
-                <div class="h5">
-                  2345
-                </div>
-              </div>
-              <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis pro Aktie:
-                </div>
-                <div class="h5">
-                  743
-                </div>
-              </div>
+              <v-data-table
+                dense
+                :headers="headersKaufen"
+                :items="akData"
+                :items-per-page="10"
+                class="elevation-1"
+              >
+                <!-- Detailpage der einzelnen Aktien -->
 
-              <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis insgesamt:
-                </div>
-                <div class="h5">
-                  2344
-                </div>
-              </div>
-              <v-divider class="divider_style"></v-divider>
-              <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis insgesamt:
-                </div>
-                <div class="h5">
-                  2344
-                </div>
-              </div>
-              <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Verfügbares Geld nach Kauf:
-                </div>
-                <div class="h5">
-                  2344
-                </div>
-              </div>
-              <div class="mb-n3 mt-3 textfields d-flex ">
-                <v-btn width="100%">Kaufe Appleasd</v-btn>
-              </div>
+                <template v-slot:[`item.actions`]="{ item }">
+                  <v-btn
+                    @click="buyStock(item)"
+                    small
+                    plain
+                    class="primary  mt-2 mb-2"
+                    >Kaufen</v-btn
+                  >
+                </template>
+              </v-data-table>
             </v-window-item>
             <!-- Verkauf -->
             <v-window-item :value="1">
@@ -227,14 +190,22 @@
 <script>
 import axios from 'axios';
 import TopBar from '../components/TopBar.vue';
+import server from '@/serverInterface';
 
 export default {
   components: {
     TopBar,
   },
   methods: {
-    sellbuy() {
+    async sellbuy() {
       this.dialog = true;
+      this.akInfo = (
+        await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      ).data;
+      this.akKurs = (
+        await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      ).data;
+      this.createAktie();
     },
     stepc0() {
       this.step = 0;
@@ -256,13 +227,44 @@ export default {
       ).data;
       // console.log(this.stocks);
     },
+    async buyStock(ak) {
+      console.log('buy');
+      let newItem = {
+        isin: ak.isin,
+        buy_price: ak.kurs,
+        competition_id: this.comp_id,
+        count: 1,
+      };
+      await server.post(`http://localhost:3000/user/buyStocks`, newItem);
+    },
+    createAktie() {
+      // Funktion die alle Aktein mit deren Kruse bekommt
+      // Für Datatable werden Manuell Objekte für die einzelnen Aktein erstellt
+      for (let elm of this.akInfo) {
+        let aktie = { name: elm.title, isin: elm.isin, wkn: elm.wkn, kurs: 1 };
+        this.akData.push(aktie);
+      }
+      for (let el of this.akData) {
+        console.log(el);
+        let wert = this.akKurs.find((e) => e.isin == el.isin);
+        if (wert == undefined) {
+          wert = { wert: 1 };
+        }
+        el.kurs = wert.wert;
+      }
+      // console.log(this.akData);
+    },
   },
   async created() {
+    console.log('createds');
     await this.getData();
     await this.getStocks();
   },
   data() {
     return {
+      akInfo: [],
+      akData: [],
+      akKurs: [],
       dialog: false,
       step: 0,
       visible: false,
@@ -279,11 +281,22 @@ export default {
         { text: 'Buy_Price', value: 'buy_price' },
         { text: 'Count', value: 'count' },
       ],
+      headersKaufen: [
+        {
+          text: 'Name',
+          align: 'center',
+          sortable: true,
+          value: 'name',
+        },
+        { text: 'ISIN', value: 'isin', sortable: false },
+        { text: 'Kurs', value: 'kurs' },
+        { text: 'Kaufen', value: 'actions' },
+      ],
     };
   },
   props: {
     comp_id: {
-      type: Number,
+      type: String,
     },
   },
 };

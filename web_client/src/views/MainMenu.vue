@@ -101,8 +101,8 @@
 </template>
 
 <script>
-import TopBar from "../components/TopBar.vue";
-import server from "@/serverInterface";
+import TopBar from '../components/TopBar.vue';
+import server from '@/serverInterface';
 export default {
   components: {
     TopBar,
@@ -154,23 +154,23 @@ export default {
       user: {},
       dialog: false,
       dialog_enter: false,
-      compCode: "",
+      compCode: '',
       competetion: {
-        title: "",
+        title: '',
         starting_money: 0,
-        end_date: "",
+        end_date: '',
       },
       headers: [
         {
-          text: "titel",
-          align: "start",
+          text: 'titel',
+          align: 'start',
           sortable: false,
-          value: "title",
+          value: 'title',
         },
-        { text: "Portfoliowert", value: "portfolio_value" },
-        { text: "Cash", value: "cash" },
-        { text: "Total", value: "total" },
-        { text: "Status", value: "active" },
+        { text: 'Portfoliowert', value: 'portfolio_value' },
+        { text: 'Cash', value: 'cash' },
+        { text: 'Total', value: 'total' },
+        { text: 'Status', value: 'active' },
         // { text: 'id', value: 'competition_id' },
       ],
     };
