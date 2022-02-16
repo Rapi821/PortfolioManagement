@@ -16,12 +16,12 @@
           <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
         </v-row>
       </v-card-text>
-      <v-card-actions>
+      <!-- <v-card-actions>
         <div class="mx-auto">
           <v-btn class="me-2" color="primary">Kaufen</v-btn>
           <v-btn class="me-2" color="primary">Verkaufen</v-btn>
         </div>
-      </v-card-actions>
+      </v-card-actions> -->
       <v-card-actions>
         <div class="d-flex  justify-center align-center">
           <Chart
