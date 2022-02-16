@@ -24,14 +24,17 @@ const getUserCompetitions = asyncHandler(async (req, res) => {
   let cash = await persons.getCash(req.session.user.user_id);
   let stockValue = await persons.getstockValue(req.session.user.user_id);
   for (const i in base) {
-    base.find(e=> e.competition_id == cash[i].competition_id).cash= cash[i].cash;
+    base.find((e) => e.competition_id == cash[i].competition_id).cash =
+      cash[i].cash;
     if (stockValue[i] != undefined) {
-      base.find(e=> e.competition_id == stockValue[i].competition_id).portfolio_value= stockValue[i].stocksvalue;
+      base.find(
+        (e) => e.competition_id == stockValue[i].competition_id
+      ).portfolio_value = stockValue[i].stocksvalue;
     }
   }
   for (const i of base) {
-    if(!i.hasOwnProperty('portfolio_value')){
-      i.portfolio_value=0;
+    if (!i.hasOwnProperty('portfolio_value')) {
+      i.portfolio_value = 0;
     }
   }
   res.status(200).json(base);
@@ -91,11 +94,8 @@ const buyStocks = asyncHandler(async (req, res) => {
     (await persons.checkStockBought(req.body, req.session.user.user_id))
       .count != 1
   ) {
-    //fehler bei checkStockBought
-    console.log('in IF');
     await persons.buyNewStocks(req.body, req.session.user.user_id);
   } else {
-    console.log(req.body);
     await persons.rebuyStocks(req.body, req.session.user.user_id);
   }
   await persons.removeMoney(req.body, req.session.user.user_id);
@@ -115,6 +115,13 @@ const getCompetition = asyncHandler(async (req, res) => {
     );
 });
 
+const sellStocks = asyncHandler(async (req, res) => {
+  // check ob der user in der competition genug aktien hat 
+  // if user.aktiencount mit isin - req.body.count >=0 
+  // WENN JA  -> await person.sellStocks, 
+  res.status(200).json(await persons.getUsers());
+});
+
 module.exports = {
   getUsers,
   getUserById,
@@ -128,4 +135,5 @@ module.exports = {
   buyStocks,
   addUserToCompetition,
   getCompetition,
+  sellStocks,
 };

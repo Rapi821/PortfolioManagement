@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.1
--- Dumped by pg_dump version 13.1
+-- Dumped from database version 13.2
+-- Dumped by pg_dump version 13.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,41 +19,6 @@ SET row_security = off;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: all_stocks; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.all_stocks (
-    stock_id integer NOT NULL,
-    isin character varying,
-    name character varying
-);
-
-
-ALTER TABLE public.all_stocks OWNER TO postgres;
-
---
--- Name: all_stocks_stock_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.all_stocks_stock_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.all_stocks_stock_id_seq OWNER TO postgres;
-
---
--- Name: all_stocks_stock_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.all_stocks_stock_id_seq OWNED BY public.all_stocks.stock_id;
-
 
 --
 -- Name: competition_members; Type: TABLE; Schema: public; Owner: postgres
@@ -88,43 +53,6 @@ ALTER TABLE public."competitionMembers_DepotID_seq" OWNER TO postgres;
 --
 
 ALTER SEQUENCE public."competitionMembers_DepotID_seq" OWNED BY public.competition_members.member_id;
-
-
---
--- Name: competition_stocks; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.competition_stocks (
-    competition_stocks_id integer NOT NULL,
-    isin character varying NOT NULL,
-    competition_id integer,
-    stock_id integer,
-    name character varying
-);
-
-
-ALTER TABLE public.competition_stocks OWNER TO postgres;
-
---
--- Name: competitionStocks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."competitionStocks_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."competitionStocks_id_seq" OWNER TO postgres;
-
---
--- Name: competitionStocks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."competitionStocks_id_seq" OWNED BY public.competition_stocks.competition_stocks_id;
 
 
 --
@@ -305,13 +233,6 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.user_id;
 
 
 --
--- Name: all_stocks stock_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.all_stocks ALTER COLUMN stock_id SET DEFAULT nextval('public.all_stocks_stock_id_seq'::regclass);
-
-
---
 -- Name: competition_member_depot_lines depot_line_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -323,13 +244,6 @@ ALTER TABLE ONLY public.competition_member_depot_lines ALTER COLUMN depot_line_i
 --
 
 ALTER TABLE ONLY public.competition_members ALTER COLUMN member_id SET DEFAULT nextval('public."competitionMembers_DepotID_seq"'::regclass);
-
-
---
--- Name: competition_stocks competition_stocks_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_stocks ALTER COLUMN competition_stocks_id SET DEFAULT nextval('public."competitionStocks_id_seq"'::regclass);
 
 
 --
@@ -354,25 +268,11 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.u
 
 
 --
--- Data for Name: all_stocks; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.all_stocks (stock_id, isin, name) FROM stdin;
-0	US0378331005	Apple
-1	US5949181045	Microsoft
-2	US0231351067	Amazon
-3	0000	CURRENT MONEY
-\.
-
-
---
 -- Data for Name: competition_member_depot_lines; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, count, competition_id, member_id, buy_date) FROM stdin;
 7	0000	24600.12	1	1	3	\N
-49	US5949181045	17987.60	160	0	8	\N
-36	0000	24543.4	1	0	8	\N
 51	0000	20000	1	10	18	\N
 9	0000	3286.92	1	0	0	\N
 30	0000	28506.2	1	0	2	\N
@@ -380,6 +280,8 @@ COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, coun
 33	0000	15000	1	20	6	\N
 34	0000	100000	1	21	7	\N
 8	0000	6774.52	1	0	1	\N
+49	US5949181045	25987.60	240	0	8	\N
+36	0000	16543.4	1	0	8	\N
 \.
 
 
@@ -397,17 +299,6 @@ COPY public.competition_members (member_id, user_id, competition_id) FROM stdin;
 7	8	21
 8	8	0
 18	8	10
-\.
-
-
---
--- Data for Name: competition_stocks; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.competition_stocks (competition_stocks_id, isin, competition_id, stock_id, name) FROM stdin;
-4	0000	1	3	\N
-1	US0378331005	0	0	Apple
-2	US5949181045	0	1	Microsoft
 \.
 
 
@@ -458,6 +349,14 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 30	8	100	10	buy	US5949181045	2022-02-15
 31	8	100	10	buy	US5949181045	2022-02-15
 32	8	100	10	buy	US5949181045	2022-02-15
+33	8	100	10	buy	US5949181045	2022-02-16
+34	8	100	10	buy	US5949181045	2022-02-16
+35	8	100	10	buy	US5949181045	2022-02-16
+36	8	100	10	buy	US5949181045	2022-02-16
+37	8	100	10	buy	US5949181045	2022-02-16
+38	8	100	10	buy	US5949181045	2022-02-16
+39	8	100	10	buy	US5949181045	2022-02-16
+40	8	100	10	buy	US5949181045	2022-02-16
 \.
 
 
@@ -467,6 +366,7 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
 WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-17 16:58:59
+2Y_mi_uGn_BzVDaVhaKGQoMXPKBjz9CA	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-18T12:14:54.755Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-18 13:35:43
 \.
 
 
@@ -486,24 +386,10 @@ wolfsberger.r03@htlwienwest.at	Raphael	Wolfsberger	test123	8
 
 
 --
--- Name: all_stocks_stock_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.all_stocks_stock_id_seq', 2, true);
-
-
---
 -- Name: competitionMembers_DepotID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public."competitionMembers_DepotID_seq"', 21, true);
-
-
---
--- Name: competitionStocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."competitionStocks_id_seq"', 5, true);
 
 
 --
@@ -524,7 +410,7 @@ SELECT pg_catalog.setval('public.competitions_competition_id_seq', 21, true);
 -- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 32, true);
+SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 40, true);
 
 
 --
@@ -559,14 +445,6 @@ ALTER TABLE ONLY public.competitions
 
 
 --
--- Name: competition_stocks competitionstocks_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_stocks
-    ADD CONSTRAINT competitionstocks_pk PRIMARY KEY (competition_stocks_id);
-
-
---
 -- Name: depot_records depotrecords_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -588,14 +466,6 @@ ALTER TABLE ONLY public.competition_member_depot_lines
 
 ALTER TABLE ONLY public.user_sessions
     ADD CONSTRAINT session_pkey PRIMARY KEY (sid);
-
-
---
--- Name: all_stocks table_name_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.all_stocks
-    ADD CONSTRAINT table_name_pk PRIMARY KEY (stock_id);
 
 
 --
@@ -622,31 +492,10 @@ CREATE INDEX "IDX_session_expire" ON public.user_sessions USING btree (expire);
 
 
 --
--- Name: all_stocks_name_uindex; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX all_stocks_name_uindex ON public.all_stocks USING btree (name);
-
-
---
 -- Name: competitions_competition_code_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX competitions_competition_code_uindex ON public.competitions USING btree (competition_code);
-
-
---
--- Name: competitionstocks_isin_uindex; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX competitionstocks_isin_uindex ON public.competition_stocks USING btree (isin);
-
-
---
--- Name: table_name_isin_uindex; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX table_name_isin_uindex ON public.all_stocks USING btree (isin);
 
 
 --
@@ -682,30 +531,6 @@ ALTER TABLE ONLY public.competition_members
 
 
 --
--- Name: competition_stocks CompetitionStocks_CompetitionID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_stocks
-    ADD CONSTRAINT "CompetitionStocks_CompetitionID_fkey" FOREIGN KEY (competition_id) REFERENCES public.competitions(competition_id);
-
-
---
--- Name: competition_stocks CompetitionStocks_isin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_stocks
-    ADD CONSTRAINT "CompetitionStocks_isin_fkey" FOREIGN KEY (isin) REFERENCES public.all_stocks(isin);
-
-
---
--- Name: competition_stocks CompetitionStocks_stockID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_stocks
-    ADD CONSTRAINT "CompetitionStocks_stockID_fkey" FOREIGN KEY (stock_id) REFERENCES public.all_stocks(stock_id);
-
-
---
 -- Name: competitions Competitions_OwnerID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -714,50 +539,11 @@ ALTER TABLE ONLY public.competitions
 
 
 --
--- Name: competition_member_depot_lines competition_member_depot_lines_isin_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_member_depot_lines
-    ADD CONSTRAINT competition_member_depot_lines_isin_fkey1 FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
-
-
---
--- Name: depot_records depot_records_isin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.depot_records
-    ADD CONSTRAINT depot_records_isin_fkey FOREIGN KEY (isin) REFERENCES public.competition_stocks(isin);
-
-
---
 -- Name: depot_records fk_member_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.depot_records
     ADD CONSTRAINT fk_member_id FOREIGN KEY (member_id) REFERENCES public.competition_members(member_id);
-
-
---
--- Name: competition_stocks fk_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.competition_stocks
-    ADD CONSTRAINT fk_name FOREIGN KEY (name) REFERENCES public.all_stocks(name);
-
-
---
--- Name: TABLE all_stocks; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT SELECT ON TABLE public.all_stocks TO read_only;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.all_stocks TO read_write;
-
-
---
--- Name: SEQUENCE all_stocks_stock_id_seq; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT USAGE ON SEQUENCE public.all_stocks_stock_id_seq TO read_write;
 
 
 --
@@ -773,21 +559,6 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_members TO read_wr
 --
 
 GRANT USAGE ON SEQUENCE public."competitionMembers_DepotID_seq" TO read_write;
-
-
---
--- Name: TABLE competition_stocks; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT SELECT ON TABLE public.competition_stocks TO read_only;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.competition_stocks TO read_write;
-
-
---
--- Name: SEQUENCE "competitionStocks_id_seq"; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT USAGE ON SEQUENCE public."competitionStocks_id_seq" TO read_write;
 
 
 --

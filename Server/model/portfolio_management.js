@@ -139,33 +139,33 @@ const addToRecords = async (newData, user_id) =>
 // Überprüfung ob die Aktien bereits im Depot sind und nachgekauft wird oder
 // ob es die ersten Aktien mit dem isin in dem Depot sind
 const checkStockBought = async (newData, user_id) =>
+  // console.log(user_id, newData),
   (
-    // console.log(user_id, newData),
     await query(
-    `select COUNT(*) from competition_member_depot_lines where 
+      `select COUNT(*) from competition_member_depot_lines where 
     member_id= (select member_id from competition_members where 
       user_id= $1 and competition_id=$2) and isin= $3`,
-  [user_id, newData.competition_id, newData.isin])).rows[0];
+      [user_id, newData.competition_id, newData.isin]
+    )
+  ).rows[0];
 
 // Bereits gekaufte Aktie nachkaufen
 const rebuyStocks = async (newData, user_id) =>
-  (
-    await query(
-      `update competition_member_depot_lines set buy_price=((select (buy_price) as 
+  await query(
+    `update competition_member_depot_lines set buy_price=((select (buy_price) as 
       old_total from competition_member_depot_lines where member_id= (select member_id 
       from competition_members where user_id=$1 and competition_id=$2) and isin= $3)+$4::NUMERIC*$5::NUMERIC), 
       count=((select count from competition_member_depot_lines where member_id= 
       (select member_id from competition_members where user_id=$1 and competition_id=$2) 
       and isin= $3)+ $5::NUMERIC) where member_id= (select member_id from competition_members where user_id=$1
       and competition_id=$2) and isin= $3`,
-      [
-        user_id,
-        newData.competition_id,
-        newData.isin,
-        newData.buy_price,
-        newData.count
-      ]
-    )
+    [
+      user_id,
+      newData.competition_id,
+      newData.isin,
+      newData.buy_price,
+      newData.count,
+    ]
   );
 
 const getCompetition = async (comp_id, user_id) =>
@@ -175,6 +175,14 @@ const getCompetition = async (comp_id, user_id) =>
       [user_id, comp_id]
     )
   ).rows;
+
+const sellStocks = async (comp_id, user_id) =>
+  (
+    await query(
+      "select cs.name, cmdl.isin, cmdl.buy_price, cmdl.count from competition_member_depot_lines cmdl join competition_stocks cs on cs.isin = cmdl.isin where cmdl.member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and cmdl.isin != '0000'",
+      [user_id, comp_id]
+  )
+).rows;
 
 module.exports = {
   getUsers,
@@ -194,4 +202,5 @@ module.exports = {
   removeMoney,
   addToRecords,
   getCompetition,
+  sellStocks,
 };
