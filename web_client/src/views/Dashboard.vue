@@ -216,8 +216,8 @@ export default {
       this.visible = true;
     },
     async getData() {
-      this.user = (await axios.get('http://localhost:3000/user/data')).data;
-      // console.log(this.user);
+      this.user = (await server.get('http://localhost:3000/user/data')).data;
+      console.log(this.user);
     },
     async getStocks() {
       this.stocks = (
@@ -236,6 +236,7 @@ export default {
         count: 1,
       };
       await server.post(`http://localhost:3000/user/buyStocks`, newItem);
+      this.dialog = false;
     },
     createAktie() {
       // Funktion die alle Aktein mit deren Kruse bekommt

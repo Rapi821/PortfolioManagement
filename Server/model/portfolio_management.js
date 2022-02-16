@@ -181,8 +181,8 @@ const sellStocks = async (comp_id, user_id) =>
     await query(
       "select cs.name, cmdl.isin, cmdl.buy_price, cmdl.count from competition_member_depot_lines cmdl join competition_stocks cs on cs.isin = cmdl.isin where cmdl.member_id= (select member_id from competition_members where user_id=$1 and competition_id=$2) and cmdl.isin != '0000'",
       [user_id, comp_id]
-  )
-).rows;
+    )
+  ).rows;
 
 module.exports = {
   getUsers,

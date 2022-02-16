@@ -5,8 +5,11 @@
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
       <v-card-actions
-        ><v-btn @click="compEnter">Competition Beitreten</v-btn
-        ><v-btn @click="compCreate">Competition Erstellen</v-btn>
+        ><v-btn @click="compEnter" class="btn" color="primary"
+          >Competition Beitreten</v-btn
+        ><v-btn @click="compCreate" class="btn" color="primary"
+          >Competition Erstellen</v-btn
+        >
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-title>
