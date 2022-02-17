@@ -22,29 +22,24 @@ const registerNewUser = asyncHandler(async (req, res) => {
 const getUserCompetitions = asyncHandler(async (req, res) => {
   let base = await persons.getCompetitionsByUser(req.session.user.user_id);
   let cash = await persons.getCash(req.session.user.user_id);
-  let stockValue = await persons.getstockValue(req.session.user.user_id);
+  let buyPrice = await persons.getstockValue(req.session.user.user_id);
   let erg;
   let stockV = [];
-  console.log(base);
   for (let i in base) {
     base.find((e) => e.competition_id == cash[i].competition_id).cash =
       cash[i].cash;
-    // if (stockValue[i] != undefined) {
-    //   erg = base.find((e) => e.competition_id == stockValue[i].competition_id);
-    //   // .portfolio_value = stockValue[i].stocksvalue;
-    // }
-    erg = stockValue
-      .filter((e) => e.competition_id == base[i].competition_id)
-      .reduce((x, sum) => sum + x, 0);
-    console.log('base: ' + erg[0]);
+
+    if (buyPrice[i] != undefined) {
+      base.find(
+        (e) => e.competition_id == buyPrice[i].competition_id
+      ).portfolio_value = buyPrice[i].sum;
+    }
   }
   for (const i of base) {
     if (!i.hasOwnProperty('portfolio_value')) {
       i.portfolio_value = 0;
     }
   }
-  // console.log(stockValue);
-  console.log(stockV);
   res.status(200).json(base);
 });
 // Erstellen einer neuen Competition

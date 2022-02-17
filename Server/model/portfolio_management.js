@@ -39,9 +39,13 @@ const getCash = async (user_id) =>
   ).rows;
 
 const getstockValue = async (user_id) =>
+  // await query(
+  //   "select sum(buy_price) as stocksValue, competition_id  from competition_member_depot_lines group by member_id, isin, competition_id having member_id in (select member_id from competition_members where user_id=$1) and isin != '0000'",
+  //   [user_id]
+  // )
   (
     await query(
-      "select sum(buy_price) as stocksValue, competition_id  from competition_member_depot_lines group by member_id, isin, competition_id having member_id in (select member_id from competition_members where user_id=$1) and isin != '0000'",
+      "select sum(stocksValue), competition_id from (SELECT sum(buy_price) as stocksValue, competition_id, member_id from competition_member_depot_lines GROUP BY competition_id, isin, member_id HAVING isin !='0000') as X group by competition_id, member_id having member_id in (select member_id from competition_members where user_id=$1)",
       [user_id]
     )
   ).rows;
