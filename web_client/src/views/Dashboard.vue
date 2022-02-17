@@ -15,13 +15,19 @@
                 Portfolio Wert
               </div>
               <v-list-item-title class="text-h6 mb-1 mt-n6">
-                5774€
+                {{ portValue }}
               </v-list-item-title>
               <div class="text-overline mb-4">
                 Verfügbares Geld
               </div>
               <v-list-item-title class="text-h6 mb-1 mt-n6">
-                237€
+                {{ cash }}
+              </v-list-item-title>
+              <div class="text-overline mb-4">
+                Aktien Wert
+              </div>
+              <v-list-item-title class="text-h6 mb-1 mt-n6">
+                {{ akValue }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -30,11 +36,11 @@
       <v-spacer></v-spacer>
       <div class="mar2">
         <div class=" text-h5 mb-2">Dein Aktien Gemma</div>
-        <!-- <v-data-table
+        <v-data-table
           :headers="headers"
-          :items="desserts"
+          :items="akHave"
           class="elevation-0"
-        ></v-data-table> -->
+        ></v-data-table>
       </div>
 
       <!-- <div class="d-none d-xl-flex b"></div> -->
@@ -199,13 +205,6 @@ export default {
   methods: {
     async sellbuy() {
       this.dialog = true;
-      this.akInfo = (
-        await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
-      ).data;
-      this.akKurs = (
-        await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
-      ).data;
-      this.createAktie();
     },
     stepc0() {
       this.step = 0;
@@ -221,11 +220,11 @@ export default {
     },
     async getStocks() {
       this.stocks = (
-        await axios.get(
-          `http://localhost:3000/competitions/${this.user.user_id}`
+        await server.get(
+          `http://localhost:3000/competitions/${this.comp_id}/getCompStocks`
         )
       ).data;
-      // console.log(this.stocks);
+      console.log(this.stocks);
     },
     async buyStock(ak) {
       console.log('buy');
@@ -237,6 +236,8 @@ export default {
       };
       await server.post(`http://localhost:3000/user/buyStocks`, newItem);
       this.dialog = false;
+      await this.getStocks();
+      this.createAkForTable();
     },
     createAktie() {
       // Funktion die alle Aktein mit deren Kruse bekommt
@@ -246,7 +247,7 @@ export default {
         this.akData.push(aktie);
       }
       for (let el of this.akData) {
-        console.log(el);
+        // console.log(el);
         let wert = this.akKurs.find((e) => e.isin == el.isin);
         if (wert == undefined) {
           wert = { wert: 1 };
@@ -255,17 +256,54 @@ export default {
       }
       // console.log(this.akData);
     },
+    createAkForTable() {
+      this.cash = 0;
+      this.akValue = 0;
+      this.akHave = [];
+      let ak = {};
+      let kurs = {};
+      for (let a of this.stocks) {
+        if (a.isin != '0000') {
+          kurs = this.akData.find((e) => e.isin == a.isin);
+          ak = {
+            name: this.akInfo.find((e) => e.isin == a.isin).title,
+            isin: a.isin,
+            count: a.count,
+            buy_price: a.buy_price,
+            wert: kurs.kurs * a.count,
+          };
+          this.akHave.push(ak);
+        } else {
+          this.cash = a.buy_price;
+        }
+      }
+      for (let elm of this.akHave) {
+        this.akValue += Number(elm.wert);
+      }
+      this.portValue = Number(this.akValue) + Number(this.cash);
+    },
   },
   async created() {
-    console.log('createds');
     await this.getData();
     await this.getStocks();
+    this.akInfo = (
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+    ).data;
+    this.akKurs = (
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+    ).data;
+    this.createAktie();
+    this.createAkForTable();
   },
   data() {
     return {
       akInfo: [],
       akData: [],
       akKurs: [],
+      akHave: [],
+      cash: 0,
+      portValue: 0,
+      akValue: 0,
       dialog: false,
       step: 0,
       visible: false,
@@ -274,11 +312,18 @@ export default {
       stocks: [],
       headers: [
         {
+          text: 'Name',
+          align: 'start',
+          sortable: false,
+          value: 'name',
+        },
+        {
           text: 'Isin',
           align: 'start',
           sortable: false,
           value: 'isin',
         },
+        { text: 'Wert', value: 'wert' },
         { text: 'Buy_Price', value: 'buy_price' },
         { text: 'Count', value: 'count' },
       ],

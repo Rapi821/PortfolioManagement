@@ -81,11 +81,11 @@ const addUserToCompetition = async (newData, user_id) => {
   ).rows;
 };
 //Alle Aktien in einem Depot
-const getStocksFromDepot = async (member_id) =>
+const getStocksFromDepot = async (competition_id, user_id) =>
   (
     await query(
-      "select isin, buy_price, count from competition_member_depot_lines where member_id= $1 and isin !='0000'",
-      [member_id]
+      'select isin, buy_price, count from competition_member_depot_lines where member_id=(select member_id from competition_members where competition_members.competition_id = $1 and user_id=$2)',
+      [competition_id, user_id]
     )
   ).rows;
 

@@ -71,7 +71,14 @@ const addUserToCompetition = asyncHandler(async (req, res) => {
 });
 // Alle Aktien in einem Depot
 const getStocksFromDepot = asyncHandler(async (req, res) => {
-  res.status(200).json(await persons.getStocksFromDepot(req.params.member_id));
+  res
+    .status(200)
+    .json(
+      await persons.getStocksFromDepot(
+        req.params.competition_id,
+        req.session.user.user_id
+      )
+    );
 });
 // Login Route
 const loginUser = asyncHandler(async (req, res) => {
@@ -82,7 +89,7 @@ const loginUser = asyncHandler(async (req, res) => {
     return;
   }
   console.log('user Logged in');
-  console.log(user);
+  console.log(req.session);
   req.session.user = user;
   res.status(200).json(user);
 });

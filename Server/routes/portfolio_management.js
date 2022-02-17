@@ -28,7 +28,7 @@ router.post('/user/createNewOne', registerNewUser);
 // Erstellen einer neuen Competition
 router.post('/createNewCompetition', createNewCompetition);
 // Alle Aktien in einem Depot
-router.get('/competitions/:member_id', getStocksFromDepot);
+router.get('/competitions/:competition_id/getCompStocks', getStocksFromDepot);
 // Login Route
 router.post('/user/login', loginUser);
 // Route um Daten vonm eingeloggten User zu bekommen
