@@ -109,7 +109,7 @@
 
                 <template v-slot:[`item.actions`]="{ item }">
                   <v-btn
-                    @click="buyStock(item)"
+                    @click="openBuyDialog(item)"
                     small
                     plain
                     class="primary  mt-2 mb-2"
@@ -191,6 +191,35 @@
         </v-card-actions> -->
       </v-card>
     </v-dialog>
+    <v-dialog v-model="buyDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Aktien Kaufen</v-card-title>
+        <v-window>
+          <v-window-item
+            ><v-form
+              ><v-text-field
+                label="Geld"
+                name="toBuy"
+                type="number"
+                color="primary"
+                v-model="anzGeld"
+                @input="getBuyCount"/><v-text-field
+                label="Anzahl"
+                name="Count"
+                type="text"
+                color="primary"
+                v-model="buyCount"
+                readonly
+            /></v-form>
+          </v-window-item>
+        </v-window>
+        <v-card-action>
+          <v-btn @click="buyStock" small class="primary  mt-2 mb-2"
+            >Kaufen</v-btn
+          >
+        </v-card-action>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -205,6 +234,11 @@ export default {
   methods: {
     async sellbuy() {
       this.dialog = true;
+    },
+    openBuyDialog(item) {
+      this.curAk = item;
+      this.buyDialog = true;
+      // this.dialog = false;
     },
     stepc0() {
       this.step = 0;
@@ -226,13 +260,13 @@ export default {
       ).data;
       console.log(this.stocks);
     },
-    async buyStock(ak) {
+    async buyStock() {
       console.log('buy');
       let newItem = {
-        isin: ak.isin,
-        buy_price: ak.kurs,
+        isin: this.curAk.isin,
+        buy_price: this.curAk.kurs,
         competition_id: this.comp_id,
-        count: 1,
+        count: this.buyCount,
       };
       await server.post(`http://localhost:3000/user/buyStocks`, newItem);
       this.dialog = false;
@@ -255,6 +289,10 @@ export default {
         el.kurs = wert.wert;
       }
       // console.log(this.akData);
+    },
+    getBuyCount() {
+      // console.log(this.curAk);
+      this.buyCount = (this.anzGeld / this.curAk.kurs).toFixed(2);
     },
     createAkForTable() {
       this.cash = 0;
@@ -302,13 +340,17 @@ export default {
       akKurs: [],
       akHave: [],
       cash: 0,
+      anzGeld: 0,
+      buyCount: 0,
       portValue: 0,
       akValue: 0,
       dialog: false,
+      buyDialog: false,
       step: 0,
       visible: false,
       competetion: {},
       user: {},
+      curAk: {},
       stocks: [],
       headers: [
         {
