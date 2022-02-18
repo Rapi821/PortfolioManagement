@@ -100,6 +100,7 @@ const getUserData = asyncHandler(async (req, res) => {
 });
 const buyStocks = asyncHandler(async (req, res) => {
   req.body.buy_date = help_functions.getCurrentDate();
+  req.body.buysell= 'buy';
   if (
     (await persons.checkStockBought(req.body, req.session.user.user_id))
       .count != 1
@@ -126,10 +127,16 @@ const getCompetition = asyncHandler(async (req, res) => {
 });
 
 const sellStocks = asyncHandler(async (req, res) => {
-  // check ob der user in der competition genug aktien hat
-  // if user.aktiencount mit isin - req.body.count >=0
-  // WENN JA  -> await person.sellStocks,
-  res.status(200).json(await persons.getUsers());
+  req.body.buy_date = help_functions.getCurrentDate();
+  req.body.buysell= 'sell';
+  if(((await persons.getStackCount(req.body, req.session.user.user_id))[0].count - req.body.count) >= 0){
+    await persons.sellStocks(req.body, req.session.user.user_id);
+    req.body.buy_price= req.body.sell_price;
+    await persons.addMoney(req.body, req.session.user.user_id);
+    res
+    .status(200)
+    .json(await persons.addToRecords(req.body, req.session.user.user_id));
+  }
 });
 
 module.exports = {
