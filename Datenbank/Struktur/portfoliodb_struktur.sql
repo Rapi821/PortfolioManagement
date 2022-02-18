@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.2
--- Dumped by pg_dump version 13.2
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -63,7 +63,7 @@ CREATE TABLE public.competition_member_depot_lines (
     depot_line_id integer NOT NULL,
     isin character varying NOT NULL,
     buy_price numeric NOT NULL,
-    count integer NOT NULL,
+    count numeric NOT NULL,
     competition_id integer,
     member_id integer,
     buy_date date
