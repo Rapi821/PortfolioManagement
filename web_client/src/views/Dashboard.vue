@@ -35,20 +35,30 @@
       </div>
       <v-spacer></v-spacer>
       <div class="mar2">
-        <div class=" text-h5 mb-2">Dein Aktien Gemma</div>
+        <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
         <v-data-table
           :headers="headers"
           :items="akHave"
-          class="elevation-0"
-        ></v-data-table>
+          class="elevation-0 ms-5"
+        >
+          <template v-slot:[`item.verkaufen`]="{ item }">
+            <v-btn
+              @click="openSellDialog(item)"
+              small
+              plain
+              class="primary  mt-2 mb-2 me-2"
+              >Verkaufen</v-btn
+            >
+          </template>
+        </v-data-table>
       </div>
 
       <!-- <div class="d-none d-xl-flex b"></div> -->
     </div>
     <div>
-      <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn>
+      <!-- <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn> -->
+      <v-btn @click="sellbuy">Kaufen</v-btn>
     </div>
-    <v-btn @click="sellbuy">Kaufen</v-btn>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <div class="d-flex justify-space-around">
@@ -131,19 +141,22 @@
                 ><v-text-field
                   label="Anzahl verkaufen"
                   name="Anzahl"
-                  type="text"
+                  type="Number"
                   color="primary"
+                  v-model="sellPrice"
+                  @input="sellAkCount"
+                  :readonly="sellPrice == curAk.wert"
               /></v-form>
-              <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
+              <!-- <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
                 <v-btn width="45%">Plus</v-btn>
                 <v-btn width="45%">Minus</v-btn>
-              </div>
+              </div> -->
               <div class="textfields d-flex justify-space-between">
                 <div class="h5">
                   Verfügbares Geld:
                 </div>
                 <div class="h5">
-                  2345
+                  {{ cash }}
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
@@ -151,10 +164,17 @@
                   Preis pro Aktie:
                 </div>
                 <div class="h5">
-                  743
+                  <!-- {{ akData.find((e) => e.isin == curAk.isin).kurs }} -->
                 </div>
               </div>
-
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Dein Aktienwert:
+                </div>
+                <div class="h5">
+                  {{ curAk.wert }}
+                </div>
+              </div>
               <div class="textfields d-flex justify-space-between">
                 <div class="h5">
                   Preis insgesamt:
@@ -166,10 +186,10 @@
               <v-divider class="divider_style"></v-divider>
               <div class="textfields d-flex justify-space-between">
                 <div class="h5">
-                  Preis insgesamt:
+                  Portfolio Wert:
                 </div>
                 <div class="h5">
-                  2344
+                  {{ portValue }}
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
@@ -177,11 +197,11 @@
                   Verfügbares Geld nach Kauf:
                 </div>
                 <div class="h5">
-                  2344
+                  {{ Number(cash) + Number(sellPrice) }}
                 </div>
               </div>
               <div class="mb-n3 mt-3 textfields d-flex ">
-                <v-btn width="100%">Kaufe Appleasd</v-btn>
+                <v-btn width="100%" @click="sellAk">Verkaufen</v-btn>
               </div></v-window-item
             >
           </v-container>
@@ -242,10 +262,20 @@ export default {
     async sellbuy() {
       this.dialog = true;
     },
+    openSellDialog(item) {
+      this.curAk = item;
+      this.step = 1;
+      this.dialog = true;
+    },
     openBuyDialog(item) {
       this.curAk = item;
       this.buyDialog = true;
       // this.dialog = false;
+    },
+    sellAkCount() {
+      if (this.sellPrice > this.curAk.wert) {
+        this.sellPrice = this.curAk.wert;
+      }
     },
     stepc0() {
       this.step = 0;
@@ -280,6 +310,18 @@ export default {
       this.buyDialog = false;
       await this.getStocks();
       this.createAkForTable();
+    },
+    async sellAk() {
+      let newCount = (this.sellPrice / this.curAk.wert).toFixed(2);
+      let obj = {
+        isin: this.curAk.isin,
+        sell_price: this.sellPrice,
+        competition_id: this.comp_id,
+        count: Number(newCount),
+      };
+      // console.log(obj);
+      await server.post(`http://localhost:3000/user/sellStocks`, obj);
+      this.getComps();
     },
     createAktie() {
       // Funktion die alle Aktein mit deren Kruse bekommt
@@ -355,6 +397,8 @@ export default {
       buyCount: 0,
       portValue: 0,
       akValue: 0,
+      sellPrice: 0,
+      newCash: 0,
       dialog: false,
       buyDialog: false,
       step: 0,
@@ -367,7 +411,6 @@ export default {
         {
           text: 'Name',
           align: 'start',
-          sortable: false,
           value: 'name',
         },
         {
@@ -377,8 +420,9 @@ export default {
           value: 'isin',
         },
         { text: 'Wert', value: 'wert' },
-        { text: 'Buy_Price', value: 'buy_price' },
+        { text: 'Kaufpreis', value: 'buy_price' },
         { text: 'Count', value: 'count' },
+        { text: '', value: 'verkaufen' },
       ],
       headersKaufen: [
         {
@@ -389,7 +433,7 @@ export default {
         },
         { text: 'ISIN', value: 'isin', sortable: false },
         { text: 'Kurs', value: 'kurs' },
-        { text: 'Kaufen', value: 'actions' },
+        { text: 'Kaufen', value: 'actions', sortable: false },
       ],
     };
   },
