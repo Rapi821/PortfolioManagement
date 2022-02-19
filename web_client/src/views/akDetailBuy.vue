@@ -1,6 +1,5 @@
 <template>
   <div class="fill-height">
-    <TopBar />
     <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
       <v-card-title justify="center" class="mx-auto">{{
         akInfo.title
@@ -22,6 +21,13 @@
           <v-btn class="me-2" color="primary">Verkaufen</v-btn>
         </div>
       </v-card-actions> -->
+      <v-card-actions>
+        <div class="mx-auto">
+          <v-btn class="me-1" color="primary" :to="`/Dashboard/${comp_id}`"
+            >Zurück zum competetion</v-btn
+          >
+        </div>
+      </v-card-actions>
       <v-card-actions>
         <div class="d-flex  justify-center align-center">
           <Chart
@@ -52,7 +58,6 @@
 
 <script>
 import Chart from '../components/Chart';
-import TopBar from '../components/TopBar.vue';
 
 import axios from 'axios';
 export default {
@@ -190,7 +195,6 @@ export default {
   },
   components: {
     Chart,
-    TopBar,
   },
   async created() {
     this.akInfo = (
@@ -203,6 +207,9 @@ export default {
 
   props: {
     isin: {
+      type: String,
+    },
+    comp_id: {
       type: String,
     },
   },

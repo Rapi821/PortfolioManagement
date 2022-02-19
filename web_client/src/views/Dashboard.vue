@@ -112,8 +112,15 @@
                     @click="openBuyDialog(item)"
                     small
                     plain
-                    class="primary  mt-2 mb-2"
+                    class="primary  mt-2 mb-2 me-2"
                     >Kaufen</v-btn
+                  >
+                  <v-btn
+                    @click="buyDetail(item)"
+                    small
+                    plain
+                    class="primary  mt-2 mb-2"
+                    >Detail</v-btn
                   >
                 </template>
               </v-data-table>
@@ -270,6 +277,7 @@ export default {
       };
       await server.post(`http://localhost:3000/user/buyStocks`, newItem);
       this.dialog = false;
+      this.buyDialog = false;
       await this.getStocks();
       this.createAkForTable();
     },
@@ -293,6 +301,9 @@ export default {
     getBuyCount() {
       // console.log(this.curAk);
       this.buyCount = (this.anzGeld / this.curAk.kurs).toFixed(2);
+    },
+    buyDetail(item) {
+      this.$router.replace(`/detailAk/${item.isin}/${this.comp_id}`);
     },
     createAkForTable() {
       this.cash = 0;
