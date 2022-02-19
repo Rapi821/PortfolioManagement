@@ -57,7 +57,7 @@
     </div>
     <div>
       <!-- <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn> -->
-      <v-btn @click="sellbuy">Kaufen</v-btn>
+      <v-btn @click="sellbuy" class="mx-auto" color="sucess">Kaufen</v-btn>
     </div>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
