@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.2
--- Dumped by pg_dump version 13.2
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -63,10 +63,12 @@ CREATE TABLE public.competition_member_depot_lines (
     depot_line_id integer NOT NULL,
     isin character varying NOT NULL,
     buy_price numeric NOT NULL,
-    count integer NOT NULL,
+    count numeric NOT NULL,
     competition_id integer,
     member_id integer,
-    buy_date date
+    buy_date date,
+    CONSTRAINT buy_price_not_negative CHECK ((buy_price >= (0)::numeric)),
+    CONSTRAINT count_not_negative CHECK ((count >= (0)::numeric))
 );
 
 
@@ -280,8 +282,8 @@ COPY public.competition_member_depot_lines (depot_line_id, isin, buy_price, coun
 33	0000	15000	1	20	6	\N
 34	0000	100000	1	21	7	\N
 8	0000	6774.52	1	0	1	\N
-49	US5949181045	25987.60	240	0	8	\N
-36	0000	16543.4	1	0	8	\N
+49	US5949181045	1012.4	20	0	8	\N
+36	0000	14000	1	0	8	\N
 \.
 
 
@@ -357,6 +359,109 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 38	8	100	10	buy	US5949181045	2022-02-16
 39	8	100	10	buy	US5949181045	2022-02-16
 40	8	100	10	buy	US5949181045	2022-02-16
+41	8	100	10	buy	US5949181045	2022-02-18
+42	8	100	10	buy	US5949181045	2022-02-18
+43	8	100	10	buy	US5949181045	2022-02-18
+44	8	100	10	buy	US5949181045	2022-02-18
+45	8	100	10	buy	US5949181045	2022-02-18
+46	8	100	10	buy	US5949181045	2022-02-18
+47	8	100	10	buy	US5949181045	2022-02-18
+48	8	100	10	buy	US5949181045	2022-02-18
+49	8	100	10	buy	US5949181045	2022-02-18
+50	8	100	10	buy	US5949181045	2022-02-18
+51	8	100	10	buy	US5949181045	2022-02-18
+52	8	100	10	buy	US5949181045	2022-02-18
+53	8	100	10	buy	US5949181045	2022-02-18
+54	8	100	10	buy	US5949181045	2022-02-18
+55	8	100	10	buy	US5949181045	2022-02-18
+56	8	100	10	buy	US5949181045	2022-02-18
+57	8	100	10	buy	US5949181045	2022-02-18
+58	8	100	10	buy	US5949181045	2022-02-18
+60	8	100	10	buy	US5949181045	2022-02-18
+61	8	1000	1	sell	US5949181045	\N
+62	8	1000	1	sell	US5949181045	\N
+63	8	1000	1	sell	US5949181045	\N
+64	8	1000	1	sell	US5949181045	\N
+65	8	1000	1	sell	US5949181045	\N
+66	8	1000	1	sell	US5949181045	\N
+67	8	1000	1	sell	US5949181045	\N
+68	8	1000	1	sell	US5949181045	\N
+69	8	1000	1	sell	US5949181045	\N
+70	8	1000	1	sell	US5949181045	\N
+71	8	1000	1	sell	US5949181045	\N
+72	8	1000	1	sell	US5949181045	\N
+73	8	1000	1	sell	US5949181045	\N
+74	8	1000	1	sell	US5949181045	\N
+75	8	1000	1	sell	US5949181045	\N
+76	8	1000	1	sell	US5949181045	\N
+77	8	100	10	buy	US5949181045	2022-02-18
+78	8	1000	1	sell	US5949181045	2022-02-18
+79	8	1000	1	sell	US5949181045	2022-02-18
+80	8	1000	1	sell	US5949181045	2022-02-18
+81	8	1000	1	sell	US5949181045	2022-02-18
+82	8	1000	1	sell	US5949181045	2022-02-18
+83	8	1000	1	sell	US5949181045	2022-02-18
+84	8	100	10	buy	US5949181045	2022-02-18
+85	8	100	10	buy	US5949181045	2022-02-18
+86	8	100	10	buy	US5949181045	2022-02-18
+87	8	100	10	buy	US5949181045	2022-02-18
+88	8	100	10	buy	US5949181045	2022-02-18
+89	8	100	10	buy	US5949181045	2022-02-18
+90	8	100	10	buy	US5949181045	2022-02-18
+91	8	100	10	buy	US5949181045	2022-02-18
+92	8	100	10	buy	US5949181045	2022-02-18
+93	8	100	10	buy	US5949181045	2022-02-18
+94	8	100	10	buy	US5949181045	2022-02-18
+95	8	100	10	buy	US5949181045	2022-02-18
+96	8	100	10	buy	US5949181045	2022-02-18
+97	8	1000	1	sell	US5949181045	2022-02-18
+98	8	1000	1	sell	US5949181045	2022-02-18
+99	8	1000	1	sell	US5949181045	2022-02-18
+100	8	1000	1	sell	US5949181045	2022-02-18
+101	8	1000	1	sell	US5949181045	2022-02-18
+102	8	1000	1	sell	US5949181045	2022-02-18
+103	8	1000	1	sell	US5949181045	2022-02-18
+104	8	1000	1	sell	US5949181045	2022-02-18
+105	8	1000	1	sell	US5949181045	2022-02-18
+106	8	1000	1	sell	US5949181045	2022-02-18
+107	8	1000	1	sell	US5949181045	2022-02-18
+108	8	1000	1	sell	US5949181045	2022-02-18
+109	8	1000	1	sell	US5949181045	2022-02-18
+110	8	1000	1	sell	US5949181045	2022-02-18
+111	8	100	10	buy	US5949181045	2022-02-18
+112	8	100	10	buy	US5949181045	2022-02-18
+113	8	100	10	buy	US5949181045	2022-02-18
+114	8	100	10	buy	US5949181045	2022-02-18
+115	8	100	10	buy	US5949181045	2022-02-18
+116	8	100	10	buy	US5949181045	2022-02-18
+117	8	100	10	buy	US5949181045	2022-02-18
+118	8	100	10	buy	US5949181045	2022-02-18
+119	8	100	10	buy	US5949181045	2022-02-18
+120	8	100	10	buy	US5949181045	2022-02-18
+121	8	100	10	buy	US5949181045	2022-02-18
+122	8	100	10	buy	US5949181045	2022-02-18
+123	8	100	10	buy	US5949181045	2022-02-18
+124	8	100	10	buy	US5949181045	2022-02-18
+125	8	1000	1	sell	US5949181045	2022-02-18
+126	8	1000	1	sell	US5949181045	2022-02-18
+127	8	1000	1	sell	US5949181045	2022-02-18
+128	8	1000	1	sell	US5949181045	2022-02-18
+129	8	1000	1	sell	US5949181045	2022-02-18
+130	8	1000	1	sell	US5949181045	2022-02-18
+131	8	1000	1	sell	US5949181045	2022-02-18
+132	8	1000	1	sell	US5949181045	2022-02-18
+133	8	1000	1	sell	US5949181045	2022-02-18
+134	8	1000	1	sell	US5949181045	2022-02-18
+135	8	1000	1	sell	US5949181045	2022-02-18
+136	8	1000	1	sell	US5949181045	2022-02-18
+137	8	1000	1	sell	US5949181045	2022-02-18
+138	8	1000	1	sell	US5949181045	2022-02-18
+139	8	1000	1	sell	US5949181045	2022-02-18
+140	8	100	10	buy	US5949181045	2022-02-18
+141	8	100	10	sell	US5949181045	2022-02-18
+142	8	100	10	buy	US5949181045	2022-02-18
+143	8	100	10	buy	US5949181045	2022-02-18
+144	8	100	10	sell	US5949181045	2022-02-18
 \.
 
 
@@ -365,8 +470,8 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 --
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
-WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-17 16:58:59
 2Y_mi_uGn_BzVDaVhaKGQoMXPKBjz9CA	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-18T12:14:54.755Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-18 13:35:43
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-20 19:05:37
 \.
 
 
@@ -410,7 +515,7 @@ SELECT pg_catalog.setval('public.competitions_competition_id_seq', 21, true);
 -- Name: depotRecords_depot_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 40, true);
+SELECT pg_catalog.setval('public."depotRecords_depot_records_id_seq"', 144, true);
 
 
 --

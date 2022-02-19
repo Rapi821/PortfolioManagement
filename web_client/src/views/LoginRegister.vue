@@ -221,10 +221,19 @@ export default {
         lastname: this.lastname,
         password: this.password,
       });
-      let user = (await server.get(`http://localhost:3000/user/${this.email}`))
-        .data;
-      this.user_id = user.user_id;
-      this.$router.replace(`/mainmenu`);
+      let user = (
+        await server.post(`http://localhost:3000/user/login`, {
+          email: this.email,
+          password: this.password,
+        })
+      ).data;
+      if (user.user_id != undefined) {
+        console.log('richtiges passwort');
+        this.$router.replace(`/mainmenu`);
+        // Router.beforeach machen
+      } else {
+        this.password = 'falsches Passwort';
+      }
     },
   },
 };

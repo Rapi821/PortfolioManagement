@@ -22,29 +22,24 @@ const registerNewUser = asyncHandler(async (req, res) => {
 const getUserCompetitions = asyncHandler(async (req, res) => {
   let base = await persons.getCompetitionsByUser(req.session.user.user_id);
   let cash = await persons.getCash(req.session.user.user_id);
-  let stockValue = await persons.getstockValue(req.session.user.user_id);
+  let buyPrice = await persons.getstockValue(req.session.user.user_id);
   let erg;
   let stockV = [];
-  console.log(base);
   for (let i in base) {
     base.find((e) => e.competition_id == cash[i].competition_id).cash =
       cash[i].cash;
-    // if (stockValue[i] != undefined) {
-    //   erg = base.find((e) => e.competition_id == stockValue[i].competition_id);
-    //   // .portfolio_value = stockValue[i].stocksvalue;
-    // }
-    erg = stockValue
-      .filter((e) => e.competition_id == base[i].competition_id)
-      .reduce((x, sum) => sum + x, 0);
-    console.log('base: ' + erg[0]);
+
+    if (buyPrice[i] != undefined) {
+      base.find(
+        (e) => e.competition_id == buyPrice[i].competition_id
+      ).portfolio_value = buyPrice[i].sum;
+    }
   }
   for (const i of base) {
     if (!i.hasOwnProperty('portfolio_value')) {
       i.portfolio_value = 0;
     }
   }
-  // console.log(stockValue);
-  console.log(stockV);
   res.status(200).json(base);
 });
 // Erstellen einer neuen Competition
@@ -76,7 +71,14 @@ const addUserToCompetition = asyncHandler(async (req, res) => {
 });
 // Alle Aktien in einem Depot
 const getStocksFromDepot = asyncHandler(async (req, res) => {
-  res.status(200).json(await persons.getStocksFromDepot(req.params.member_id));
+  res
+    .status(200)
+    .json(
+      await persons.getStocksFromDepot(
+        req.params.competition_id,
+        req.session.user.user_id
+      )
+    );
 });
 // Login Route
 const loginUser = asyncHandler(async (req, res) => {
@@ -87,7 +89,7 @@ const loginUser = asyncHandler(async (req, res) => {
     return;
   }
   console.log('user Logged in');
-  console.log(user);
+  console.log(req.session);
   req.session.user = user;
   res.status(200).json(user);
 });
@@ -98,6 +100,7 @@ const getUserData = asyncHandler(async (req, res) => {
 });
 const buyStocks = asyncHandler(async (req, res) => {
   req.body.buy_date = help_functions.getCurrentDate();
+  req.body.buysell= 'buy';
   if (
     (await persons.checkStockBought(req.body, req.session.user.user_id))
       .count != 1
@@ -124,10 +127,16 @@ const getCompetition = asyncHandler(async (req, res) => {
 });
 
 const sellStocks = asyncHandler(async (req, res) => {
-  // check ob der user in der competition genug aktien hat
-  // if user.aktiencount mit isin - req.body.count >=0
-  // WENN JA  -> await person.sellStocks,
-  res.status(200).json(await persons.getUsers());
+  req.body.buy_date = help_functions.getCurrentDate();
+  req.body.buysell= 'sell';
+  if(((await persons.getStackCount(req.body, req.session.user.user_id))[0].count - req.body.count) >= 0){
+    await persons.sellStocks(req.body, req.session.user.user_id);
+    req.body.buy_price= req.body.sell_price;
+    await persons.addMoney(req.body, req.session.user.user_id);
+    res
+    .status(200)
+    .json(await persons.addToRecords(req.body, req.session.user.user_id));
+  }
 });
 
 module.exports = {

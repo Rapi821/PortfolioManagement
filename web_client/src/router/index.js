@@ -7,6 +7,7 @@ import DetailAktie from '../views/akDetail.vue';
 import MainMenu from '../views/MainMenu.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Ranking from '../views/Ranking.vue';
+import DetailAktieBuy from '../views/akDetailBuy.vue';
 
 Vue.use(VueRouter);
 
@@ -66,6 +67,13 @@ const routes = [
     props: true,
     name: 'Ranking',
     component: Ranking,
+  },
+   {
+    // DetailPAge einer Aktei Beim Kaufen
+    path: '/detailAk/:isin/:comp_id',
+    props: true,
+    name: 'DetailAktieBuy',
+    component: DetailAktieBuy,
   },
 ];
 

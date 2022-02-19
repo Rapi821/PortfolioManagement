@@ -96,7 +96,22 @@
       "
     >
       Kaufe Aktien </v-btn
-    ><!--
+    >
+    <v-btn
+      color="blue darken-1"
+      text
+      @click="
+        sellStocks({
+          isin: 'US5949181045',
+          sell_price: 100,          
+          competition_id: 0,
+          count: 10,
+        })
+      "
+    >
+      Aktien verkaufen
+    </v-btn>
+    <!--
     <v-btn color="blue darken-1" text @click="getCompetition('0')">
       Get Data für eine Competition
     </v-btn> -->
@@ -111,6 +126,10 @@ export default {
     TopBar,
   },
   methods: {
+    async sellStocks(obj){
+      await server.post(`http://localhost:3000/user/sellStocks`, obj);
+      this.getComps();
+    },
     async getCompetition(x) {
       console.log(
         (await server.get(`http://localhost:3000/competition/${x}`)).data
