@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
+    "test": "jest",
     "lint": "eslint . --ext .js"
   },
   "author": "TP",
@@ -18,8 +19,10 @@
     "express-async-handler": "^1.1.4",
     "express-session": "^1.17.2",
     "helmet": "^4.3.1",
+    "jest": "^27.5.1",
     "morgan": "^1.10.0",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "supertest": "^6.2.2"
   },
   "devDependencies": {
     "eslint": "^7.26.0",
