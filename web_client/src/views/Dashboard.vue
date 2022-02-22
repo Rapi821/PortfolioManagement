@@ -41,6 +41,9 @@
           :items="akHave"
           class="elevation-0 ms-5"
         >
+          <!-- <template v-slot:[`item.count`]="{ item }">
+            <span>{{ item.toFixed(2) }}</span>            Geht nicht bin lost
+          </template> -->
           <template v-slot:[`item.verkaufen`]="{ item }">
             <v-btn
               @click="openSellDialog(item)"
@@ -421,7 +424,7 @@ export default {
         },
         { text: "Wert", value: "wert" },
         { text: "Kaufpreis", value: "buy_price" },
-        { text: "Count", value: "count" },
+        { text: "", value: "count" },
         { text: "", value: "verkaufen" },
       ],
       headersKaufen: [
