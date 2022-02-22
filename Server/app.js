@@ -68,6 +68,4 @@ app.use('/', persons);
 
 app.use(errorHandler);
 app.use(notFound);
-const PORT = 3000;
-
-app.listen(PORT);
+module.exports = app;
