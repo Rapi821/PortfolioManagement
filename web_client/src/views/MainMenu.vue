@@ -5,8 +5,6 @@
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
       <v-card-actions
-        ><v-btn @click="compEnter" class="btn" color="primary"
-          >Competition Beitreten</v-btn
         ><v-btn @click="compCreate" class="btn" color="primary"
           >Competition Erstellen</v-btn
         >
@@ -67,7 +65,15 @@
                   item.title
                 }}</router-link></span
               >
-            </template></v-data-table
+            </template>
+            <!-- <template v-slot:item.cash="{ item }">
+              <span>
+                {{ item.cash.toFixed(2) }}      Geht nicht
+              </span>
+            </template> -->
+          </v-data-table>
+          <v-btn @click="compEnter" class="btn mt-2" color="primary"
+            >Competition Beitreten</v-btn
           ></v-col
         ></v-row
       >
@@ -211,7 +217,10 @@ export default {
           sortable: false,
           value: "title",
         },
-        { text: "Portfoliowert", value: "portfolio_value" },
+        {
+          text: "Portfoliowert",
+          value: "portfolio_value",
+        },
         { text: "Cash", value: "cash" },
         { text: "Total", value: "total" },
         { text: "Status", value: "active" },
