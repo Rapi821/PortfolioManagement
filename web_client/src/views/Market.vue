@@ -23,6 +23,13 @@
                 class="primary  mt-2 mb-2"
                 >Details</v-btn
               >
+              <v-btn
+                @click="openSellDialog(item)"
+                small
+                plain
+                class="primary ml-2 mt-2 mb-2 me-2"
+                >Handeln</v-btn
+              >
             </template>
           </v-data-table>
         </v-col>
@@ -35,7 +42,7 @@
 
 <script>
 import axios from "axios";
-import TopBarMarket from "../components/TopBar.vue";
+import TopBarMarket from "../components/TopBarMarket.vue";
 export default {
   name: "Market",
   components: { TopBarMarket },
@@ -56,6 +63,7 @@ export default {
         { text: "WKN", value: "wkn", sortable: false },
         { text: "Kurs", value: "kurs" },
         { text: "Aktionen", value: "actions" },
+        { text: "", value: "verkaufen" },
       ],
     };
   },
