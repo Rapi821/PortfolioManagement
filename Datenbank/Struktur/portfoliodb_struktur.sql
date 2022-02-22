@@ -64,8 +64,8 @@ CREATE TABLE public.competition_member_depot_lines (
     isin character varying NOT NULL,
     buy_price numeric NOT NULL,
     count numeric NOT NULL,
-    competition_id integer,
-    member_id integer,
+    competition_id integer NOT NULL,
+    member_id integer NOT NULL,
     CONSTRAINT buy_price_not_negative CHECK ((buy_price > (0)::numeric)),
     CONSTRAINT count_not_negative CHECK ((count > (0)::numeric))
 );
@@ -145,8 +145,8 @@ CREATE TABLE public.depot_records (
     price numeric NOT NULL,
     count numeric NOT NULL,
     buy_sell character varying NOT NULL,
-    isin character varying,
-    date date,
+    isin character varying NOT NULL,
+    date date NOT NULL,
     CONSTRAINT check_if_buy_or_sell CHECK ((((buy_sell)::text ~~ 'buy'::text) OR ((buy_sell)::text ~~ 'sell'::text))),
     CONSTRAINT dr_count_not_negative CHECK ((count > (0)::numeric)),
     CONSTRAINT dr_price_not_negative CHECK ((price > (0)::numeric))
@@ -327,12 +327,6 @@ COPY public.competitions (competition_id, creation_date, title, starting_money, 
 --
 
 COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, isin, date) FROM stdin;
-4	0	298.76	10	buy	US5949181045	\N
-5	0	298.76	10	buy	US5949181045	\N
-6	1	298.76	10	buy	US5949181045	\N
-7	1	298.76	5	buy	US5949181045	\N
-8	1	298.76	5	buy	US5949181045	\N
-9	1	298.76	5	buy	US5949181045	\N
 10	1	298.76	5	buy	US5949181045	2022-01-23
 11	8	298.76	5	buy	US5949181045	2022-01-23
 14	8	298.76	5	buy	US5949181045	2022-02-15
@@ -381,22 +375,6 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 57	8	100	10	buy	US5949181045	2022-02-18
 58	8	100	10	buy	US5949181045	2022-02-18
 60	8	100	10	buy	US5949181045	2022-02-18
-61	8	1000	1	sell	US5949181045	\N
-62	8	1000	1	sell	US5949181045	\N
-63	8	1000	1	sell	US5949181045	\N
-64	8	1000	1	sell	US5949181045	\N
-65	8	1000	1	sell	US5949181045	\N
-66	8	1000	1	sell	US5949181045	\N
-67	8	1000	1	sell	US5949181045	\N
-68	8	1000	1	sell	US5949181045	\N
-69	8	1000	1	sell	US5949181045	\N
-70	8	1000	1	sell	US5949181045	\N
-71	8	1000	1	sell	US5949181045	\N
-72	8	1000	1	sell	US5949181045	\N
-73	8	1000	1	sell	US5949181045	\N
-74	8	1000	1	sell	US5949181045	\N
-75	8	1000	1	sell	US5949181045	\N
-76	8	1000	1	sell	US5949181045	\N
 77	8	100	10	buy	US5949181045	2022-02-18
 78	8	1000	1	sell	US5949181045	2022-02-18
 79	8	1000	1	sell	US5949181045	2022-02-18
@@ -478,7 +456,7 @@ COPY public.depot_records (depot_records_id, member_id, price, count, buy_sell, 
 
 COPY public.user_sessions (sid, sess, expire) FROM stdin;
 2Y_mi_uGn_BzVDaVhaKGQoMXPKBjz9CA	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-18T12:14:54.755Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-18 13:35:43
-WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-22 15:47:34
+WfvjWusWxafDprkPbSpI_yIQoAixrt0l	{"cookie":{"originalMaxAge":2592000000,"expires":"2022-03-12T11:03:41.436Z","secure":false,"httpOnly":true,"path":"/"},"user":{"email":"wolfsberger.r03@htlwienwest.at","firstname":"Raphael","lastname":"Wolfsberger","password":"test123","user_id":8}}	2022-03-23 21:56:38
 \.
 
 

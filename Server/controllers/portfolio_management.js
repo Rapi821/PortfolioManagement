@@ -137,6 +137,13 @@ const sellStocks = asyncHandler(async (req, res) => {
     .status(200)
     .json(await persons.addToRecords(req.body, req.session.user.user_id));
   }
+}); 
+const getRanking = asyncHandler(async (req, res) => {
+  res.status(200).json(await persons.getRanking(req.params.competition_id));
+}); 
+
+const getRecords = asyncHandler(async (req, res) => {
+  res.status(200).json(await persons.getRecords(req.params.competition_id, req.session.user.user_id));
 });
 
 module.exports = {
@@ -153,4 +160,6 @@ module.exports = {
   addUserToCompetition,
   getCompetition,
   sellStocks,
+  getRanking,
+  getRecords
 };
