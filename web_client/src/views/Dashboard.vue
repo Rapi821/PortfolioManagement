@@ -6,7 +6,7 @@
       <div class="d-none d-xl-flex b"></div>
       <div class="mar">
         <div class=" text-h5 mb-2">
-          Portfolio Wert
+          Dashboard
         </div>
         <v-card class="elevation-0" max-width="200">
           <v-list-item three-line>
@@ -250,9 +250,9 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import TopBar from '../components/TopBar.vue';
-import server from '@/serverInterface';
+import axios from "axios";
+import TopBar from "../components/TopBar.vue";
+import server from "@/serverInterface";
 
 export default {
   components: {
@@ -286,7 +286,7 @@ export default {
       this.visible = true;
     },
     async getData() {
-      this.user = (await server.get('http://localhost:3000/user/data')).data;
+      this.user = (await server.get("http://localhost:3000/user/data")).data;
       console.log(this.user);
     },
     async getStocks() {
@@ -298,7 +298,7 @@ export default {
       console.log(this.stocks);
     },
     async buyStock() {
-      console.log('buy');
+      console.log("buy");
       let newItem = {
         isin: this.curAk.isin,
         buy_price: this.curAk.kurs,
@@ -354,7 +354,7 @@ export default {
       let ak = {};
       let kurs = {};
       for (let a of this.stocks) {
-        if (a.isin != '0000') {
+        if (a.isin != "0000") {
           kurs = this.akData.find((e) => e.isin == a.isin);
           ak = {
             name: this.akInfo.find((e) => e.isin == a.isin).title,
@@ -378,10 +378,10 @@ export default {
     await this.getData();
     await this.getStocks();
     this.akInfo = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
     ).data;
     this.akKurs = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
     ).data;
     this.createAktie();
     this.createAkForTable();
@@ -409,31 +409,31 @@ export default {
       stocks: [],
       headers: [
         {
-          text: 'Name',
-          align: 'start',
-          value: 'name',
+          text: "Name",
+          align: "start",
+          value: "name",
         },
         {
-          text: 'Isin',
-          align: 'start',
+          text: "Isin",
+          align: "start",
           sortable: false,
-          value: 'isin',
+          value: "isin",
         },
-        { text: 'Wert', value: 'wert' },
-        { text: 'Kaufpreis', value: 'buy_price' },
-        { text: 'Count', value: 'count' },
-        { text: '', value: 'verkaufen' },
+        { text: "Wert", value: "wert" },
+        { text: "Kaufpreis", value: "buy_price" },
+        { text: "Count", value: "count" },
+        { text: "", value: "verkaufen" },
       ],
       headersKaufen: [
         {
-          text: 'Name',
-          align: 'center',
+          text: "Name",
+          align: "center",
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: 'Kaufen', value: 'actions', sortable: false },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "Kaufen", value: "actions", sortable: false },
       ],
     };
   },

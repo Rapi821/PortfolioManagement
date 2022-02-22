@@ -1,7 +1,7 @@
 <template>
-  <v-app-bar app color="primary" dark class="px-16">
+  <v-app-bar app color="secondary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
-    <v-btn color="black" active-class="white black--text" @click="logOut" 
+    <v-btn color="black" active-class="white black--text" @click="logOut"
       >Logout</v-btn
     >
 
@@ -14,7 +14,7 @@
       active-class="white primary--text"
       class="mx-3"
       :to="`/mainmenu`"
-      >Main Menu</v-btn
+      >Competitions</v-btn
     >
     <!-- <v-btn outlined active-class="white primary--text" to="/Dashboard"
       >Dashboard</v-btn
@@ -32,9 +32,7 @@ export default {
     //
   }),
   methods: {
-    logOut() {
-      
-    }
+    logOut() {},
   },
 };
 </script>
