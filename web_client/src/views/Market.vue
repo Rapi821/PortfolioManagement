@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <TopBar />
+    <TopBarMarket />
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
     <v-container class="fill-height " fluid>
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-import TopBar from '../components/TopBar.vue';
+import axios from "axios";
+import TopBarMarket from "../components/TopBar.vue";
 export default {
-  name: 'Market',
-  components: { TopBar },
+  name: "Market",
+  components: { TopBarMarket },
   data() {
     return {
       akInfo: [],
@@ -47,15 +47,15 @@ export default {
 
       headers: [
         {
-          text: 'Name',
-          align: 'center',
+          text: "Name",
+          align: "center",
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'WKN', value: 'wkn', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: 'Aktionen', value: 'actions' },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "WKN", value: "wkn", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "Aktionen", value: "actions" },
       ],
     };
   },
@@ -80,10 +80,10 @@ export default {
   },
   async created() {
     this.akInfo = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
     ).data;
     this.akKurs = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
     ).data;
     this.createAktie();
   },

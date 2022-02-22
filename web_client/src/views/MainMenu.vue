@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar />
+    <TopBarMarket />
     <v-card max-width="700px" class="mx-auto mt-2 elevation-2">
       <v-card-title>Deine Competitions</v-card-title>
       <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
@@ -53,8 +53,11 @@
 
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="8"
-          ><v-data-table
+        <v-col cols="12" sm="8">
+          <div class=" text-h5 mb-2">
+            Competitions
+          </div>
+          <v-data-table
             :headers="headers"
             :items="competetions"
             class="elevation-3"
@@ -95,15 +98,15 @@
         })
       "
     >
-      Kaufe Aktien </v-btn
-    >
+      Kaufe Aktien
+    </v-btn>
     <v-btn
       color="blue darken-1"
       text
       @click="
         sellStocks({
           isin: 'US5949181045',
-          sell_price: 100,          
+          sell_price: 100,
           competition_id: 0,
           count: 10,
         })
@@ -115,14 +118,14 @@
       color="blue darken-1"
       text
       @click="
-        getRecords({        
+        getRecords({
           competition_id: 0,
         })
       "
     >
       Get Records
     </v-btn>
-    
+
     <v-btn color="blue darken-1" text @click="getCompetition('0')">
       Get Data für eine Competition
     </v-btn>
@@ -130,18 +133,22 @@
 </template>
 
 <script>
-import TopBar from '../components/TopBar.vue';
-import server from '@/serverInterface';
+import TopBarMarket from "../components/TopBar.vue";
+import server from "@/serverInterface";
 export default {
   components: {
-    TopBar,
+    TopBarMarket,
   },
   methods: {
-    async getRecords(obj){
-      const x = (await server.get(`http://localhost:3000/competition/records/${obj.competition_id}`)).data;
+    async getRecords(obj) {
+      const x = (
+        await server.get(
+          `http://localhost:3000/competition/records/${obj.competition_id}`
+        )
+      ).data;
       console.log(x);
     },
-    async sellStocks(obj){
+    async sellStocks(obj) {
       await server.post(`http://localhost:3000/user/sellStocks`, obj);
       this.getComps();
     },
@@ -191,23 +198,23 @@ export default {
       user: {},
       dialog: false,
       dialog_enter: false,
-      compCode: '',
+      compCode: "",
       competetion: {
-        title: '',
+        title: "",
         starting_money: 0,
-        end_date: '',
+        end_date: "",
       },
       headers: [
         {
-          text: 'titel',
-          align: 'start',
+          text: "titel",
+          align: "start",
           sortable: false,
-          value: 'title',
+          value: "title",
         },
-        { text: 'Portfoliowert', value: 'portfolio_value' },
-        { text: 'Cash', value: 'cash' },
-        { text: 'Total', value: 'total' },
-        { text: 'Status', value: 'active' },
+        { text: "Portfoliowert", value: "portfolio_value" },
+        { text: "Cash", value: "cash" },
+        { text: "Total", value: "total" },
+        { text: "Status", value: "active" },
         // { text: 'id', value: 'competition_id' },
       ],
     };

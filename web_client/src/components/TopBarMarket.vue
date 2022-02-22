@@ -6,25 +6,9 @@
     >
 
     <v-spacer></v-spacer>
-    <v-tooltip bottom v-model="show">
-      <template v-slot:activator="{ on }">
-        <div v-on="on">
-          <v-btn
-            disabled
-            v-bind="attrs"
-            v-on="on"
-            outlined
-            active-class="white primary--text"
-            >Market</v-btn
-          >
-        </div>
-      </template>
-      <span
-        >Wähle eine Competition aus bevor du auf den Markt zugreifen
-        kannst</span
-      >
-    </v-tooltip>
-
+    <v-btn outlined active-class="white primary--text" :to="`/Market`"
+      >Market</v-btn
+    >
     <v-btn
       outlined
       active-class="white primary--text"
@@ -42,7 +26,7 @@
 
 <script>
 export default {
-  name: "TopBar",
+  name: "TopBarMarket",
 
   data: () => ({
     //

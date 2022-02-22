@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar />
+    <TopBarMarket />
 
     <div class="d-flex z">
       <div class="d-none d-xl-flex b"></div>
@@ -251,12 +251,12 @@
 </template>
 <script>
 import axios from "axios";
-import TopBar from "../components/TopBar.vue";
+import TopBarMarket from "../components/TopBarMarket.vue";
 import server from "@/serverInterface";
 
 export default {
   components: {
-    TopBar,
+    TopBarMarket,
   },
   methods: {
     async sellbuy() {

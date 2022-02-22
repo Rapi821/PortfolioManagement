@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar />
+    <TopBarMarket />
     <h1>Ranking</h1>
     <div>
       <v-btn :to="`/Dashboard/${comp_id}`">Zurück zum Dashboard</v-btn>
@@ -26,9 +26,9 @@
 <script>
 // import axios from 'axios';
 // import server from '@/serverInterface';
-import TopBar from '../components/TopBar.vue';
+import TopBarMarket from "../components/TopBar.vue";
 export default {
-  components: { TopBar },
+  components: { TopBarMarket },
   props: {
     comp_id: {
       type: Number,
@@ -38,13 +38,13 @@ export default {
     return {
       headers: [
         {
-          text: 'Platzierung',
-          align: 'start',
+          text: "Platzierung",
+          align: "start",
           sortable: true,
-          value: '#',
+          value: "#",
         },
-        { text: 'Name', value: '#' },
-        { text: 'Portfolio Wert', value: '#' },
+        { text: "Name", value: "#" },
+        { text: "Portfolio Wert", value: "#" },
       ],
     };
   },
