@@ -1,0 +1,1 @@
+select u.firstname, u.lastname, cmdl.isin, cmdl.count, cmdl.buy_price as total from competition_members cm join users u on cm.user_id = u.user_id join competition_member_depot_lines cmdl on cm.member_id = cmdl.member_id where cmdl.competition_id= 0;

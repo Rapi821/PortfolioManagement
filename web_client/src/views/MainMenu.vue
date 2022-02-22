@@ -89,7 +89,7 @@
       @click="
         buyStock({
           isin: 'US5949181045',
-          buy_price: 100,
+          buy_price: 100.12,
           count: 10,
           competition_id: 0,
         })
@@ -111,10 +111,21 @@
     >
       Aktien verkaufen
     </v-btn>
-    <!--
+    <v-btn
+      color="blue darken-1"
+      text
+      @click="
+        getRecords({        
+          competition_id: 0,
+        })
+      "
+    >
+      Get Records
+    </v-btn>
+    
     <v-btn color="blue darken-1" text @click="getCompetition('0')">
       Get Data für eine Competition
-    </v-btn> -->
+    </v-btn>
   </div>
 </template>
 
@@ -126,6 +137,10 @@ export default {
     TopBar,
   },
   methods: {
+    async getRecords(obj){
+      const x = (await server.get(`http://localhost:3000/competition/records/${obj.competition_id}`)).data;
+      console.log(x);
+    },
     async sellStocks(obj){
       await server.post(`http://localhost:3000/user/sellStocks`, obj);
       this.getComps();
