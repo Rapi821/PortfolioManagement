@@ -59,7 +59,35 @@
             :headers="headers"
             :items="competetions"
             class="elevation-3"
-            ><template v-slot:[`item.title`]="{ item }">
+          >
+            <template v-slot:[`item.cash`]="{ item }">
+              <div>
+                {{
+                  parseInt(item.cash)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                }}
+              </div>
+            </template>
+            <template v-slot:[`item.portfolio_value`]="{ item }">
+              <div>
+                {{
+                  parseInt(item.portfolio_value)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                }}
+              </div>
+            </template>
+            <template v-slot:[`item.total`]="{ item }">
+              <div>
+                {{
+                  parseInt(item.total)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                }}
+              </div>
+            </template>
+            <template v-slot:[`item.title`]="{ item }">
               <span
                 ><router-link :to="`/Dashboard/${item.competition_id}`">{{
                   item.title
