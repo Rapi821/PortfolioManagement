@@ -2,7 +2,7 @@
   <div>
     <TopBarMarket />
 
-    <div class="d-flex z">
+    <div class="d-flex  z">
       <div class="d-none d-xl-flex b"></div>
       <div class="mar">
         <div class=" text-h5 mb-2">
@@ -15,35 +15,71 @@
                 Portfolio Wert
               </div>
               <v-list-item-title class="text-h6 mb-1 mt-n6">
-                {{ portValue }}
+                {{
+                  parseInt(portValue)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                }}
               </v-list-item-title>
               <div class="text-overline mb-4">
                 Verfügbares Geld
               </div>
               <v-list-item-title class="text-h6 mb-1 mt-n6">
-                {{ cash }}
+                {{
+                  parseInt(cash)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                }}
               </v-list-item-title>
               <div class="text-overline mb-4">
                 Aktien Wert
               </div>
               <v-list-item-title class="text-h6 mb-1 mt-n6">
-                {{ akValue }}
+                {{
+                  parseInt(akValue)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
       </div>
-      <v-spacer></v-spacer>
-      <div class="mar2">
+
+      <div class="ml-2">
         <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
         <v-data-table
           :headers="headers"
           :items="akHave"
           class="elevation-0 ms-5"
         >
-          <!-- <template v-slot:[`item.count`]="{ item }">
-            <span>{{ item.toFixed(2) }}</span>            Geht nicht bin lost
-          </template> -->
+          <template v-slot:[`item.wert`]="{ item }">
+            <div>
+              {{
+                parseInt(item.wert)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+              }}
+            </div>
+          </template>
+          <template v-slot:[`item.buy_price`]="{ item }">
+            <div>
+              {{
+                parseInt(item.buy_price)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+              }}
+            </div>
+          </template>
+          <template v-slot:[`item.count`]="{ item }">
+            <div>
+              {{
+                parseInt(item.count)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+              }}
+            </div>
+          </template>
           <template v-slot:[`item.verkaufen`]="{ item }">
             <v-btn
               @click="openSellDialog(item)"
@@ -424,7 +460,7 @@ export default {
         },
         { text: "Wert", value: "wert" },
         { text: "Kaufpreis", value: "buy_price" },
-        { text: "", value: "count" },
+        { text: "Count?", value: "count" },
         { text: "", value: "verkaufen" },
       ],
       headersKaufen: [
