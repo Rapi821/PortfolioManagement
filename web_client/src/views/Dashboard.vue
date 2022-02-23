@@ -46,7 +46,7 @@
         </v-card>
       </div>
 
-      <div class="ml-2">
+      <div class="ml-8">
         <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
         <v-data-table
           :headers="headers"
@@ -76,7 +76,7 @@
               {{
                 parseInt(item.count)
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
               }}
             </div>
           </template>
