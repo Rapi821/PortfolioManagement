@@ -6,7 +6,10 @@
     >
 
     <v-spacer></v-spacer>
-    <v-btn outlined active-class="white primary--text" :to="`/Market`"
+    <v-btn
+      outlined
+      active-class="white primary--text"
+      :to="`/Market/${comp_id}`"
       >Market</v-btn
     >
     <v-btn
@@ -26,8 +29,12 @@
 
 <script>
 export default {
-  name: "TopBarMarket",
-
+  name: 'TopBarMarket',
+  props: {
+    comp_id: {
+      type: String,
+    },
+  },
   data: () => ({
     //
   }),

@@ -100,7 +100,7 @@ const getUserData = asyncHandler(async (req, res) => {
 });
 const buyStocks = asyncHandler(async (req, res) => {
   req.body.buy_date = help_functions.getCurrentDate();
-  req.body.buysell= 'buy';
+  req.body.buysell = 'buy';
   if (
     (await persons.checkStockBought(req.body, req.session.user.user_id))
       .count != 1
@@ -127,23 +127,35 @@ const getCompetition = asyncHandler(async (req, res) => {
 });
 
 const sellStocks = asyncHandler(async (req, res) => {
+  console.log(req.body);
   req.body.buy_date = help_functions.getCurrentDate();
-  req.body.buysell= 'sell';
-  if(((await persons.getStackCount(req.body, req.session.user.user_id))[0].count - req.body.count) >= 0){
+  req.body.buysell = 'sell';
+  if (
+    (await persons.getStackCount(req.body, req.session.user.user_id))[0].count -
+      req.body.count >=
+    0
+  ) {
     await persons.sellStocks(req.body, req.session.user.user_id);
-    req.body.buy_price= req.body.sell_price;
+    req.body.buy_price = req.body.sell_price;
     await persons.addMoney(req.body, req.session.user.user_id);
     res
-    .status(200)
-    .json(await persons.addToRecords(req.body, req.session.user.user_id));
+      .status(200)
+      .json(await persons.addToRecords(req.body, req.session.user.user_id));
   }
-}); 
+});
 const getRanking = asyncHandler(async (req, res) => {
   res.status(200).json(await persons.getRanking(req.params.competition_id));
-}); 
+});
 
 const getRecords = asyncHandler(async (req, res) => {
-  res.status(200).json(await persons.getRecords(req.params.competition_id, req.session.user.user_id));
+  res
+    .status(200)
+    .json(
+      await persons.getRecords(
+        req.params.competition_id,
+        req.session.user.user_id
+      )
+    );
 });
 
 module.exports = {
@@ -161,5 +173,5 @@ module.exports = {
   getCompetition,
   sellStocks,
   getRanking,
-  getRecords
+  getRecords,
 };

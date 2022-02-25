@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <TopBarMarket />
+ <TopBarMarket :comp_id="comp_id" />
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
     <v-container class="fill-height " fluid>
@@ -17,7 +17,7 @@
 
             <template v-slot:[`item.actions`]="{ item }">
               <v-btn
-                :to="`/akDetail/${item.isin}`"
+                :to="`/detailAk/${item.isin}/${comp_id}`"
                 small
                 plain
                 class="primary  mt-2 mb-2"
@@ -41,11 +41,16 @@
 </template>
 
 <script>
-import axios from "axios";
-import TopBarMarket from "../components/TopBarMarket.vue";
+import axios from 'axios';
+import TopBarMarket from '../components/TopBarMarket.vue';
 export default {
-  name: "Market",
+  name: 'Market',
   components: { TopBarMarket },
+  props: {
+    comp_id: {
+      type: String,
+    },
+  },
   data() {
     return {
       akInfo: [],
@@ -54,16 +59,16 @@ export default {
 
       headers: [
         {
-          text: "Name",
-          align: "center",
+          text: 'Name',
+          align: 'center',
           sortable: true,
-          value: "name",
+          value: 'name',
         },
-        { text: "ISIN", value: "isin", sortable: false },
-        { text: "WKN", value: "wkn", sortable: false },
-        { text: "Kurs", value: "kurs" },
-        { text: "Aktionen", value: "actions" },
-        { text: "", value: "verkaufen" },
+        { text: 'ISIN', value: 'isin', sortable: false },
+        { text: 'WKN', value: 'wkn', sortable: false },
+        { text: 'Kurs', value: 'kurs' },
+        { text: 'Aktionen', value: 'actions' },
+        { text: '', value: 'verkaufen' },
       ],
     };
   },
@@ -88,10 +93,10 @@ export default {
   },
   async created() {
     this.akInfo = (
-      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
     ).data;
     this.akKurs = (
-      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
     ).data;
     this.createAktie();
   },

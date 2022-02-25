@@ -1,5 +1,6 @@
 <template>
   <div class="fill-height">
+    <TopBarMarket :comp_id="comp_id" />
     <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
       <v-card-title justify="center" class="mx-auto">{{
         akInfo.title
@@ -15,18 +16,20 @@
           <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
         </v-row>
       </v-card-text>
-      <!-- <v-card-actions>
-        <div class="mx-auto">
-          <v-btn class="me-2" color="primary">Kaufen</v-btn>
-          <v-btn class="me-2" color="primary">Verkaufen</v-btn>
-        </div>
-      </v-card-actions> -->
       <v-card-actions>
         <div class="mx-auto">
+          <v-btn class="me-2" color="primary" @click="openBuyDialog"
+            >Kaufen</v-btn
+          >
+          <!-- <v-btn class="me-2" color="primary">Verkaufen</v-btn> -->
+        </div>
+      </v-card-actions>
+      <v-card-actions>
+        <!-- <div class="mx-auto">
           <v-btn class="me-1" color="primary" :to="`/Dashboard/${comp_id}`"
             >Zurück zum competetion</v-btn
           >
-        </div>
+        </div> -->
       </v-card-actions>
       <v-card-actions>
         <div class="d-flex  justify-center align-center">
@@ -53,12 +56,41 @@
     <!-- <div class="d-flex  justify-center align-center">
       <Chart v-if="!loaded" :chartdata="chartData" :options="options" />
     </div> -->
+    <v-dialog v-model="buyDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Aktien Kaufen</v-card-title>
+        <v-window>
+          <v-window-item
+            ><v-form
+              ><v-text-field
+                label="Geld"
+                name="toBuy"
+                type="number"
+                color="primary"
+                v-model="anzGeld"
+                @input="getBuyCount"/><v-text-field
+                label="Anzahl"
+                name="Count"
+                type="text"
+                color="primary"
+                v-model="buyCount"
+                readonly
+            /></v-form>
+          </v-window-item>
+        </v-window>
+        <v-card-action>
+          <v-btn @click="buyStock" small class="primary  mt-2 mb-2"
+            >Kaufen</v-btn
+          >
+        </v-card-action>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import Chart from '../components/Chart';
-
+import TopBarMarket from '../components/TopBarMarket.vue';
 import axios from 'axios';
 export default {
   name: 'Market',
@@ -69,6 +101,7 @@ export default {
       test: [],
       loaded: false,
       chartOptions: {},
+      buyDialog: false,
       chartData: {
         labels: [],
         datasets: [
@@ -104,6 +137,14 @@ export default {
     forceRerender() {
       this.componentRefreshKey += 1;
     },
+    openBuyDialog() {
+      this.buyDialog = true;
+    },
+    // getBuyCount() {
+    //   console.log(this.curAk);
+
+    //   this.buyCount = (this.anzGeld / this.curAk.kurs).toFixed(2);
+    // },
     async getKurs() {
       this.akKurs = (
         await axios.get(
@@ -195,6 +236,7 @@ export default {
   },
   components: {
     Chart,
+    TopBarMarket,
   },
   async created() {
     this.akInfo = (

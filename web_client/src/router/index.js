@@ -32,8 +32,8 @@ const routes = [
   },
   {
     // Alle verfpgbaren Aktien Market
-    path: '/Market/',
-    // props: true,
+    path: '/Market/:comp_id',
+    props: true,
     name: 'Market',
     component: Market,
   },
@@ -68,7 +68,7 @@ const routes = [
     name: 'Ranking',
     component: Ranking,
   },
-   {
+  {
     // DetailPAge einer Aktei Beim Kaufen
     path: '/detailAk/:isin/:comp_id',
     props: true,
