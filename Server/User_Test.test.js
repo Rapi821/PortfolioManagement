@@ -7,15 +7,16 @@ const app = require('./app'); // Link to your server file
 // app.listen(PORT);
 
 describe('after authenticating session', function () {
-  let authenticatedSession;
+  let authenticatedSession = null;
+  let validCompetionId = -1;
 
   beforeEach(function (done) {
     testSession = session(app);
     testSession
       .post('/user/login')
       .send({
-        email: 'szwajda.v03@htlwienwest.at',
-        password: '1?Ä.*t<',
+        email: 'devall.s03@htlwienwest.at',
+        password: 'qHV3#ctbt',
       })
       .expect(200)
       .end(function (err) {
@@ -29,13 +30,34 @@ describe('after authenticating session', function () {
     await db.close();
   });
 
-  it('should get a restricted page', async (done) => {
-    authenticatedSession.get('/user/competitions').end(function (err, data) {
-      if (err) return done(err);
-      console.log(data);
-      expect(data.status).toBe(200);
+  it('should get a competition list', async () => {
+    const res = await authenticatedSession.get('/user/competitions');
+//    console.log(res.body);
+    // make sure that at least 1 competition is listed
+    expect(res.body.length).toBeGreaterThan(0);
 
-      return done();
-    });
+    const firstCompetion = res.body[0];
+    expect(firstCompetion).toEqual(
+      expect.objectContaining({
+        // cash: expect.any(Number), // both are strings atm -> should be numbers!
+        // total: expect.any(Number),  // both are strings atm -> should be numbers!
+        cash: expect.any(String),
+        total: expect.any(String),
+      }),
+    );
+    expect(firstCompetion).toHaveProperty('active', true); // active should be true
+    expect(firstCompetion).toHaveProperty('competition_id'); // prime key should be available
+
+    validCompetionId = firstCompetion.competition_id;
+  });
+
+  it('should get competition 0 ', async () => {
+    const res = await authenticatedSession.get('/competition/' + validCompetionId);
+ //   console.log(res.body);
+    // make sure that at least 1 entry is listed
+    expect(res.body.length).toBeGreaterThan(0);
+
+    // array should contain isin 0000 => cash
+    expect(res.body).toEqual(expect.arrayContaining([expect.objectContaining({ isin: '0000' })]));
   });
 });
