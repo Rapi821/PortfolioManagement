@@ -18,24 +18,24 @@
       </v-card-text>
       <v-card-actions>
         <div class="mx-auto">
-          <v-btn class="me-2" color="primary" @click="openBuyDialog"
+          <!-- <v-btn class="me-2" color="primary" @click="openBuyDialog"
             >Kaufen</v-btn
-          >
+          > -->
           <!-- <v-btn class="me-2" color="primary">Verkaufen</v-btn> -->
         </div>
       </v-card-actions>
       <v-card-actions>
-        <!-- <div class="mx-auto">
+        <div class="mx-auto">
           <v-btn class="me-1" color="primary" :to="`/Dashboard/${comp_id}`"
             >Zurück zum competetion</v-btn
           >
-        </div> -->
+        </div>
       </v-card-actions>
       <v-card-actions>
         <div class="d-flex  justify-center align-center">
           <Chart
             :chartdata="chartData"
-            :options="options"
+            :options="chartOptions"
             :key="componentRefreshKey"
           />
         </div>
@@ -100,14 +100,21 @@ export default {
       datum: new Date(),
       test: [],
       loaded: false,
-      chartOptions: {},
+      chartOptions: {
+        elements: {
+          point: {
+            radius: 0,
+          },
+        },
+      },
       buyDialog: false,
       chartData: {
         labels: [],
         datasets: [
           {
             backgroundColor: '#f87979',
-
+            type: 'line',
+            borderColor: '#f87979',
             data: [],
           },
         ],
@@ -163,6 +170,7 @@ export default {
           `https://heroku-porftolio-crawler.herokuapp.com/kursByTime/${this.isin}?date=${yesterdayDate}`
         )
       ).data;
+      // console.log(this.akByTime);
       this.wertExtraktion();
 
       for (let elm of this.akByTime) {
@@ -184,7 +192,26 @@ export default {
       ).data;
       this.wertExtraktion();
       this.datum = yesterdayDate;
+      this.chartData.datasets[0].data = [];
+      this.chartData.labels = [];
+      for (let elm of this.akByTime) {
+        // this.chartData.datasets.data.push(elm.wert);
+        this.test.push(elm.wert);
+        let zeitMod = elm.zeit.split('T');
+        console.log(zeitMod);
+        let datum = zeitMod[0];
+        let zeit = zeitMod[1].split('.')[0];
+        let datumZeit = `${zeit} ${datum}`;
+        this.chartData.labels.push(datumZeit);
+      }
+      this.chartData.datasets[0].data = this.test;
+      console.log(this.chartData.labels);
+      console.log(this.chartData.datasets[0].data);
+      this.wertExtraktion();
       console.log(this.datum);
+      this.loaded = true;
+      this.forceRerender();
+      // console.log(this.datum);
     },
     async oneMonth() {
       const today = new Date();
@@ -217,7 +244,12 @@ export default {
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
-        this.chartData.labels.push(elm.zeit);
+        let zeitMod = elm.zeit.split('T');
+        console.log(zeitMod);
+        let datum = zeitMod[0];
+        let zeit = zeitMod[1].split('.')[0];
+        let datumZeit = `${zeit} ${datum}`;
+        this.chartData.labels.push(datumZeit);
       }
       this.chartData.datasets[0].data = this.test;
       console.log(this.chartData.labels);

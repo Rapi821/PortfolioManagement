@@ -282,6 +282,9 @@
           <v-btn @click="buyStock" small class="primary  mt-2 mb-2"
             >Kaufen</v-btn
           >
+          <v-btn @click="closeBuy" small class="primary  mt-2 mb-2"
+            >Cancel</v-btn
+          >
         </v-card-action>
       </v-card>
     </v-dialog>
@@ -309,6 +312,9 @@ export default {
       this.curAk = item;
       this.buyDialog = true;
       // this.dialog = false;
+    },
+    closeBuy() {
+      this.buyDialog = false;
     },
     sellAkCount() {
       if (this.sellPrice > this.curAk.wert) {
@@ -350,19 +356,22 @@ export default {
       this.createAkForTable();
     },
     async sellAk() {
-      console.log(this.sellPrice);
-      console.log(this.curAk.wert);
+      // console.log(this.sellPrice);
+      console.log(this.curAk);
       let newCount = (this.sellPrice / this.curAk.wert).toFixed(2);
       console.log(newCount);
       let obj = {
         isin: this.curAk.isin,
         sell_price: this.sellPrice,
+        buy_price: Number(this.curAk.buy_price),
         competition_id: this.comp_id,
         count: Number(newCount),
       };
+      console.log(obj);
       // console.log(obj);
       await server.post(`http://localhost:3000/user/sellStocks`, obj);
       this.getComps();
+      this.createAkForTable();
     },
     createAktie() {
       // Funktion die alle Aktein mit deren Kruse bekommt
