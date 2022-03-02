@@ -101,11 +101,18 @@ export default {
       test: [],
       loaded: false,
       chartOptions: {
+        plugins:{   
+             legend: {
+               display: false
+                     },
+                  },
+             
         elements: {
           point: {
             radius: 0,
           },
         },
+        
       },
       buyDialog: false,
       chartData: {

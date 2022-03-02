@@ -26,7 +26,7 @@
         <div class="d-flex  justify-center align-center">
           <Chart
             :chartdata="chartData"
-            :options="options"
+            :options="chartOptions"
             :key="componentRefreshKey"
           />
         </div>
@@ -63,7 +63,14 @@ export default {
       datum: new Date(),
       test: [],
       loaded: false,
-      chartOptions: {},
+      chartOptions: {
+       legend: {
+            display: false
+         },//geht wahrscheinlich nicht
+         tooltips: {
+            enabled: false
+         }},
+
       chartData: {
         labels: [],
         datasets: [
@@ -74,6 +81,7 @@ export default {
           },
         ],
       },
+      
       akInfo: [],
       akKurs: [],
       akByTime: [],

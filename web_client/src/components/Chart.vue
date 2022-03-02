@@ -16,6 +16,11 @@ export default {
     options: {
       type: Object,
       default: null,
+      // plugins:{   
+      //     legend: {
+      //          display: false,
+      //             },
+      //         }
     },
   },
   mounted() {
