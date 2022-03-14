@@ -1,52 +1,8 @@
 <template>
   <div>
     <TopBarMarket />
-    <v-card width="0px"
-      ><!--Keine Gute Lösung aber mal schauen  -->
-      <v-card-actions>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Competition erstellen</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="competetion.title"
-                      label="Titel"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="competetion.starting_money"
-                      label="Startgeld"
-                    ></v-text-field> </v-col
-                  ><v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="competetion.end_date"
-                      label="End Datum"
-                    ></v-text-field> </v-col
-                ></v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="createCompetition">
-                Create
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog></v-card-actions
-      >
-    </v-card>
-
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
+    <v-container fill-height fluid>
+      <v-row d-flex align="center" justify="center">
         <v-col cols="12" sm="8">
           <div class=" text-h4 mb-1">
             Hallo {{ user.firstname }} {{ user.lastname }}!
@@ -112,60 +68,103 @@
 
     <!-- <h3>Testbuttons für Routen</h3> -->
     <!-- TEST BUTTONS FÜR ROUTEN -->
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        compEnter({
-          code: 'V12FO3FWNY',
-        })
-      "
-    >
-      Competition Beitreten
-    </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        buyStock({
-          isin: 'US5949181045',
-          buy_price: 100.12,
-          count: 10,
-          competition_id: 0,
-        })
-      "
-    >
-      Kaufe Aktien
-    </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        sellStocks({
-          isin: 'US5949181045',
-          sell_price: 100,
-          competition_id: 0,
-          count: 10,
-        })
-      "
-    >
-      Aktien verkaufen
-    </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        getRecords({
-          competition_id: 0,
-        })
-      "
-    >
-      Get Records
-    </v-btn>
+    <!-- <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              compEnter({
+                code: 'V12FO3FWNY',
+              })
+            "
+          >
+            Competition Beitreten
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              buyStock({
+                isin: 'US5949181045',
+                buy_price: 100.12,
+                count: 10,
+                competition_id: 0,
+              })
+            "
+          >
+            Kaufe Aktien
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              sellStocks({
+                isin: 'US5949181045',
+                sell_price: 100,
+                competition_id: 0,
+                count: 10,
+              })
+            "
+          >
+            Aktien verkaufen
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              getRecords({
+                competition_id: 0,
+              })
+            "
+          >
+            Get Records
+          </v-btn>
 
-    <v-btn color="blue darken-1" text @click="getCompetition('0')">
-      Get Data für eine Competition
-    </v-btn>
+          <v-btn color="blue darken-1" text @click="getCompetition('0')">
+            Get Data für eine Competition
+          </v-btn> -->
+    <!--Keine Gute Lösung aber mal schauen  -->
+    <v-card width="0px">
+      <v-card-actions>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Competition erstellen</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="competetion.title"
+                      label="Titel"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="competetion.starting_money"
+                      label="Startgeld"
+                    ></v-text-field> </v-col
+                  ><v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="competetion.end_date"
+                      label="End Datum"
+                    ></v-text-field> </v-col
+                ></v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="createCompetition">
+                Create
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog></v-card-actions
+      >
+    </v-card>
   </div>
 </template>
 
