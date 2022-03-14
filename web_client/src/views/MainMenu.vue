@@ -1,13 +1,9 @@
 <template>
   <div>
     <TopBarMarket />
-    <v-card max-width="700px" class="mx-auto mt-2 elevation-2">
-      <v-card-title>Deine Competitions</v-card-title>
-      <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
-      <v-card-actions
-        ><v-btn @click="compCreate" class="btn" color="primary"
-          >Competition Erstellen</v-btn
-        >
+    <v-card width="0px"
+      ><!--Keine Gute Lösung aber mal schauen  -->
+      <v-card-actions>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-title>
@@ -52,8 +48,12 @@
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8">
-          <div class=" text-h5 mb-2">
-            Competitions
+          <div class=" text-h4 mb-1">
+            Hallo {{ user.firstname }} {{ user.lastname }}!
+          </div>
+          <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
+          <div class=" text-h6 font-weight-light">
+            Deine Competitions
           </div>
           <v-data-table
             :headers="headers"
@@ -102,6 +102,9 @@
           </v-data-table>
           <v-btn @click="compEnter" class="btn mt-2" color="primary"
             >Competition Beitreten</v-btn
+          >
+          <v-btn @click="compCreate" class="btn mt-2 ml-2" color="primary"
+            >Competition Erstellen</v-btn
           ></v-col
         ></v-row
       >
