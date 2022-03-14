@@ -24,13 +24,7 @@
           <!-- <v-btn class="me-2" color="primary">Verkaufen</v-btn> -->
         </div>
       </v-card-actions>
-      <v-card-actions>
-        <div class="mx-auto">
-          <v-btn class="me-1" color="primary" :to="`/Dashboard/${comp_id}`"
-            >Zurück zum competetion</v-btn
-          >
-        </div>
-      </v-card-actions>
+      <v-card-actions> </v-card-actions>
       <v-card-actions>
         <div class="d-flex  justify-center align-center">
           <Chart
@@ -50,6 +44,11 @@
         </div>
       </v-card-actions>
     </v-card>
+    <div class="mx-auto">
+      <v-btn color="primary" :to="`/Dashboard/${comp_id}`"
+        >Zurück zur competetion "{{ competetion[comp_id].title }}"</v-btn
+      >
+    </div>
     <!-- <span>{{ akByTimeWert }}</span> -->
 
     <!-- weggeben -->
@@ -92,6 +91,7 @@
 import Chart from "../components/Chart";
 import TopBarMarket from "../components/TopBarMarket.vue";
 import axios from "axios";
+import server from "@/serverInterface";
 export default {
   name: "Market",
   data() {
@@ -99,6 +99,7 @@ export default {
       componentRefreshKey: 0,
       datum: new Date(),
       test: [],
+      competetion: [],
       loaded: false,
       chartOptions: {
         plugins: {
@@ -156,6 +157,7 @@ export default {
     // this.oneMonth();
   },
   methods: {
+    async getCompbyID() {},
     forceRerender() {
       this.componentRefreshKey += 1;
     },
@@ -173,6 +175,7 @@ export default {
           `https://heroku-porftolio-crawler.herokuapp.com/akDetailKurs/${this.akInfo.isin}`
         )
       ).data;
+      // console.log(this.akKurs);
     },
     async oneDay() {
       const today = new Date();
@@ -213,17 +216,17 @@ export default {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
         let zeitMod = elm.zeit.split("T");
-        console.log(zeitMod);
+        // console.log(zeitMod);
         let datum = zeitMod[0];
         let zeit = zeitMod[1].split(".")[0];
         let datumZeit = `${zeit} ${datum}`;
         this.chartData.labels.push(datumZeit);
       }
       this.chartData.datasets[0].data = this.test;
-      console.log(this.chartData.labels);
-      console.log(this.chartData.datasets[0].data);
+      // console.log(this.chartData.labels);
+      // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
-      console.log(this.datum);
+      // console.log(this.datum);
       this.loaded = true;
       this.forceRerender();
       // console.log(this.datum);
@@ -260,7 +263,7 @@ export default {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
         let zeitMod = elm.zeit.split("T");
-        console.log(zeitMod);
+        // console.log(zeitMod);
         let datum = zeitMod[0];
         let zeit = zeitMod[1].split(".")[0];
         let datumZeit = `${zeit} ${datum}`;
@@ -270,8 +273,8 @@ export default {
       //Hier this.test array reversen
       this.test.reverse();
       this.chartData.datasets[0].data = this.test;
-      console.log(this.chartData.labels);
-      console.log(this.chartData.datasets[0].data);
+      // console.log(this.chartData.labels);
+      // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
       // console.log(this.datum);
       this.loaded = true;
@@ -294,7 +297,14 @@ export default {
         `https://heroku-porftolio-crawler.herokuapp.com/akDetail/${this.isin}`
       )
     ).data[0];
+    this.competetion = (
+      await server.get(`http://localhost:3000/user/competitions`)
+    ).data;
+
+    console.log(this.competetion);
+
     this.getKurs();
+    // this.getCompbyID();
   },
 
   props: {
