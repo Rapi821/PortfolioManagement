@@ -4,9 +4,7 @@
     <v-container fill-height fluid>
       <v-row d-flex align="center" justify="center">
         <v-col cols="12" sm="8">
-          <div class=" text-h4 mb-1">
-            Hallo {{ user.firstname }} {{ user.lastname }}!
-          </div>
+          <div class=" text-h4 mb-1">Hallo {{ user.firstname }}!</div>
           <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
           <div class=" text-h6 font-weight-light">
             Deine Competitions
@@ -55,7 +53,6 @@
             <template v-slot:[`item.active`]="{ item }">
               <v-chip
                 dark
-                
                 outlined
                 :color="getColor(item.active)"
                 v-if="item.active"
