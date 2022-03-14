@@ -44,11 +44,33 @@
               </div>
             </template>
             <template v-slot:[`item.title`]="{ item }">
-              <span
-                ><router-link :to="`/Dashboard/${item.competition_id}`">{{
-                  item.title
-                }}</router-link></span
+              <v-chip color="primary" outlined label
+                ><router-link
+                  style="text-decoration: none; "
+                  :to="`/Dashboard/${item.competition_id}`"
+                  >{{ item.title }}</router-link
+                ></v-chip
               >
+            </template>
+            <template v-slot:[`item.active`]="{ item }">
+              <v-chip
+                dark
+                
+                outlined
+                :color="getColor(item.active)"
+                v-if="item.active"
+              >
+                {{ "aktiv" }}
+              </v-chip>
+              <v-chip
+                dark
+                label
+                outlined
+                :color="getColor(item.active)"
+                v-if="item.active == false"
+              >
+                {{ "inaktiv" }}
+              </v-chip>
             </template>
             <!-- <template v-slot:item.cash="{ item }">
               <span>
@@ -176,6 +198,10 @@ export default {
     TopBarMarket,
   },
   methods: {
+    getColor(active) {
+      if (active) return "green";
+      else return "red";
+    },
     async getRecords(obj) {
       const x = (
         await server.get(

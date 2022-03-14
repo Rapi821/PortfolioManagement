@@ -2,9 +2,8 @@
   <div>
     <TopBarMarket :comp_id="comp_id" />
 
-    <div class="d-flex  z">
-      <div class="d-none d-xl-flex b"></div>
-      <div class="mar">
+    <div class="d-flex b">
+      <div>
         <div class=" text-h5 mb-2">
           Dashboard
         </div>
@@ -18,7 +17,7 @@
                 {{
                   parseInt(portValue)
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </v-list-item-title>
               <div class="text-overline mb-4">
@@ -28,7 +27,7 @@
                 {{
                   parseInt(cash)
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </v-list-item-title>
               <div class="text-overline mb-4">
@@ -38,7 +37,7 @@
                 {{
                   parseInt(akValue)
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </v-list-item-title>
             </v-list-item-content>
@@ -46,7 +45,7 @@
         </v-card>
       </div>
 
-      <div class="ml-8">
+      <div class="z">
         <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
         <v-data-table
           :headers="headers"
@@ -58,7 +57,7 @@
               {{
                 parseInt(item.wert)
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
               }}
             </div>
           </template>
@@ -67,7 +66,7 @@
               {{
                 parseInt(item.buy_price)
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
               }}
             </div>
           </template>
@@ -76,7 +75,7 @@
               {{
                 parseInt(item.count)
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
               }}
             </div>
           </template>
@@ -291,9 +290,9 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import TopBarMarket from '../components/TopBarMarket.vue';
-import server from '@/serverInterface';
+import axios from "axios";
+import TopBarMarket from "../components/TopBarMarket.vue";
+import server from "@/serverInterface";
 
 export default {
   components: {
@@ -330,7 +329,7 @@ export default {
       this.visible = true;
     },
     async getData() {
-      this.user = (await server.get('http://localhost:3000/user/data')).data;
+      this.user = (await server.get("http://localhost:3000/user/data")).data;
       console.log(this.user);
     },
     async getStocks() {
@@ -342,7 +341,7 @@ export default {
       console.log(this.stocks);
     },
     async buyStock() {
-      console.log('buy');
+      console.log("buy");
       let newItem = {
         isin: this.curAk.isin,
         buy_price: this.curAk.kurs,
@@ -404,7 +403,7 @@ export default {
       let ak = {};
       let kurs = {};
       for (let a of this.stocks) {
-        if (a.isin != '0000') {
+        if (a.isin != "0000") {
           kurs = this.akData.find((e) => e.isin == a.isin);
           ak = {
             name: this.akInfo.find((e) => e.isin == a.isin).title,
@@ -428,10 +427,10 @@ export default {
     await this.getData();
     await this.getStocks();
     this.akInfo = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
     ).data;
     this.akKurs = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
     ).data;
     this.createAktie();
     this.createAkForTable();
@@ -459,31 +458,31 @@ export default {
       stocks: [],
       headers: [
         {
-          text: 'Name',
-          align: 'start',
-          value: 'name',
+          text: "Name",
+          align: "start",
+          value: "name",
         },
         {
-          text: 'Isin',
-          align: 'start',
+          text: "Isin",
+          align: "start",
           sortable: false,
-          value: 'isin',
+          value: "isin",
         },
-        { text: 'Wert', value: 'wert' },
-        { text: 'Kaufpreis', value: 'buy_price' },
-        { text: 'Count?', value: 'count' },
-        { text: '', value: 'verkaufen' },
+        { text: "Wert", value: "wert" },
+        { text: "Kaufpreis", value: "buy_price" },
+        { text: "Count?", value: "count" },
+        { text: "", value: "verkaufen" },
       ],
       headersKaufen: [
         {
-          text: 'Name',
-          align: 'center',
+          text: "Name",
+          align: "center",
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: 'Kaufen', value: 'actions', sortable: false },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "Kaufen", value: "actions", sortable: false },
       ],
     };
   },
@@ -496,11 +495,10 @@ export default {
 </script>
 <style>
 .z {
-  margin-top: 150px; /* Nur Vorübergehend! */
+  margin-left: 7vw;
 }
 .b {
-  width: 300px; /* entfernung von linkem bildschirmrand */
-  height: 100%;
+  margin-left: 20vw;
 }
 .bod {
   height: 100%;
