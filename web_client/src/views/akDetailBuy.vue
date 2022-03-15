@@ -5,6 +5,9 @@
       <v-row no-gutters class="mt-n12">
         <v-col cols="12" sm="2" class="mr-n2"> </v-col>
         <v-col cols="12" sm="5">
+          <div class=" text-h5 mt-n8 font-weight-light">
+            {{ akInfo.title }}
+          </div>
           <v-card outlined>
             <!-- <v-card-title justify="center" class="mx-auto">{{
               akInfo.title
@@ -28,7 +31,37 @@
             /> </v-card
         ></v-col>
         <v-col cols="12" sm="1"> </v-col>
-        <v-col cols="12" sm="2" class=""><v-card>test</v-card> </v-col>
+        <v-col cols="12" sm="2" class="">
+          <!-- Buysellwindow nicht so gut mit padding maybe noch ändern -->
+          <v-card class="buysellwindow"
+            ><div class="textfields d-flex justify-space-between">
+              <div class="text-h8 font-weight-light">
+                Zeitraum
+              </div>
+              <div class="text-h8 font-weight-light">
+                Veränderung
+              </div>
+            </div>
+            <div class="textfields mt-4 d-flex justify-space-between">
+              <div class="text-h5 ">
+                Tag
+              </div>
+              <div class="text-h5 ">{{ this.dailyPerChange }}%</div>
+            </div>
+            <div class="textfields mt-1 d-flex justify-space-between">
+              <div class="text-h5 ">
+                Woche
+              </div>
+              <div class="text-h5 ">{{ this.weeklyPerChange }}%</div>
+            </div>
+            <div class="textfields mt-1 d-flex justify-space-between">
+              <div class="text-h5 ">
+                Monat
+              </div>
+              <div class="text-h5 ">{{ this.monthlyPerChange }}%</div>
+            </div></v-card
+          >
+        </v-col>
         <v-col cols="12" sm="2"> </v-col>
       </v-row>
     </v-container>
@@ -91,6 +124,9 @@ export default {
   name: "Market",
   data() {
     return {
+      weeklyPerChange: 0,
+      dailyPerChange: 0,
+      monthlyPerChange: 0,
       dialog: true,
       loading: false,
       componentRefreshKey: 0,
@@ -147,6 +183,12 @@ export default {
       akKurs: [],
       akByTime: [],
       akByTimeWert: [],
+      basisWeek: 0,
+      week: 0,
+      basisMonth: 0,
+      month: 0,
+      basisday: 0,
+      day: 0,
     };
   },
   // watch: {
@@ -172,6 +214,35 @@ export default {
     // this.oneMonth();
   },
   methods: {
+    getWeeklyPerChange() {
+      // console.log(this.test);
+      this.basisWeek = parseInt(this.test[this.test.length - 1]);
+      // console.log(this.basisWeek);
+      this.week = parseInt(this.test[this.test.length - 15]);
+      // console.log(this.week);
+      this.weeklyPerChange = parseInt(
+        ((this.week - this.basisWeek) / this.basisWeek) * 100
+      );
+      //console.log(this.weeklyPerChange);
+      // console.log("hallo");
+      // console.log(this.test.length);
+    },
+    getDailyPerChange() {
+      this.basisday = parseInt(this.test[this.test.length - 1]);
+      this.day = parseInt(this.test[this.test.length - 5]);
+      this.dailyPerChange = parseInt(
+        ((this.day - this.basisday) / this.basisday) * 100
+      );
+    },
+    getMonthlyPerChange() {
+      this.basisMonth = parseInt(this.test[this.test.length - 1]);
+      console.log(this.basisMonth);
+      this.month = parseInt(this.test[this.test.length - 61]);
+      console.log(this.month);
+      this.monthlyPerChange = parseInt(
+        ((this.month - this.basisMonth) / this.basisMonth) * 100
+      );
+    },
     async getCompbyID() {},
     forceRerender() {
       this.componentRefreshKey += 1;
@@ -288,6 +359,10 @@ export default {
       //Hier this.test array reversen
       this.test.reverse();
       this.chartData.datasets[0].data = this.test;
+      // console.log(this.test);
+      this.getWeeklyPerChange();
+      this.getMonthlyPerChange();
+      this.getDailyPerChange();
       // console.log(this.chartData.labels);
       // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
@@ -317,11 +392,12 @@ export default {
       await server.get(`http://localhost:3000/user/competitions`)
     ).data;
 
-    console.log(this.competetion);
+    // console.log(this.competetion);
 
     this.getKurs();
     // this.getCompbyID();
     this.oneMonth();
+
     this.loading = false;
   },
 

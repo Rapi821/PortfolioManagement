@@ -88,7 +88,7 @@ export default {
         if (wert == undefined) {
           wert = { wert: 1 };
         }
-        el.kurs = wert.wert;
+        el.kurs = wert.wert;  
       }
       // console.log(this.akData);
     },

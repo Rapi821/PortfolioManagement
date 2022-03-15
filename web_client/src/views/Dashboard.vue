@@ -1,115 +1,121 @@
 <template>
-  <div>
+  <div class="fill-height">
     <TopBarMarket :comp_id="comp_id" />
-
-    <div class="d-flex b">
-      <div>
-        <div class=" text-h5 mb-2">
-          Dashboard
-        </div>
-        <v-card :loading="loading" class="elevation-0" max-width="200">
-          <template slot="progress">
-            <v-progress-linear
-              color="primary"
-              indeterminate
-              height="2"
-            ></v-progress-linear>
-          </template>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class=" text-overline mb-4">
-                Portfolio Wert
-              </div>
-              <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
-                {{
-                  parseInt(portValue)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-                }}
-              </v-list-item-title>
-              <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
-                -
-              </v-list-item-title>
-              <div class="text-overline mb-4">
-                Verfügbares Geld
-              </div>
-              <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
-                {{
-                  parseInt(cash)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-                }}
-              </v-list-item-title>
-              <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
-                -
-              </v-list-item-title>
-              <div class="text-overline mb-4">
-                Aktien Wert
-              </div>
-              <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
-                {{
-                  parseInt(akValue)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-                }}
-              </v-list-item-title>
-              <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
-                -
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
-      </div>
-
-      <div class="z">
-        <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
-        <v-data-table
-          :loading="loading"
-          :headers="headers"
-          :items="akHave"
-          class="elevation-0 ms-5"
+    <v-container class="fill-height " fluid>
+      <v-row no-gutters class="mt-n12">
+        <v-col cols="12" sm="2"></v-col>
+        <v-col cols="12" sm="2"
+          ><div>
+            <div class=" text-h5 mb-2">
+              Dashboard
+            </div>
+            <v-card :loading="loading" class="elevation-0" max-width="200">
+              <template slot="progress">
+                <v-progress-linear
+                  color="primary"
+                  indeterminate
+                  height="2"
+                ></v-progress-linear>
+              </template>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div class=" text-overline mb-4">
+                    Portfolio Wert
+                  </div>
+                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                    {{
+                      parseInt(portValue)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                    -
+                  </v-list-item-title>
+                  <div class="text-overline mb-4">
+                    Verfügbares Geld
+                  </div>
+                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                    {{
+                      parseInt(cash)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                    -
+                  </v-list-item-title>
+                  <div class="text-overline mb-4">
+                    Aktien Wert
+                  </div>
+                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                    {{
+                      parseInt(akValue)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                    -
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
+          </div></v-col
         >
-          <template v-slot:[`item.wert`]="{ item }">
-            <div>
-              {{
-                parseInt(item.wert)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-              }}
-            </div>
-          </template>
-          <template v-slot:[`item.buy_price`]="{ item }">
-            <div>
-              {{
-                parseInt(item.buy_price)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-              }}
-            </div>
-          </template>
-          <template v-slot:[`item.count`]="{ item }">
-            <div>
-              {{
-                parseInt(item.count)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-              }}
-            </div>
-          </template>
-          <template v-slot:[`item.verkaufen`]="{ item }">
-            <v-btn
-              @click="openSellDialog(item)"
-              small
-              plain
-              class="primary  mt-2 mb-2 me-2"
-              >Verkaufen</v-btn
-            >
-          </template>
-        </v-data-table>
-      </div>
 
-      <!-- <div class="d-none d-xl-flex b"></div> -->
-    </div>
+        <v-col cols="12" sm="5"
+          ><div class="z">
+            <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
+            <v-data-table
+              :loading="loading"
+              :headers="headers"
+              :items="akHave"
+              class="elevation-0 ms-5"
+            >
+              <template v-slot:[`item.wert`]="{ item }">
+                <div>
+                  {{
+                    parseInt(item.wert)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                  }}
+                </div>
+              </template>
+              <template v-slot:[`item.buy_price`]="{ item }">
+                <div>
+                  {{
+                    parseInt(item.buy_price)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                  }}
+                </div>
+              </template>
+              <template v-slot:[`item.count`]="{ item }">
+                <div>
+                  {{
+                    parseInt(item.count)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                  }}
+                </div>
+              </template>
+              <template v-slot:[`item.verkaufen`]="{ item }">
+                <v-btn
+                  @click="openSellDialog(item)"
+                  small
+                  plain
+                  class="primary  mt-2 mb-2 me-2"
+                  >Verkaufen</v-btn
+                >
+              </template>
+            </v-data-table>
+          </div></v-col
+        >
+        <v-col cols="12" sm="2"></v-col>
+      </v-row>
+    </v-container>
+
     <div>
       <!-- <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn> -->
       <v-btn @click="sellbuy" class="mx-auto" color="sucess">Kaufen</v-btn>
@@ -513,7 +519,7 @@ export default {
 };
 </script>
 <style>
-.z {
+/* .z {
   margin-left: 7vw;
 }
 .b {
@@ -527,7 +533,7 @@ export default {
 }
 .mar2 {
   margin-right: 630px;
-}
+} */
 .buysellwindow {
   padding: 7%;
 }
