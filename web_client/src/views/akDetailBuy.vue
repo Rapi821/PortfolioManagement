@@ -1,11 +1,11 @@
 <template>
   <div>
     <TopBarMarket :comp_id="comp_id" />
-    <v-container fill-height>
+    <v-container>
       <v-row no-gutters>
         <v-col cols="12" sm="2" class="mr-n2"> </v-col>
-        <v-col cols="12" sm="5">
-          <v-card height="52vh" outlined>
+        <v-col  cols="12" sm="5">
+          <v-card  outlined>
             <!-- <v-card-title justify="center" class="mx-auto">{{
               akInfo.title
             }}</v-card-title> -->
@@ -20,13 +20,12 @@
                 <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
               </v-row>
             </v-card-text> -->
-            <div class="chart-wrapper">
-              <Chart
-                :chartdata="chartData"
-                :options="chartOptions"
-                :key="componentRefreshKey"
-              />
-            </div> </v-card
+
+            <Chart
+              :chartdata="chartData"
+              :options="chartOptions"
+              :key="componentRefreshKey"
+            /> </v-card
         ></v-col>
         <v-col cols="12" sm="1"> </v-col>
         <v-col cols="12" sm="2" class=""><v-card>test</v-card> </v-col>
