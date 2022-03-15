@@ -1,40 +1,39 @@
 <template>
-  <div class="fill-height">
+  <div>
     <TopBarMarket :comp_id="comp_id" />
-    <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
-      <v-card-title justify="center" class="mx-auto">{{
-        akInfo.title
-      }}</v-card-title>
-      <v-card-text>
-        <!-- <v-row>
+    <v-container fill-height>
+      <v-row no-gutters>
+        <v-col cols="12" sm="2" class="mr-n2"> </v-col>
+        <v-col cols="12" sm="5">
+          <v-card height="52vh" outlined>
+            <!-- <v-card-title justify="center" class="mx-auto">{{
+              akInfo.title
+            }}</v-card-title> -->
+            <!-- <v-card-text> -->
+            <!-- <v-row>
           <div>
             <b>ISIN:</b> {{ akInfo.isin }} <b> WKN:</b>
             {{ akInfo.wkn }}  //Denke nicht dass das wichtig ist zu sehen oder?
           </div>
         </v-row> -->
-        <v-row>
-          <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <div class="mx-auto">
-          <!-- <v-btn class="me-2" color="primary" @click="openBuyDialog"
-            >Kaufen</v-btn
-          > -->
-          <!-- <v-btn class="me-2" color="primary">Verkaufen</v-btn> -->
-        </div>
-      </v-card-actions>
-      <v-card-actions>
-        <div class="d-flex  justify-center align-center">
-          <Chart
-            :chartdata="chartData"
-            :options="chartOptions"
-            :key="componentRefreshKey"
-          />
-        </div>
-      </v-card-actions>
-      
-    </v-card>
+            <!-- <v-row>
+                <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
+              </v-row>
+            </v-card-text> -->
+            <div class="chart-wrapper">
+              <Chart
+                :chartdata="chartData"
+                :options="chartOptions"
+                :key="componentRefreshKey"
+              />
+            </div> </v-card
+        ></v-col>
+        <v-col cols="12" sm="1"> </v-col>
+        <v-col cols="12" sm="2" class=""><v-card>test</v-card> </v-col>
+        <v-col cols="12" sm="2"> </v-col>
+      </v-row>
+    </v-container>
+
     <div class="mx-auto">
       <v-btn class="me-1" color="primary" @click="oneDay()">1 Tag</v-btn>
       <v-btn class="me-1" color="primary" @click="oneWeek()">1 Woche</v-btn>
@@ -45,6 +44,7 @@
         >Zurück zur competetion "{{ competetion[comp_id].title }}"</v-btn
       >
     </div>
+
     <!-- <span>{{ akByTimeWert }}</span> -->
 
     <!-- weggeben -->
@@ -100,6 +100,17 @@ export default {
       competetion: [],
       loaded: false,
       chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            top: 10,
+            // Nicht responive nicht so nice
+            right: 20,
+            bottom: 10,
+          },
+        },
         plugins: {
           legend: {
             display: false,
@@ -311,6 +322,7 @@ export default {
 
     this.getKurs();
     // this.getCompbyID();
+    this.oneMonth();
     this.loading = false;
   },
 
@@ -325,4 +337,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.test {
+  // padding-top: 10vh;
+  // padding-bottom: 10vh;
+  //height: 109px;
+}
+.chart-wrapper {
+  border: 1px solid blue;
+  height: 600px;
+  width: 600px;
+}
+</style>
