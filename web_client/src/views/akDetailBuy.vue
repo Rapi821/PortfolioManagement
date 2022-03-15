@@ -4,8 +4,8 @@
     <v-container>
       <v-row no-gutters>
         <v-col cols="12" sm="2" class="mr-n2"> </v-col>
-        <v-col  cols="12" sm="5">
-          <v-card  outlined>
+        <v-col cols="12" sm="5">
+          <v-card outlined>
             <!-- <v-card-title justify="center" class="mx-auto">{{
               akInfo.title
             }}</v-card-title> -->
@@ -32,8 +32,8 @@
         <v-col cols="12" sm="2"> </v-col>
       </v-row>
     </v-container>
-
-    <div class="mx-auto">
+    <!-- Wichtig nicht löschen!!!! -->
+    <!-- <div class="mx-auto">
       <v-btn class="me-1" color="primary" @click="oneDay()">1 Tag</v-btn>
       <v-btn class="me-1" color="primary" @click="oneWeek()">1 Woche</v-btn>
       <v-btn class="me-1" color="primary" @click="oneMonth()">1 Monat</v-btn>
@@ -42,8 +42,8 @@
       <v-btn color="primary" :to="`/Dashboard/${comp_id}`"
         >Zurück zur competetion "{{ competetion[comp_id].title }}"</v-btn
       >
-    </div>
-
+    </div> -->
+    <!-- Wichtig nicht löschen!!!! -->
     <!-- <span>{{ akByTimeWert }}</span> -->
 
     <!-- weggeben -->
