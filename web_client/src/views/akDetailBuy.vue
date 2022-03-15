@@ -6,12 +6,12 @@
         akInfo.title
       }}</v-card-title>
       <v-card-text>
-        <v-row>
+        <!-- <v-row>
           <div>
             <b>ISIN:</b> {{ akInfo.isin }} <b> WKN:</b>
-            {{ akInfo.wkn }}
+            {{ akInfo.wkn }}  //Denke nicht dass das wichtig ist zu sehen oder?
           </div>
-        </v-row>
+        </v-row> -->
         <v-row>
           <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
         </v-row>
@@ -24,7 +24,6 @@
           <!-- <v-btn class="me-2" color="primary">Verkaufen</v-btn> -->
         </div>
       </v-card-actions>
-      <v-card-actions> </v-card-actions>
       <v-card-actions>
         <div class="d-flex  justify-center align-center">
           <Chart
@@ -34,16 +33,13 @@
           />
         </div>
       </v-card-actions>
-      <v-card-actions>
-        <div class="mx-auto">
-          <v-btn class="me-1" color="primary" @click="oneDay()">1 Tag</v-btn>
-          <v-btn class="me-1" color="primary" @click="oneWeek()">1 Woche</v-btn>
-          <v-btn class="me-1" color="primary" @click="oneMonth()"
-            >1 Monat</v-btn
-          >
-        </div>
-      </v-card-actions>
+      
     </v-card>
+    <div class="mx-auto">
+      <v-btn class="me-1" color="primary" @click="oneDay()">1 Tag</v-btn>
+      <v-btn class="me-1" color="primary" @click="oneWeek()">1 Woche</v-btn>
+      <v-btn class="me-1" color="primary" @click="oneMonth()">1 Monat</v-btn>
+    </div>
     <div class="mx-auto">
       <v-btn color="primary" :to="`/Dashboard/${comp_id}`"
         >Zurück zur competetion "{{ competetion[comp_id].title }}"</v-btn
@@ -96,6 +92,8 @@ export default {
   name: "Market",
   data() {
     return {
+      dialog: true,
+      loading: false,
       componentRefreshKey: 0,
       datum: new Date(),
       test: [],
@@ -141,6 +139,13 @@ export default {
       akByTimeWert: [],
     };
   },
+  // watch: {
+  //   dialog(val) {
+  //     if (!val) return;
+
+  //     setTimeout(() => (this.dialog = false), 4000);
+  //   },
+  // },
   async mounted() {
     // this.loaded = false
     // try {
@@ -292,6 +297,7 @@ export default {
     TopBarMarket,
   },
   async created() {
+    this.loading = true;
     this.akInfo = (
       await axios.get(
         `https://heroku-porftolio-crawler.herokuapp.com/akDetail/${this.isin}`
@@ -305,6 +311,7 @@ export default {
 
     this.getKurs();
     // this.getCompbyID();
+    this.loading = false;
   },
 
   props: {
