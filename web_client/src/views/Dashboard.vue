@@ -7,38 +7,54 @@
         <div class=" text-h5 mb-2">
           Dashboard
         </div>
-        <v-card class="elevation-0" max-width="200">
+        <v-card :loading="loading" class="elevation-0" max-width="200">
+          <template slot="progress">
+            <v-progress-linear
+              color="primary"
+              indeterminate
+              height="2"
+            ></v-progress-linear>
+          </template>
           <v-list-item three-line>
             <v-list-item-content>
               <div class=" text-overline mb-4">
                 Portfolio Wert
               </div>
-              <v-list-item-title class="text-h6 mb-1 mt-n6">
+              <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
                 {{
                   parseInt(portValue)
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </v-list-item-title>
+              <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                -
+              </v-list-item-title>
               <div class="text-overline mb-4">
                 Verfügbares Geld
               </div>
-              <v-list-item-title class="text-h6 mb-1 mt-n6">
+              <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
                 {{
                   parseInt(cash)
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </v-list-item-title>
+              <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                -
+              </v-list-item-title>
               <div class="text-overline mb-4">
                 Aktien Wert
               </div>
-              <v-list-item-title class="text-h6 mb-1 mt-n6">
+              <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
                 {{
                   parseInt(akValue)
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
+              </v-list-item-title>
+              <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                -
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -48,6 +64,7 @@
       <div class="z">
         <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
         <v-data-table
+          :loading="loading"
           :headers="headers"
           :items="akHave"
           class="elevation-0 ms-5"
@@ -424,7 +441,7 @@ export default {
     },
   },
   async created() {
-    await this.getData();
+    (this.loading = true), await this.getData();
     await this.getStocks();
     this.akInfo = (
       await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
@@ -434,9 +451,11 @@ export default {
     ).data;
     this.createAktie();
     this.createAkForTable();
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       akInfo: [],
       akData: [],
       akKurs: [],
