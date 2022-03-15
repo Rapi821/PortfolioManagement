@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="fill-height">
     <TopBarMarket />
-    <v-container fill-height fluid>
-      <v-row d-flex align="center" justify="center">
+    <v-container class="fill-height " fluid>
+      <v-row class="negativMargin" d-flex justify="center">
         <v-col cols="12" sm="8">
           <div class=" text-h4 mb-1">Hallo {{ user.firstname }}!</div>
           <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
@@ -289,4 +289,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.negativMargin {
+  margin-top: -15vh;
+}
+</style>

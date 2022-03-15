@@ -4,7 +4,7 @@
     <!-- <div class="d-none d-xl-flex a"></div> -->
     <!-- <v-spacer></v-spacer> -->
     <v-container class="fill-height " fluid>
-      <v-row align="center" justify="center">
+      <v-row align="center"  justify="center">
         <v-col cols="12" sm="8">
           <v-data-table
             dense
@@ -109,6 +109,9 @@ export default {
 <style>
 .a {
   width: 300px;
+}
+.negativMargin {
+  margin-top: -20vh;
 }
 </style>
 <style lang="sass">

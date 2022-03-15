@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="fill-height">
     <TopBarMarket :comp_id="comp_id" />
-    <v-container>
-      <v-row no-gutters>
+    <v-container class="fill-height " fluid>
+      <v-row no-gutters class="mt-n12">
         <v-col cols="12" sm="2" class="mr-n2"> </v-col>
         <v-col cols="12" sm="5">
           <v-card outlined>
@@ -105,7 +105,7 @@ export default {
           padding: {
             left: 10,
             top: 10,
-            // Nicht responive nicht so nice
+            // Nicht responsive nicht so nice
             right: 20,
             bottom: 10,
           },
