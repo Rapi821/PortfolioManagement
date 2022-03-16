@@ -30,6 +30,7 @@
                         </h4>
                         <v-form>
                           <v-text-field
+                            data-testid="emailLogin"
                             label="Email"
                             name="Email"
                             prepend-icon="mdi-email"
@@ -39,6 +40,7 @@
                           />
 
                           <v-text-field
+                            data-testid="passwordLogin"
                             id="password"
                             label="Passwort"
                             name="password"
@@ -54,7 +56,12 @@
                       </v-card-text>
                       <div class="text-center mt-3 mb-12">
                         <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
-                        <v-btn rounded color="primary" dark @click="loginUser"
+                        <v-btn
+                          data-testid="btnLogin"
+                          rounded
+                          color="primary"
+                          dark
+                          @click="loginUser"
                           >SIGN IN</v-btn
                         >
                       </div>
@@ -70,9 +77,7 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für account erstellen -->
-                        <v-btn rounded outlined dark @click="step++"
-                          >SIGN UP</v-btn
-                        >
+                        <v-btn rounded outlined dark @click="step++">SIGN UP</v-btn>
                       </div>
                     </v-col>
                   </v-row>
@@ -90,9 +95,7 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für anmelden -->
-                        <v-btn rounded outlined dark @click="step--"
-                          >Sign in</v-btn
-                        >
+                        <v-btn rounded outlined dark @click="step--">Sign in</v-btn>
                       </div>
                     </v-col>
 
@@ -162,13 +165,7 @@
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
                         <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
-                        <v-btn
-                          rounded
-                          color="primary"
-                          dark
-                          @click="createAccount"
-                          >SIGN UP</v-btn
-                        >
+                        <v-btn rounded color="primary" dark @click="createAccount">SIGN UP</v-btn>
                       </div>
                     </v-col>
                   </v-row>

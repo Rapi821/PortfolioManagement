@@ -12,15 +12,14 @@
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-col class="ml-12"
-          ><p
-            class=" text-xl-h1 text-lg-h1 text-md-h2 text-no-wrap font-weight-medium"
-          >
+          ><p class=" text-xl-h1 text-lg-h1 text-md-h2 text-no-wrap font-weight-medium">
             Willkommen zu <br />Portfolio-Management
           </p>
           <p class="text-xl-h4 text-lg-h4 text-md-h5 font-weight-light">
             Starte das Abenteuer
           </p>
           <v-btn
+            data-testid="btnstart"
             min-width="200px"
             class="mt-14"
             outlined
@@ -39,7 +38,7 @@
 
 <script>
 export default {
-  name: "Home",
+  name: 'Home',
 
   components: {},
 };

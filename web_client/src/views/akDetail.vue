@@ -3,7 +3,7 @@
     <TopBar />
     <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
       <v-card-title justify="center" class="mx-auto">{{
-        akInfo.title
+        akInfo.title 
       }}</v-card-title>
       <v-card-text>
         <v-row>

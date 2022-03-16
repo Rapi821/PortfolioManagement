@@ -1,55 +1,82 @@
 <template>
   <div class="fill-height">
     <TopBarMarket :comp_id="comp_id" />
-    <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
-      <v-card-title justify="center" class="mx-auto">{{
-        akInfo.title
-      }}</v-card-title>
-      <v-card-text>
-        <v-row>
+    <v-container class="fill-height " fluid>
+      <v-row no-gutters class="mt-n12">
+        <v-col cols="12" sm="2" class="mr-n2"> </v-col>
+        <v-col cols="12" sm="5">
+          <div class=" text-h5 mt-n8 font-weight-light">
+            {{ akInfo.title }}
+          </div>
+          <v-card outlined>
+            <!-- <v-card-title justify="center" class="mx-auto">{{
+              akInfo.title
+            }}</v-card-title> -->
+            <!-- <v-card-text> -->
+            <!-- <v-row>
           <div>
             <b>ISIN:</b> {{ akInfo.isin }} <b> WKN:</b>
-            {{ akInfo.wkn }}
+            {{ akInfo.wkn }}  //Denke nicht dass das wichtig ist zu sehen oder?
           </div>
-        </v-row>
-        <v-row>
-          <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <div class="mx-auto">
-          <!-- <v-btn class="me-2" color="primary" @click="openBuyDialog"
-            >Kaufen</v-btn
-          > -->
-          <!-- <v-btn class="me-2" color="primary">Verkaufen</v-btn> -->
-        </div>
-      </v-card-actions>
-      <v-card-actions>
-        <div class="mx-auto">
-          <v-btn class="me-1" color="primary" :to="`/Dashboard/${comp_id}`"
-            >Zurück zum competetion</v-btn
+        </v-row> -->
+            <!-- <v-row>
+                <div><b>Wert: </b> {{ akKurs[0].wert }}</div>
+              </v-row>
+            </v-card-text> -->
+
+            <Chart
+              :chartdata="chartData"
+              :options="chartOptions"
+              :key="componentRefreshKey"
+            /> </v-card
+        ></v-col>
+        <v-col cols="12" sm="1"> </v-col>
+        <v-col cols="12" sm="2" class="">
+          <!-- Buysellwindow nicht so gut mit padding maybe noch ändern -->
+          <v-card class="buysellwindow"
+            ><div class="textfields d-flex justify-space-between">
+              <div class="text-h8 font-weight-light">
+                Zeitraum
+              </div>
+              <div class="text-h8 font-weight-light">
+                Veränderung
+              </div>
+            </div>
+            <div class="textfields mt-4 d-flex justify-space-between">
+              <div class="text-h5 ">
+                Tag
+              </div>
+              <div class="text-h5 ">{{ this.dailyPerChange }}%</div>
+            </div>
+            <div class="textfields mt-1 d-flex justify-space-between">
+              <div class="text-h5 ">
+                Woche
+              </div>
+              <div class="text-h5 ">{{ this.weeklyPerChange }}%</div>
+            </div>
+            <div class="textfields mt-1 d-flex justify-space-between">
+              <div class="text-h5 ">
+                Monat
+              </div>
+              <div class="text-h5 ">{{ this.monthlyPerChange }}%</div>
+            </div></v-card
           >
-        </div>
-      </v-card-actions>
-      <v-card-actions>
-        <div class="d-flex  justify-center align-center">
-          <Chart
-            :chartdata="chartData"
-            :options="chartOptions"
-            :key="componentRefreshKey"
-          />
-        </div>
-      </v-card-actions>
-      <v-card-actions>
-        <div class="mx-auto">
-          <v-btn class="me-1" color="success" @click="oneDay()">1 Tag</v-btn>
-          <v-btn class="me-1" color="success" @click="oneWeek()">1 Woche</v-btn>
-          <v-btn class="me-1" color="success" @click="oneMonth()"
-            >1 Monat</v-btn
-          >
-        </div>
-      </v-card-actions>
-    </v-card>
+        </v-col>
+        <v-col cols="12" sm="2"> </v-col>
+      </v-row>
+    </v-container>
+    <!-- Wichtig nicht löschen!!!! -->
+    <!-- <div class="mx-auto">
+      <v-btn class="me-1" color="primary" @click="oneDay()">1 Tag</v-btn>
+      <v-btn class="me-1" color="primary" @click="oneWeek()">1 Woche</v-btn>
+      <v-btn class="me-1" color="primary" @click="oneMonth()">1 Monat</v-btn>
+    </div>
+    <div class="mx-auto">
+      <v-btn color="primary" :to="`/Dashboard/${comp_id}`"
+        >Zurück zur competetion "{{ competetion[comp_id].title }}"</v-btn
+      >
+    </div> -->
+    <!-- Wichtig nicht löschen!!!! -->
     <!-- <span>{{ akByTimeWert }}</span> -->
 
     <!-- weggeben -->
@@ -89,39 +116,65 @@
 </template>
 
 <script>
-import Chart from '../components/Chart';
-import TopBarMarket from '../components/TopBarMarket.vue';
-import axios from 'axios';
+import Chart from "../components/Chart";
+import TopBarMarket from "../components/TopBarMarket.vue";
+import axios from "axios";
+import server from "@/serverInterface";
 export default {
-  name: 'Market',
+  name: "Market",
   data() {
     return {
+      weeklyPerChange: 0,
+      dailyPerChange: 0,
+      monthlyPerChange: 0,
+      dialog: true,
+      loading: false,
       componentRefreshKey: 0,
       datum: new Date(),
       test: [],
+      competetion: [],
       loaded: false,
       chartOptions: {
-        plugins:{   
-             legend: {
-               display: false
-                     },
-                  },
-             
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            top: 10,
+            // Nicht responsive nicht so nice
+            right: 20,
+            bottom: 10,
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        // scales: {
+        //   yAxes: [
+        //     {
+        //       ticks: {
+        //         beginAtZero: true,  sollte gehen, geht nicht
+        //         mirror: true,
+        //       },
+        //     },
+        //   ],
+        // },
         elements: {
           point: {
             radius: 0,
           },
         },
-        
       },
       buyDialog: false,
       chartData: {
         labels: [],
         datasets: [
           {
-            backgroundColor: '#f87979',
-            type: 'line',
-            borderColor: '#f87979',
+            backgroundColor: "#f87979",
+            type: "line",
+            borderColor: "#f87979",
             data: [],
           },
         ],
@@ -130,8 +183,21 @@ export default {
       akKurs: [],
       akByTime: [],
       akByTimeWert: [],
+      basisWeek: 0,
+      week: 0,
+      basisMonth: 0,
+      month: 0,
+      basisday: 0,
+      day: 0,
     };
   },
+  // watch: {
+  //   dialog(val) {
+  //     if (!val) return;
+
+  //     setTimeout(() => (this.dialog = false), 4000);
+  //   },
+  // },
   async mounted() {
     // this.loaded = false
     // try {
@@ -148,6 +214,36 @@ export default {
     // this.oneMonth();
   },
   methods: {
+    getWeeklyPerChange() {
+      // console.log(this.test);
+      this.basisWeek = parseInt(this.test[this.test.length - 1]);
+      // console.log(this.basisWeek);
+      this.week = parseInt(this.test[this.test.length - 15]);
+      // console.log(this.week);
+      this.weeklyPerChange = parseInt(
+        ((this.week - this.basisWeek) / this.basisWeek) * 100
+      );
+      //console.log(this.weeklyPerChange);
+      // console.log("hallo");
+      // console.log(this.test.length);
+    },
+    getDailyPerChange() {
+      this.basisday = parseInt(this.test[this.test.length - 1]);
+      this.day = parseInt(this.test[this.test.length - 5]);
+      this.dailyPerChange = parseInt(
+        ((this.day - this.basisday) / this.basisday) * 100
+      );
+    },
+    getMonthlyPerChange() {
+      this.basisMonth = parseInt(this.test[this.test.length - 1]);
+      console.log(this.basisMonth);
+      this.month = parseInt(this.test[this.test.length - 61]);
+      console.log(this.month);
+      this.monthlyPerChange = parseInt(
+        ((this.month - this.basisMonth) / this.basisMonth) * 100
+      );
+    },
+    async getCompbyID() {},
     forceRerender() {
       this.componentRefreshKey += 1;
     },
@@ -165,12 +261,13 @@ export default {
           `https://heroku-porftolio-crawler.herokuapp.com/akDetailKurs/${this.akInfo.isin}`
         )
       ).data;
+      // console.log(this.akKurs);
     },
     async oneDay() {
       const today = new Date();
       const yesterday = today.getDate() - 1;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -190,7 +287,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 7;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -204,18 +301,18 @@ export default {
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
-        let zeitMod = elm.zeit.split('T');
-        console.log(zeitMod);
+        let zeitMod = elm.zeit.split("T");
+        // console.log(zeitMod);
         let datum = zeitMod[0];
-        let zeit = zeitMod[1].split('.')[0];
+        let zeit = zeitMod[1].split(".")[0];
         let datumZeit = `${zeit} ${datum}`;
         this.chartData.labels.push(datumZeit);
       }
       this.chartData.datasets[0].data = this.test;
-      console.log(this.chartData.labels);
-      console.log(this.chartData.datasets[0].data);
+      // console.log(this.chartData.labels);
+      // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
-      console.log(this.datum);
+      // console.log(this.datum);
       this.loaded = true;
       this.forceRerender();
       // console.log(this.datum);
@@ -228,7 +325,7 @@ export default {
         lastMonth = 12;
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
-          lastYear + '-' + lastMonth + '-' + today.getDate();
+          lastYear + "-" + lastMonth + "-" + today.getDate();
         this.datum = yesterdayDate;
         // console.log(yesterdayDate);
         this.akByTime = (
@@ -238,7 +335,7 @@ export default {
         ).data;
       } else {
         const yesterdayDate =
-          today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+          today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
@@ -251,18 +348,25 @@ export default {
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
-        let zeitMod = elm.zeit.split('T');
-        console.log(zeitMod);
+        let zeitMod = elm.zeit.split("T");
+        // console.log(zeitMod);
         let datum = zeitMod[0];
-        let zeit = zeitMod[1].split('.')[0];
+        let zeit = zeitMod[1].split(".")[0];
         let datumZeit = `${zeit} ${datum}`;
         this.chartData.labels.push(datumZeit);
       }
+      this.chartData.labels.reverse();
+      //Hier this.test array reversen
+      this.test.reverse();
       this.chartData.datasets[0].data = this.test;
-      console.log(this.chartData.labels);
-      console.log(this.chartData.datasets[0].data);
+      // console.log(this.test);
+      this.getWeeklyPerChange();
+      this.getMonthlyPerChange();
+      this.getDailyPerChange();
+      // console.log(this.chartData.labels);
+      // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
-      console.log(this.datum);
+      // console.log(this.datum);
       this.loaded = true;
       this.forceRerender();
     },
@@ -278,12 +382,23 @@ export default {
     TopBarMarket,
   },
   async created() {
+    this.loading = true;
     this.akInfo = (
       await axios.get(
         `https://heroku-porftolio-crawler.herokuapp.com/akDetail/${this.isin}`
       )
     ).data[0];
+    this.competetion = (
+      await server.get(`http://localhost:3000/user/competitions`)
+    ).data;
+
+    // console.log(this.competetion);
+
     this.getKurs();
+    // this.getCompbyID();
+    this.oneMonth();
+
+    this.loading = false;
   },
 
   props: {
@@ -297,4 +412,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.test {
+  // padding-top: 10vh;
+  // padding-bottom: 10vh;
+  //height: 109px;
+}
+.chart-wrapper {
+  border: 1px solid blue;
+  height: 600px;
+  width: 600px;
+}
+</style>

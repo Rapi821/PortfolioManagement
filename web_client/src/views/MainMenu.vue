@@ -1,13 +1,142 @@
 <template>
-  <div>
+  <div class="fill-height">
     <TopBarMarket />
-    <v-card max-width="700px" class="mx-auto mt-2 elevation-2">
-      <v-card-title>Deine Competitions</v-card-title>
-      <v-card-text>{{ user.firstname }} {{ user.lastname }}</v-card-text>
-      <v-card-actions
-        ><v-btn @click="compCreate" class="btn" color="primary"
-          >Competition Erstellen</v-btn
-        >
+    <v-container class="fill-height " fluid>
+      <v-row class="negativMargin" d-flex justify="center">
+        <v-col cols="12" sm="8">
+          <div class=" text-h4 mb-1">Hallo {{ user.firstname }}!</div>
+          <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
+          <div class=" text-h6 font-weight-light">
+            Deine Competitions
+          </div>
+          <v-data-table :headers="headers" :items="competetions" class="elevation-3">
+            <template v-slot:[`item.cash`]="{ item }">
+              <div>
+                {{
+                  parseInt(item.cash)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                }}
+              </div>
+            </template>
+            <template v-slot:[`item.portfolio_value`]="{ item }">
+              <div>
+                {{
+                  parseInt(item.portfolio_value)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                }}
+              </div>
+            </template>
+            <template v-slot:[`item.total`]="{ item }">
+              <div>
+                {{
+                  parseInt(item.total)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                }}
+              </div>
+            </template>
+            <template v-slot:[`item.title`]="{ item }">
+              <v-chip color="primary" outlined label
+                ><router-link
+                  style="text-decoration: none; "
+                  :to="`/Dashboard/${item.competition_id}`"
+                  >{{ item.title }}</router-link
+                ></v-chip
+              >
+            </template>
+            <template v-slot:[`item.active`]="{ item }">
+              <v-chip dark outlined :color="getColor(item.active)" v-if="item.active">
+                {{ 'aktiv' }}
+              </v-chip>
+              <v-chip
+                dark
+                label
+                outlined
+                :color="getColor(item.active)"
+                v-if="item.active == false"
+              >
+                {{ 'inaktiv' }}
+              </v-chip>
+            </template>
+            <!-- <template v-slot:item.cash="{ item }">
+              <span>
+                {{ item.cash.toFixed(2) }}      Geht nicht
+              </span>
+            </template> -->
+          </v-data-table>
+          <v-btn @click="compEnter" class="btn mt-2" color="primary">Competition Beitreten</v-btn>
+          <v-btn
+            data-testid="btnCompCreate"
+            @click="compCreate"
+            class="btn mt-2 ml-2"
+            color="primary"
+            >Competition Erstellen</v-btn
+          ></v-col
+        ></v-row
+      >
+    </v-container>
+
+    <!-- <h3>Testbuttons für Routen</h3> -->
+    <!-- TEST BUTTONS FÜR ROUTEN -->
+    <!-- <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              compEnter({
+                code: 'V12FO3FWNY',
+              })
+            "
+          >
+            Competition Beitreten
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              buyStock({
+                isin: 'US5949181045',
+                buy_price: 100.12,
+                count: 10,
+                competition_id: 0,
+              })
+            "
+          >
+            Kaufe Aktien
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              sellStocks({
+                isin: 'US5949181045',
+                sell_price: 100,
+                competition_id: 0,
+                count: 10,
+              })
+            "
+          >
+            Aktien verkaufen
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              getRecords({
+                competition_id: 0,
+              })
+            "
+          >
+            Get Records
+          </v-btn>
+
+          <v-btn color="blue darken-1" text @click="getCompetition('0')">
+            Get Data für eine Competition
+          </v-btn> -->
+    <!--Keine Gute Lösung aber mal schauen  -->
+    <v-card width="0px">
+      <v-card-actions>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-title>
@@ -19,17 +148,20 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
+                      data-testid="comptitle"
                       v-model="competetion.title"
                       label="Titel"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
+                      data-testid="compmoney"
                       v-model="competetion.starting_money"
                       label="Startgeld"
                     ></v-text-field> </v-col
                   ><v-col cols="12" sm="6" md="4">
                     <v-text-field
+                      data-testid="compenddate"
                       v-model="competetion.end_date"
                       label="End Datum"
                     ></v-text-field> </v-col
@@ -40,7 +172,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="createCompetition">
+              <v-btn data-testid="btncompcreate" color="blue darken-1" text @click="createCompetition">
                 Create
               </v-btn>
             </v-card-actions>
@@ -48,137 +180,24 @@
         </v-dialog></v-card-actions
       >
     </v-card>
-
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8">
-          <div class=" text-h5 mb-2">
-            Competitions
-          </div>
-          <v-data-table
-            :headers="headers"
-            :items="competetions"
-            class="elevation-3"
-          >
-            <template v-slot:[`item.cash`]="{ item }">
-              <div>
-                {{
-                  parseInt(item.cash)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-                }}
-              </div>
-            </template>
-            <template v-slot:[`item.portfolio_value`]="{ item }">
-              <div>
-                {{
-                  parseInt(item.portfolio_value)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-                }}
-              </div>
-            </template>
-            <template v-slot:[`item.total`]="{ item }">
-              <div>
-                {{
-                  parseInt(item.total)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
-                }}
-              </div>
-            </template>
-            <template v-slot:[`item.title`]="{ item }">
-              <span
-                ><router-link :to="`/Dashboard/${item.competition_id}`">{{
-                  item.title
-                }}</router-link></span
-              >
-            </template>
-            <!-- <template v-slot:item.cash="{ item }">
-              <span>
-                {{ item.cash.toFixed(2) }}      Geht nicht
-              </span>
-            </template> -->
-          </v-data-table>
-          <v-btn @click="compEnter" class="btn mt-2" color="primary"
-            >Competition Beitreten</v-btn
-          ></v-col
-        ></v-row
-      >
-    </v-container>
-
-    <!-- <h3>Testbuttons für Routen</h3> -->
-    <!-- TEST BUTTONS FÜR ROUTEN -->
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        compEnter({
-          code: 'V12FO3FWNY',
-        })
-      "
-    >
-      Competition Beitreten
-    </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        buyStock({
-          isin: 'US5949181045',
-          buy_price: 100.12,
-          count: 10,
-          competition_id: 0,
-        })
-      "
-    >
-      Kaufe Aktien
-    </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        sellStocks({
-          isin: 'US5949181045',
-          sell_price: 100,
-          competition_id: 0,
-          count: 10,
-        })
-      "
-    >
-      Aktien verkaufen
-    </v-btn>
-    <v-btn
-      color="blue darken-1"
-      text
-      @click="
-        getRecords({
-          competition_id: 0,
-        })
-      "
-    >
-      Get Records
-    </v-btn>
-
-    <v-btn color="blue darken-1" text @click="getCompetition('0')">
-      Get Data für eine Competition
-    </v-btn>
   </div>
 </template>
 
 <script>
-import TopBarMarket from "../components/TopBar.vue";
-import server from "@/serverInterface";
+import TopBarMarket from '../components/TopBar.vue';
+import server from '@/serverInterface';
 export default {
   components: {
     TopBarMarket,
   },
   methods: {
+    getColor(active) {
+      if (active) return 'green';
+      else return 'red';
+    },
     async getRecords(obj) {
       const x = (
-        await server.get(
-          `http://localhost:3000/competition/records/${obj.competition_id}`
-        )
+        await server.get(`http://localhost:3000/competition/records/${obj.competition_id}`)
       ).data;
       console.log(x);
     },
@@ -187,9 +206,7 @@ export default {
       this.getComps();
     },
     async getCompetition(x) {
-      console.log(
-        (await server.get(`http://localhost:3000/competition/${x}`)).data
-      );
+      console.log((await server.get(`http://localhost:3000/competition/${x}`)).data);
     },
     close() {
       this.dialog = false;
@@ -207,17 +224,12 @@ export default {
       //Do something
     },
     async getComps() {
-      this.competetions = (
-        await server.get(`http://localhost:3000/user/competitions`)
-      ).data;
+      this.competetions = (await server.get(`http://localhost:3000/user/competitions`)).data;
       // console.log(this.competetions);
     },
     async createCompetition() {
       console.log(this.competetion);
-      await server.post(
-        `http://localhost:3000/createNewCompetition`,
-        this.competetion
-      );
+      await server.post(`http://localhost:3000/createNewCompetition`, this.competetion);
       this.close();
       this.getComps();
     },
@@ -232,26 +244,26 @@ export default {
       user: {},
       dialog: false,
       dialog_enter: false,
-      compCode: "",
+      compCode: '',
       competetion: {
-        title: "",
+        title: '',
         starting_money: 0,
-        end_date: "",
+        end_date: '',
       },
       headers: [
         {
-          text: "titel",
-          align: "start",
+          text: 'titel',
+          align: 'start',
           sortable: false,
-          value: "title",
+          value: 'title',
         },
         {
-          text: "Portfoliowert",
-          value: "portfolio_value",
+          text: 'Portfoliowert',
+          value: 'portfolio_value',
         },
-        { text: "Cash", value: "cash" },
-        { text: "Total", value: "total" },
-        { text: "Status", value: "active" },
+        { text: 'Cash', value: 'cash' },
+        { text: 'Total', value: 'total' },
+        { text: 'Status', value: 'active' },
         // { text: 'id', value: 'competition_id' },
       ],
     };
@@ -264,4 +276,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.negativMargin {
+  margin-top: -15vh;
+}
+</style>

@@ -1,99 +1,121 @@
 <template>
-  <div>
+  <div class="fill-height">
     <TopBarMarket :comp_id="comp_id" />
-
-    <div class="d-flex  z">
-      <div class="d-none d-xl-flex b"></div>
-      <div class="mar">
-        <div class=" text-h5 mb-2">
-          Dashboard
-        </div>
-        <v-card class="elevation-0" max-width="200">
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class=" text-overline mb-4">
-                Portfolio Wert
-              </div>
-              <v-list-item-title class="text-h6 mb-1 mt-n6">
-                {{
-                  parseInt(portValue)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
-                }}
-              </v-list-item-title>
-              <div class="text-overline mb-4">
-                Verfügbares Geld
-              </div>
-              <v-list-item-title class="text-h6 mb-1 mt-n6">
-                {{
-                  parseInt(cash)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
-                }}
-              </v-list-item-title>
-              <div class="text-overline mb-4">
-                Aktien Wert
-              </div>
-              <v-list-item-title class="text-h6 mb-1 mt-n6">
-                {{
-                  parseInt(akValue)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
-                }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
-      </div>
-
-      <div class="ml-8">
-        <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
-        <v-data-table
-          :headers="headers"
-          :items="akHave"
-          class="elevation-0 ms-5"
+    <v-container class="fill-height " fluid>
+      <v-row no-gutters class="mt-n12">
+        <v-col cols="12" sm="2"></v-col>
+        <v-col cols="12" sm="2"
+          ><div>
+            <div class=" text-h5 mb-2">
+              Dashboard
+            </div>
+            <v-card :loading="loading" class="elevation-0" max-width="200">
+              <template slot="progress">
+                <v-progress-linear
+                  color="primary"
+                  indeterminate
+                  height="2"
+                ></v-progress-linear>
+              </template>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div class=" text-overline mb-4">
+                    Portfolio Wert
+                  </div>
+                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                    {{
+                      parseInt(portValue)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                    -
+                  </v-list-item-title>
+                  <div class="text-overline mb-4">
+                    Verfügbares Geld
+                  </div>
+                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                    {{
+                      parseInt(cash)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                    -
+                  </v-list-item-title>
+                  <div class="text-overline mb-4">
+                    Aktien Wert
+                  </div>
+                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                    {{
+                      parseInt(akValue)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
+                    -
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
+          </div></v-col
         >
-          <template v-slot:[`item.wert`]="{ item }">
-            <div>
-              {{
-                parseInt(item.wert)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
-              }}
-            </div>
-          </template>
-          <template v-slot:[`item.buy_price`]="{ item }">
-            <div>
-              {{
-                parseInt(item.buy_price)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
-              }}
-            </div>
-          </template>
-          <template v-slot:[`item.count`]="{ item }">
-            <div>
-              {{
-                parseInt(item.count)
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-              }}
-            </div>
-          </template>
-          <template v-slot:[`item.verkaufen`]="{ item }">
-            <v-btn
-              @click="openSellDialog(item)"
-              small
-              plain
-              class="primary  mt-2 mb-2 me-2"
-              >Verkaufen</v-btn
-            >
-          </template>
-        </v-data-table>
-      </div>
 
-      <!-- <div class="d-none d-xl-flex b"></div> -->
-    </div>
+        <v-col cols="12" sm="5"
+          ><div class="z">
+            <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
+            <v-data-table
+              :loading="loading"
+              :headers="headers"
+              :items="akHave"
+              class="elevation-0 ms-5"
+            >
+              <template v-slot:[`item.wert`]="{ item }">
+                <div>
+                  {{
+                    parseInt(item.wert)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                  }}
+                </div>
+              </template>
+              <template v-slot:[`item.buy_price`]="{ item }">
+                <div>
+                  {{
+                    parseInt(item.buy_price)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                  }}
+                </div>
+              </template>
+              <template v-slot:[`item.count`]="{ item }">
+                <div>
+                  {{
+                    parseInt(item.count)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                  }}
+                </div>
+              </template>
+              <template v-slot:[`item.verkaufen`]="{ item }">
+                <v-btn
+                  @click="openSellDialog(item)"
+                  small
+                  plain
+                  class="primary  mt-2 mb-2 me-2"
+                  >Verkaufen</v-btn
+                >
+              </template>
+            </v-data-table>
+          </div></v-col
+        >
+        <v-col cols="12" sm="2"></v-col>
+      </v-row>
+    </v-container>
+
     <div>
       <!-- <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn> -->
       <v-btn @click="sellbuy" class="mx-auto" color="sucess">Kaufen</v-btn>
@@ -291,9 +313,9 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import TopBarMarket from '../components/TopBarMarket.vue';
-import server from '@/serverInterface';
+import axios from "axios";
+import TopBarMarket from "../components/TopBarMarket.vue";
+import server from "@/serverInterface";
 
 export default {
   components: {
@@ -330,7 +352,7 @@ export default {
       this.visible = true;
     },
     async getData() {
-      this.user = (await server.get('http://localhost:3000/user/data')).data;
+      this.user = (await server.get("http://localhost:3000/user/data")).data;
       console.log(this.user);
     },
     async getStocks() {
@@ -342,7 +364,7 @@ export default {
       console.log(this.stocks);
     },
     async buyStock() {
-      console.log('buy');
+      console.log("buy");
       let newItem = {
         isin: this.curAk.isin,
         buy_price: this.curAk.kurs,
@@ -404,7 +426,7 @@ export default {
       let ak = {};
       let kurs = {};
       for (let a of this.stocks) {
-        if (a.isin != '0000') {
+        if (a.isin != "0000") {
           kurs = this.akData.find((e) => e.isin == a.isin);
           ak = {
             name: this.akInfo.find((e) => e.isin == a.isin).title,
@@ -425,19 +447,21 @@ export default {
     },
   },
   async created() {
-    await this.getData();
+    (this.loading = true), await this.getData();
     await this.getStocks();
     this.akInfo = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
     ).data;
     this.akKurs = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
     ).data;
     this.createAktie();
     this.createAkForTable();
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       akInfo: [],
       akData: [],
       akKurs: [],
@@ -459,31 +483,31 @@ export default {
       stocks: [],
       headers: [
         {
-          text: 'Name',
-          align: 'start',
-          value: 'name',
+          text: "Name",
+          align: "start",
+          value: "name",
         },
         {
-          text: 'Isin',
-          align: 'start',
+          text: "Isin",
+          align: "start",
           sortable: false,
-          value: 'isin',
+          value: "isin",
         },
-        { text: 'Wert', value: 'wert' },
-        { text: 'Kaufpreis', value: 'buy_price' },
-        { text: 'Count?', value: 'count' },
-        { text: '', value: 'verkaufen' },
+        { text: "Wert", value: "wert" },
+        { text: "Kaufpreis", value: "buy_price" },
+        { text: "Count?", value: "count" },
+        { text: "", value: "verkaufen" },
       ],
       headersKaufen: [
         {
-          text: 'Name',
-          align: 'center',
+          text: "Name",
+          align: "center",
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: 'Kaufen', value: 'actions', sortable: false },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "Kaufen", value: "actions", sortable: false },
       ],
     };
   },
@@ -495,12 +519,11 @@ export default {
 };
 </script>
 <style>
-.z {
-  margin-top: 150px; /* Nur Vorübergehend! */
+/* .z {
+  margin-left: 7vw;
 }
 .b {
-  width: 300px; /* entfernung von linkem bildschirmrand */
-  height: 100%;
+  margin-left: 20vw;
 }
 .bod {
   height: 100%;
@@ -510,7 +533,7 @@ export default {
 }
 .mar2 {
   margin-right: 630px;
-}
+} */
 .buysellwindow {
   padding: 7%;
 }
