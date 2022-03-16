@@ -32,10 +32,10 @@ describe('after authenticating session', function () {
 
   it('should get a competition list', async () => {
     const res = await authenticatedSession.get('/user/competitions');
-//    console.log(res.body);
+    //    console.log(res.body);
     // make sure that at least 1 competition is listed
     expect(res.body.length).toBeGreaterThan(0);
-
+    // console.log(res.body[0]);
     const firstCompetion = res.body[0];
     expect(firstCompetion).toEqual(
       expect.objectContaining({
@@ -53,7 +53,7 @@ describe('after authenticating session', function () {
 
   it('should get competition 0 ', async () => {
     const res = await authenticatedSession.get('/competition/' + validCompetionId);
- //   console.log(res.body);
+    // console.log(res.body);
     // make sure that at least 1 entry is listed
     expect(res.body.length).toBeGreaterThan(0);
 
