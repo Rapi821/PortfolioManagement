@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <TopBarMarket />
+    <TopBarMarket @someEvent="overlay = !overlay" />
     <v-container class="fill-height " fluid>
       <v-row class="negativMargin" d-flex justify="center">
         <v-col cols="12" sm="8">
@@ -35,16 +35,25 @@
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
                 }}
+                
               </div>
             </template>
             <template v-slot:[`item.title`]="{ item }">
-              <v-chip color="primary" outlined label
-                ><router-link
+             <v-overlay
+          :absolute="absolute"
+          :value="overlay"
+          :zIndex="zIndex"
+        ></v-overlay>
+              <v-chip color="primary"  outlined label
+                >
+                 
+                <router-link
                   style="text-decoration: none; "
                   :to="`/Dashboard/${item.competition_id}`"
                   >{{ item.title }}</router-link
                 ></v-chip
               >
+
             </template>
             <template v-slot:[`item.active`]="{ item }">
               <v-chip dark outlined :color="getColor(item.active)" v-if="item.active">
@@ -66,6 +75,7 @@
               </span>
             </template> -->
           </v-data-table>
+          
           <v-btn @click="compEnter" class="btn mt-2" color="primary">Competition Beitreten</v-btn>
           <v-btn
             data-testid="btnCompCreate"
@@ -75,7 +85,14 @@
             >Competition Erstellen</v-btn
           ></v-col
         ></v-row
-      >
+      ><v-btn
+      color="error"
+      @click="overlay = !overlay"
+    >
+      Show Overlay
+    </v-btn>
+
+    
     </v-container>
 
     <!-- <h3>Testbuttons für Routen</h3> -->
@@ -168,6 +185,7 @@
                 ></v-row>
               </v-container>
             </v-card-text>
+            
 
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -240,6 +258,9 @@ export default {
   },
   data() {
     return {
+      overlay:false,
+      zIndex:0,
+      absolute:false,
       competetions: [],
       user: {},
       dialog: false,
@@ -267,12 +288,20 @@ export default {
         // { text: 'id', value: 'competition_id' },
       ],
     };
+    
   },
   async created() {
     this.user = (await server.get(`http://localhost:3000/user/data`)).data;
     console.log(this.user);
     this.getComps();
   },
+  watch: {
+      overlay (val) {
+        val && setTimeout(() => {
+          this.overlay = false
+        }, 2000)
+      },
+    },
 };
 </script>
 

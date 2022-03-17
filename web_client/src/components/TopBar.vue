@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="secondary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
-    <v-btn color="black" active-class="white black--text" @click="logOut"
+    <v-btn color="black" active-class="white black--text" 
       >Logout</v-btn
     >
 
@@ -9,7 +9,11 @@
     <v-tooltip bottom v-model="show">
       <template v-slot:activator="{ on }">
         <div v-on="on">
+          <!-- muss noch mit hover gemacht werden!! -->
           <v-btn
+          
+          @click="$emit('someEvent')"
+          
             disabled
             v-bind="attrs"
             v-on="on"
