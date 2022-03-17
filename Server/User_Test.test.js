@@ -30,12 +30,12 @@ describe('after authenticating session', function () {
     await db.close();
   });
 
-  it('should get a competition list', async () => {
+  it.skip('should get a competition list', async () => {
     const res = await authenticatedSession.get('/user/competitions');
     console.log(res.body);
     // make sure that at least 1 competition is listed
     expect(res.body.length).toBeGreaterThan(0);
-    console.log(res.body[0]);
+    console.log(res.body);
     const firstCompetion = res.body[0];
     expect(firstCompetion).toEqual(
       expect.objectContaining({
@@ -51,7 +51,7 @@ describe('after authenticating session', function () {
     validCompetionId = firstCompetion.competition_id;
   });
 
-  it('should get competition 0 ', async () => {
+  it.skip('should get competition 0 ', async () => {
     const res = await authenticatedSession.get('/competition/' + validCompetionId);
     // console.log(res.body);
     // make sure that at least 1 entry is listed
@@ -62,20 +62,58 @@ describe('after authenticating session', function () {
     expect(res.body).toEqual(expect.arrayContaining([expect.objectContaining({ isin: '0000' })]));
   });
 
-  it('should create competition ', async () => {
-    const res = await authenticatedSession.post('/createNewCompetition').send({
+  it.skip('should create competition ', async () => {
+    const respost = await authenticatedSession.post('/createNewCompetition').send({
       title: 'RouterTestComp',
       starting_money: 20000,
       end_date: '2022-12-1',
-      user_id: 2,
+      // user_id: 2,
     });
-
+    const resget = await authenticatedSession.get('/competition/' + 52);
     // console.log(res.body);
     // make sure that at least 1 entry is listed
-    console.log(res.body.id);
+    console.log(respost.body);
+    console.log(resget.body);
+    expect(resget.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ isin: '0000' })]),
+    );
+    expect(resget.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ buy_price: '20000' })]),
+    );
+    // Es wir jedes mal beim Aufruf des Tests eine neue Competition erstellt, weil keine Löschfunktion vorhanden ist, die diese wirder löscht
     // expect(res.body.length).toBeGreaterThan(0);
 
     // // array should contain isin 0000 => cash
     // expect(res.body).toEqual(expect.arrayContaining([expect.objectContaining({ isin: '0000' })]));
+  });
+
+  it.skip('should get user data ', async () => {
+    const resget = await authenticatedSession.get('/user/data');
+    // console.log(resget.body);
+    expect(resget.body).toEqual(expect.objectContaining({ email: 'devall.s03@htlwienwest.at' }));
+    expect(resget.body).toEqual(expect.objectContaining({ password: 'qHV3#ctbt' }));
+  });
+
+  it('should buy and sell stocks ', async () => {
+    const respostbuy = await authenticatedSession.post('/user/buyStocks').send({
+      isin: 'US5949181045',
+      buy_price: 298.76,
+      count: 5,
+      competition_id: 39,
+      buy_date: '2022-01-12',
+    });
+    const respostsell = await authenticatedSession.post('/user/sellStocks').send({
+      isin: 'US5949181045',
+      sell_price: 298.76,
+      count: 5,
+      competition_id: 39,
+      buy_date: '2022-01-12',
+    });
+    const resget = await authenticatedSession.get('/competitions/' + 39 + '/getCompStocks');
+    console.log(resget.body);
+    expect(resget.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ isin: 'US5949181045' })]),
+    );
+    expect(resget.body).toEqual(expect.arrayContaining([expect.objectContaining({ count: '5' })]));
   });
 });

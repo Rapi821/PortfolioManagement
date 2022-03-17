@@ -5,12 +5,12 @@ describe('Test Start and Login', () => {
     cy.visit('http://localhost:8081/');
   });
 
-  it.skip('Start', () => {
+  it('Start', () => {
     cy.get('[data-testid="btnstart"]').click();
     cy.url().should('include', '/LoginRegister');
   });
 
-  it.skip('Login', () => {
+  it('Login', () => {
     cy.get('[data-testid="btnstart"]').click();
     cy.url().should('include', '/LoginRegister');
     cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
@@ -19,7 +19,7 @@ describe('Test Start and Login', () => {
     cy.url().should('include', '/mainmenu');
   });
 
-  it.skip('CreateCompetition', () => {
+  it('CreateCompetition', () => {
     cy.get('[data-testid="btnstart"]').click();
     cy.url().should('include', '/LoginRegister');
     cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');

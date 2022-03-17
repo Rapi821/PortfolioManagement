@@ -15,7 +15,7 @@ const {
   getCompetition,
   sellStocks,
   getRanking,
-  getRecords
+  getRecords,
 } = require('../controllers/portfolio_management');
 
 const router = express.Router();
@@ -44,7 +44,7 @@ router.post('/user/buyStocks', buyStocks);
 router.post('/user/addUserToCompetition', addUserToCompetition);
 // Route für Daten von einer Competition von einem User
 router.get('/competition/:competition_id', getCompetition);
-// Route um Aktien wieder zu verkaufen 
+// Route um Aktien wieder zu verkaufen
 router.post('/user/sellStocks', sellStocks);
 // Route für die Rangliste einer Competition
 router.get('/ranking/:competition_id', getRanking);
