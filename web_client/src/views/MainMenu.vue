@@ -1,15 +1,23 @@
 <template>
   <div class="fill-height">
     <TopBarMarket @someEvent="overlay = !overlay" />
-    <v-container class="fill-height " fluid>
+    <v-overlay
+          :zIndex="0"
+             :absolute="absolute"   
+          :value="overlay"
+          color="#b3dfff"
+        ></v-overlay>
+    <v-container class="fill-height " style="z-index: 9998 "  fluid>
+      
+        
       <v-row class="negativMargin" d-flex justify="center">
         <v-col cols="12" sm="8">
-          <div class=" text-h4 mb-1">Hallo {{ user.firstname }}!</div>
+          <div class=" text-h4 mb-1" >Hallo {{ user.firstname }}!</div>
           <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
           <div class=" text-h6 font-weight-light">
             Deine Competitions
           </div>
-          <v-data-table :headers="headers" :items="competetions" class="elevation-3">
+          <v-data-table  :headers="headers" :items="competetions" class="elevation-3">
             <template v-slot:[`item.cash`]="{ item }">
               <div>
                 {{
@@ -38,22 +46,21 @@
                 
               </div>
             </template>
-            <template v-slot:[`item.title`]="{ item }">
-             <v-overlay
-          :absolute="absolute"
-          :value="overlay"
-          :zIndex="zIndex"
-        ></v-overlay>
-              <v-chip color="primary"  outlined label
+            <template  v-slot:[`item.title`]="{ item }">
+             
+              <v-chip color="primary" style="z-index: 9999 "  outlined label
                 >
                  
                 <router-link
-                  style="text-decoration: none; "
+                  style="text-decoration: none;"
                   :to="`/Dashboard/${item.competition_id}`"
-                  >{{ item.title }}</router-link
-                ></v-chip
+                  >{{ item.title }}
+                  
+                  </router-link
+                >
+                
+                </v-chip
               >
-
             </template>
             <template v-slot:[`item.active`]="{ item }">
               <v-chip dark outlined :color="getColor(item.active)" v-if="item.active">
@@ -76,7 +83,7 @@
             </template> -->
           </v-data-table>
           
-          <v-btn @click="compEnter" class="btn mt-2" color="primary">Competition Beitreten</v-btn>
+          <v-btn @click="compEnter" class=" mt-2" color="primary" >Competition Beitreten</v-btn>
           <v-btn
             data-testid="btnCompCreate"
             @click="compCreate"
@@ -85,12 +92,7 @@
             >Competition Erstellen</v-btn
           ></v-col
         ></v-row
-      ><v-btn
-      color="error"
-      @click="overlay = !overlay"
-    >
-      Show Overlay
-    </v-btn>
+      >
 
     
     </v-container>
@@ -260,7 +262,8 @@ export default {
     return {
       overlay:false,
       zIndex:0,
-      absolute:false,
+      
+      absolute:true,
       competetions: [],
       user: {},
       dialog: false,
@@ -295,13 +298,13 @@ export default {
     console.log(this.user);
     this.getComps();
   },
-  watch: {
-      overlay (val) {
-        val && setTimeout(() => {
-          this.overlay = false
-        }, 2000)
-      },
-    },
+  // watch: {
+  //     overlay (val) {
+  //       val && setTimeout(() => {
+  //         this.overlay = false
+  //       }, 2000)
+  //     },
+  //   },
 };
 </script>
 

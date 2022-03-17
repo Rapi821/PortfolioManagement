@@ -8,11 +8,11 @@
     <v-spacer></v-spacer>
     <v-tooltip bottom v-model="show">
       <template v-slot:activator="{ on }">
-        <div v-on="on">
+        <div v-on="on" @mouseover="$emit('someEvent')" @mouseleave="$emit('someEvent')">
           <!-- muss noch mit hover gemacht werden!! -->
           <v-btn
           
-          @click="$emit('someEvent')"
+          
           
             disabled
             v-bind="attrs"

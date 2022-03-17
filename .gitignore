@@ -7,3 +7,5 @@ Server/.env
 webcrawler/package-lock.json
 Server/.env
 Server/.env
+Server/.env
+Server/app.js
