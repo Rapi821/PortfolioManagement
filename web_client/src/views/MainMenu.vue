@@ -2,23 +2,24 @@
   <div class="fill-height">
     <TopBarMarket @someEvent="overlay = !overlay" />
     <v-overlay
-          :zIndex="0"
+          zIndex="9996"
              :absolute="absolute"   
           :value="overlay"
           color="#b3dfff"
         ></v-overlay>
-    <v-container class="fill-height " style="z-index: 9998 "  fluid>
+    <v-container class="fill-height "   fluid>
       
         
-      <v-row class="negativMargin" d-flex justify="center">
-        <v-col cols="12" sm="8">
+      <v-row class="negativMargin " d-flex justify="center">
+        <v-col  cols="12" sm="8">
           <div class=" text-h4 mb-1" >Hallo {{ user.firstname }}!</div>
           <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
           <div class=" text-h6 font-weight-light">
             Deine Competitions
           </div>
-          <v-data-table  :headers="headers" :items="competetions" class="elevation-3">
+          <v-data-table  :headers="headers" :items="competetions" class="elevation-3 overl">
             <template v-slot:[`item.cash`]="{ item }">
+              
               <div>
                 {{
                   parseInt(item.cash)
@@ -38,6 +39,8 @@
             </template>
             <template v-slot:[`item.total`]="{ item }">
               <div>
+                
+              <div>
                 {{
                   parseInt(item.total)
                     .toString()
@@ -45,13 +48,20 @@
                 }}
                 
               </div>
+              </div>
             </template>
-            <template  v-slot:[`item.title`]="{ item }">
+            <template class=""  v-slot:[`item.title`]="{ item }">
              
-              <v-chip color="primary" style="z-index: 9999 "  outlined label
+              <v-chip color="primary overoverl"  class="" outlined label
                 >
-                 
+                 <v-overlay
+             absolute="true"   
+          :value="overlay"
+          color="primary"
+          opacity="0.1"
+        ></v-overlay>
                 <router-link
+                class="overoverl"
                   style="text-decoration: none;"
                   :to="`/Dashboard/${item.competition_id}`"
                   >{{ item.title }}
@@ -61,6 +71,7 @@
                 
                 </v-chip
               >
+              
             </template>
             <template v-slot:[`item.active`]="{ item }">
               <v-chip dark outlined :color="getColor(item.active)" v-if="item.active">
@@ -311,5 +322,13 @@ export default {
 <style lang="scss" scoped>
 .negativMargin {
   margin-top: -15vh;
+}
+.overl{
+  position: relative;
+  z-index: 9997;
+}
+.overoverl{
+  position: relative;
+  z-index: 9999;
 }
 </style>

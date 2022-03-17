@@ -6,7 +6,7 @@
     >
 
     <v-spacer></v-spacer>
-    <v-tooltip bottom v-model="show">
+    <v-tooltip left v-model="show">
       <template v-slot:activator="{ on }">
         <div v-on="on" @mouseover="$emit('someEvent')" @mouseleave="$emit('someEvent')">
           <!-- muss noch mit hover gemacht werden!! -->
@@ -23,7 +23,7 @@
           >
         </div>
       </template>
-      <span
+      <span class="overoverl"
         >Wähle eine Competition aus bevor du auf den Markt zugreifen
         kannst</span
       >
@@ -59,5 +59,9 @@ export default {
 <style>
 .a {
   width: 300px;
+}
+.overoverl{
+ position: relative;
+  z-index: 9999;
 }
 </style>
