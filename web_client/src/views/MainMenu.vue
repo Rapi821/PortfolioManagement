@@ -1,25 +1,22 @@
 <template>
   <div class="fill-height">
     <TopBarMarket @someEvent="overlay = !overlay" />
-    <v-overlay
-          zIndex="9996"
-             :absolute="absolute"   
-          :value="overlay"
-          color="#b3dfff"
-        ></v-overlay>
-    <v-container class="fill-height "   fluid>
-      
-        
+    <v-overlay zIndex="9996" :absolute="absolute" :value="overlay" color="#b3dfff"></v-overlay>
+    <v-container class="fill-height " fluid>
       <v-row class="negativMargin " d-flex justify="center">
-        <v-col  cols="12" sm="8">
-          <div class=" text-h4 mb-1" >Hallo {{ user.firstname }}!</div>
+        <v-col cols="12" sm="8">
+          <div class=" text-h4 mb-1">Hallo {{ user.firstname }}!</div>
           <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
           <div class=" text-h6 font-weight-light">
             Deine Competitions
           </div>
-          <v-data-table  :headers="headers" :items="competetions" class="elevation-3 overl">
+          <v-data-table
+            data-testid="dataTable"
+            :headers="headers"
+            :items="competetions"
+            class="elevation-3 overl"
+          >
             <template v-slot:[`item.cash`]="{ item }">
-              
               <div>
                 {{
                   parseInt(item.cash)
@@ -39,39 +36,30 @@
             </template>
             <template v-slot:[`item.total`]="{ item }">
               <div>
-                
-              <div>
-                {{
-                  parseInt(item.total)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
-                }}
-                
-              </div>
+                <div>
+                  {{
+                    parseInt(item.total)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                  }}
+                </div>
               </div>
             </template>
-            <template class=""  v-slot:[`item.title`]="{ item }">
-             
-              <v-chip color="primary overoverl"  class="" outlined label
-                >
-                 <v-overlay
-             absolute="true"   
-          :value="overlay"
-          color="primary"
-          opacity="0.1"
-        ></v-overlay>
+            <template class="" v-slot:[`item.title`]="{ item }">
+              <v-chip color="primary overoverl" class="" outlined label>
+                <v-overlay
+                  absolute="true"
+                  :value="overlay"
+                  color="primary"
+                  opacity="0.1"
+                ></v-overlay>
                 <router-link
-                class="overoverl"
+                  class="overoverl"
                   style="text-decoration: none;"
                   :to="`/Dashboard/${item.competition_id}`"
                   >{{ item.title }}
-                  
-                  </router-link
-                >
-                
-                </v-chip
-              >
-              
+                </router-link>
+              </v-chip>
             </template>
             <template v-slot:[`item.active`]="{ item }">
               <v-chip dark outlined :color="getColor(item.active)" v-if="item.active">
@@ -93,8 +81,8 @@
               </span>
             </template> -->
           </v-data-table>
-          
-          <v-btn @click="compEnter" class=" mt-2" color="primary" >Competition Beitreten</v-btn>
+
+          <v-btn @click="compEnter" class=" mt-2" color="primary">Competition Beitreten</v-btn>
           <v-btn
             data-testid="btnCompCreate"
             @click="compCreate"
@@ -104,8 +92,6 @@
           ></v-col
         ></v-row
       >
-
-    
     </v-container>
 
     <!-- <h3>Testbuttons für Routen</h3> -->
@@ -198,12 +184,16 @@
                 ></v-row>
               </v-container>
             </v-card-text>
-            
 
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn data-testid="btncompcreate" color="blue darken-1" text @click="createCompetition">
+              <v-btn
+                data-testid="btncompcreate"
+                color="blue darken-1"
+                text
+                @click="createCompetition"
+              >
                 Create
               </v-btn>
             </v-card-actions>
@@ -271,10 +261,10 @@ export default {
   },
   data() {
     return {
-      overlay:false,
-      zIndex:0,
-      
-      absolute:true,
+      overlay: false,
+      zIndex: 0,
+
+      absolute: true,
       competetions: [],
       user: {},
       dialog: false,
@@ -302,7 +292,6 @@ export default {
         // { text: 'id', value: 'competition_id' },
       ],
     };
-    
   },
   async created() {
     this.user = (await server.get(`http://localhost:3000/user/data`)).data;
@@ -323,11 +312,11 @@ export default {
 .negativMargin {
   margin-top: -15vh;
 }
-.overl{
+.overl {
   position: relative;
   z-index: 9997;
 }
-.overoverl{
+.overoverl {
   position: relative;
   z-index: 9999;
 }
