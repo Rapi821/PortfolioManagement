@@ -42,3 +42,7 @@ content-Type: application/json
 }
 ###
 GET http://localhost:3000/user/competitions
+
+###
+GET http://localhost:3000/ranking/5
+

@@ -35,7 +35,11 @@
                   <div class="text-overline mb-4">
                     Verfügbares Geld
                   </div>
-                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                  <v-list-item-title
+                    data-testid="VerfügbaresGeld"
+                    v-if="!loading"
+                    class="text-h6 mb-1 mt-n6"
+                  >
                     {{
                       parseInt(cash)
                         .toString()
@@ -48,7 +52,11 @@
                   <div class="text-overline mb-4">
                     Aktien Wert
                   </div>
-                  <v-list-item-title v-if="!loading" class="text-h6 mb-1 mt-n6">
+                  <v-list-item-title
+                    data-testid="AktienWert"
+                    v-if="!loading"
+                    class="text-h6 mb-1 mt-n6"
+                  >
                     {{
                       parseInt(akValue)
                         .toString()
@@ -280,6 +288,7 @@
           <v-window-item
             ><v-form
               ><v-text-field
+                data-testid="MoneyForStock"
                 label="Geld"
                 name="toBuy"
                 type="number"
@@ -296,7 +305,7 @@
           </v-window-item>
         </v-window>
         <v-card-action>
-          <v-btn @click="buyStock" small class="primary  mt-2 mb-2">Kaufen</v-btn>
+          <v-btn data-testid="btnBuyStock" @click="buyStock" small class="primary  mt-2 mb-2">Kaufen</v-btn>
           <v-btn @click="closeBuy" small class="primary  mt-2 mb-2">Cancel</v-btn>
         </v-card-action>
       </v-card>

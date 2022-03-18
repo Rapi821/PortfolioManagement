@@ -39,18 +39,24 @@ describe('Test Start and Login', () => {
     cy.get('[data-testid="dataTable"]').contains('CompTest' && '3000€' && 'aktiv'); // Ist zwar nicht für eine Zeile sondern eher ob diese Werte allgemein in der Tabelle vorkommen, aber das Funktioniert zumindest
   });
 
-  it('Buy Stocks', () => {
+  it.skip('Buy Stocks', () => {
     cy.get('[data-testid="btnstart"]').click();
     cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
     cy.get('[data-testid="passwordLogin"]').type('test123');
     cy.get('[data-testid="btnLogin"]').click();
     cy.get('[data-testid="dataTable"]')
-      .contains('CompTest')
+      .contains('Raphis Aktien Game')
       .click();
     cy.get('[data-testid="btnBuyDialog"]').click();
     cy.get('[data-testid="btnBuy"]')
       .contains('Kaufen')
-      .click(); //Das funktioniert grad nt
+      .click();
+    cy.get('[data-testid="MoneyForStock"]').clear();
+    cy.get('[data-testid="MoneyForStock"]').type('212');
+    cy.get('[data-testid="btnBuyStock"]').click();
+    cy.get('[data-testid="PortfolioWert"]').should('contain', '3 000€');
+    cy.get('[data-testid="VerfügbaresGeld"]').should('contain', '2 788€');
+    cy.get('[data-testid="AktienWert"]').should('contain', '212€');
   });
 
   it.skip('Dashboard', () => {
@@ -61,7 +67,9 @@ describe('Test Start and Login', () => {
     cy.get('[data-testid="dataTable"]')
       .contains('CompTest')
       .click();
-    cy.get('[data-testid="PortfolioWert"]').should('contain', '3 000€'); //findet den Wert nicht
+    cy.get('[data-testid="PortfolioWert"]').should('contain', '3 000€');
+    cy.get('[data-testid="VerfügbaresGeld"]').should('contain', '3 000€');
+    cy.get('[data-testid="AktienWert"]').should('contain', '0€');
   });
 
   it.skip('Main Menu', () => {
