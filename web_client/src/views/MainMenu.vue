@@ -33,10 +33,20 @@
                   > -->
             <template v-slot:item="{ item }">
               <tr>
-                <td class="overoverl">
+                <td v-if="overlay" class="overoverl">
                   <v-chip class="cardbackground" label>
                     <router-link
-                      class="overoverl"
+                      class=""
+                      style="text-decoration: none"
+                      :to="`/Dashboard/${item.competition_id}`"
+                      >{{ item.title }}
+                    </router-link>
+                  </v-chip>
+                </td>
+                <td v-if="!overlay" class="">
+                  <v-chip class="cardbackground" label>
+                    <router-link
+                      class=""
                       style="text-decoration: none"
                       :to="`/Dashboard/${item.competition_id}`"
                       >{{ item.title }}
