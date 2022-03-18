@@ -1,27 +1,103 @@
 <template>
   <div class="fill-height">
     <TopBarMarket @someEvent="overlay = !overlay" />
-    <v-overlay zIndex="9996" :absolute="absolute" :value="overlay" color="#b3dfff"></v-overlay>
-    <v-container class="fill-height " fluid>
-      <v-row class="negativMargin " d-flex justify="center">
+    <v-overlay zIndex="9996" :absolute="absolute" :value="overlay"></v-overlay>
+    <v-container class="fill-height" fluid>
+      <v-row class="negativMargin" d-flex justify="center">
         <v-col cols="12" sm="8">
-          <div class=" text-h4 mb-1">Hallo {{ user.firstname }}!</div>
+          <div class="text-h4 mb-1">Hallo {{ user.firstname }}!</div>
           <!-- Wahrscheinlich schaut eine Reihe besser aus aber mal schauen -->
-          <div class=" text-h6 font-weight-light">
-            Deine Competitions
-          </div>
+          <div class="text-h6 font-weight-light">Deine Competitions</div>
           <v-data-table
             data-testid="dataTable"
             :headers="headers"
             :items="competetions"
-            class="elevation-3 overl"
+            class="elevation-3"
           >
-            <template v-slot:[`item.cash`]="{ item }">
+            <!-- <v-chip class="cardbackground" color="primary" outlined label>
+              <router-link
+                class="overoverl"
+                style="text-decoration: none"
+                :to="`/Dashboard/${item.competition_id}`"
+                >{{ item.title }}
+              </router-link>
+            </v-chip> -->
+            <!-- <v-btn
+                    color="primary"
+                    outlined
+                    small
+                    plain
+                    class="overoverl"
+                    :to="`/Dashboard/${item.competition_id}`"
+                    >{{ item.title }}</v-btn
+                  > -->
+            <template v-slot:item="{ item }">
+              <tr>
+                <td class="overoverl">
+                  <v-chip class="cardbackground" label>
+                    <router-link
+                      class="overoverl"
+                      style="text-decoration: none"
+                      :to="`/Dashboard/${item.competition_id}`"
+                      >{{ item.title }}
+                    </router-link>
+                  </v-chip>
+                </td>
+                <td>
+                  <div>
+                    {{
+                      parseInt(item.portfolio_value)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{
+                      parseInt(item.cash)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{
+                      parseInt(item.total)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                    }}
+                  </div>
+                </td>
+                <td>
+                  <v-chip
+                    dark
+                    outlined
+                    :color="getColor(item.active)"
+                    v-if="item.active"
+                  >
+                    {{ "aktiv" }}
+                  </v-chip>
+                  <v-chip
+                    dark
+                    label
+                    outlined
+                    :color="getColor(item.active)"
+                    v-if="item.active == false"
+                  >
+                    {{ "inaktiv" }}
+                  </v-chip>
+                </td>
+              </tr>
+            </template>
+
+            <!-- <template v-slot:[`item.cash`]="{ item }">
               <div>
                 {{
                   parseInt(item.cash)
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </div>
             </template>
@@ -30,7 +106,7 @@
                 {{
                   parseInt(item.portfolio_value)
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                 }}
               </div>
             </template>
@@ -40,30 +116,31 @@
                   {{
                     parseInt(item.total)
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                   }}
                 </div>
               </div>
             </template>
             <template class="" v-slot:[`item.title`]="{ item }">
-              <v-chip color="primary overoverl" class="" outlined label>
-                <v-overlay
-                  absolute="true"
-                  :value="overlay"
-                  color="primary"
-                  opacity="0.1"
-                ></v-overlay>
+              <v-chip color="primary overoverl" outlined label>
+               
                 <router-link
                   class="overoverl"
-                  style="text-decoration: none;"
+                  style="text-decoration: none"
                   :to="`/Dashboard/${item.competition_id}`"
                   >{{ item.title }}
                 </router-link>
               </v-chip>
             </template>
+
             <template v-slot:[`item.active`]="{ item }">
-              <v-chip dark outlined :color="getColor(item.active)" v-if="item.active">
-                {{ 'aktiv' }}
+              <v-chip
+                dark
+                outlined
+                :color="getColor(item.active)"
+                v-if="item.active"
+              >
+                {{ "aktiv" }}
               </v-chip>
               <v-chip
                 dark
@@ -72,17 +149,18 @@
                 :color="getColor(item.active)"
                 v-if="item.active == false"
               >
-                {{ 'inaktiv' }}
+                {{ "inaktiv" }}
               </v-chip>
-            </template>
+            </template> -->
             <!-- <template v-slot:item.cash="{ item }">
               <span>
                 {{ item.cash.toFixed(2) }}      Geht nicht
               </span>
             </template> -->
           </v-data-table>
-
-          <v-btn @click="compEnter" class=" mt-2" color="primary">Competition Beitreten</v-btn>
+          <v-btn @click="compEnter" class="mt-2" color="primary"
+            >Competition Beitreten</v-btn
+          >
           <v-btn
             data-testid="btnCompCreate"
             @click="compCreate"
@@ -205,20 +283,22 @@
 </template>
 
 <script>
-import TopBarMarket from '../components/TopBar.vue';
-import server from '@/serverInterface';
+import TopBarMarket from "../components/TopBar.vue";
+import server from "@/serverInterface";
 export default {
   components: {
     TopBarMarket,
   },
   methods: {
     getColor(active) {
-      if (active) return 'green';
-      else return 'red';
+      if (active) return "green";
+      else return "red";
     },
     async getRecords(obj) {
       const x = (
-        await server.get(`http://localhost:3000/competition/records/${obj.competition_id}`)
+        await server.get(
+          `http://localhost:3000/competition/records/${obj.competition_id}`
+        )
       ).data;
       console.log(x);
     },
@@ -227,7 +307,9 @@ export default {
       this.getComps();
     },
     async getCompetition(x) {
-      console.log((await server.get(`http://localhost:3000/competition/${x}`)).data);
+      console.log(
+        (await server.get(`http://localhost:3000/competition/${x}`)).data
+      );
     },
     close() {
       this.dialog = false;
@@ -245,12 +327,17 @@ export default {
       //Do something
     },
     async getComps() {
-      this.competetions = (await server.get(`http://localhost:3000/user/competitions`)).data;
+      this.competetions = (
+        await server.get(`http://localhost:3000/user/competitions`)
+      ).data;
       // console.log(this.competetions);
     },
     async createCompetition() {
       console.log(this.competetion);
-      await server.post(`http://localhost:3000/createNewCompetition`, this.competetion);
+      await server.post(
+        `http://localhost:3000/createNewCompetition`,
+        this.competetion
+      );
       this.close();
       this.getComps();
     },
@@ -269,26 +356,26 @@ export default {
       user: {},
       dialog: false,
       dialog_enter: false,
-      compCode: '',
+      compCode: "",
       competetion: {
-        title: '',
+        title: "",
         starting_money: 0,
-        end_date: '',
+        end_date: "",
       },
       headers: [
         {
-          text: 'titel',
-          align: 'start',
+          text: "titel",
+          align: "start",
           sortable: false,
-          value: 'title',
+          value: "title",
         },
         {
-          text: 'Portfoliowert',
-          value: 'portfolio_value',
+          text: "Portfoliowert",
+          value: "portfolio_value",
         },
-        { text: 'Cash', value: 'cash' },
-        { text: 'Total', value: 'total' },
-        { text: 'Status', value: 'active' },
+        { text: "Cash", value: "cash" },
+        { text: "Total", value: "total" },
+        { text: "Status", value: "active" },
         // { text: 'id', value: 'competition_id' },
       ],
     };
@@ -314,10 +401,17 @@ export default {
 }
 .overl {
   position: relative;
-  z-index: 9997;
+  z-index: 9994;
 }
 .overoverl {
   position: relative;
   z-index: 9999;
+}
+.cardbackground {
+  background-color: white !important;
+  border-radius: 4px !important;
+  border-width: thin; //!default
+  border-style: solid;
+  border-color: #b3ccff; //primary
 }
 </style>
