@@ -102,6 +102,8 @@ describe('after authenticating session', function () {
       competition_id: 39,
       buy_date: '2022-01-12',
     });
+    const resgett = await authenticatedSession.get('/competitions/' + 39 + '/getCompStocks');
+    console.log(resgett.body);
     const respostsell = await authenticatedSession.post('/user/sellStocks').send({
       isin: 'US5949181045',
       sell_price: 298.76,

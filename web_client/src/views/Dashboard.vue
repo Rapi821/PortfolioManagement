@@ -18,7 +18,11 @@
                   <div class=" text-overline mb-4">
                     Portfolio Wert
                   </div>
-                  <v-list-item-title data-testid="PortfolioWert" v-if="!loading" class="text-h6 mb-1 mt-n6">
+                  <v-list-item-title
+                    data-testid="PortfolioWert"
+                    v-if="!loading"
+                    class="text-h6 mb-1 mt-n6"
+                  >
                     {{
                       parseInt(portValue)
                         .toString()
@@ -164,7 +168,6 @@
           <v-container class="buysellwindow">
             <v-window-item :value="0">
               <v-data-table
-                data-testid="btnBuy"
                 dense
                 :headers="headersKaufen"
                 :items="akData"
@@ -174,7 +177,12 @@
                 <!-- Detailpage der einzelnen Aktien -->
 
                 <template v-slot:[`item.actions`]="{ item }">
-                  <v-btn @click="openBuyDialog(item)" small plain class="primary  mt-2 mb-2 me-2"
+                  <v-btn
+                    data-testid="btnBuy"
+                    @click="openBuyDialog(item)"
+                    small
+                    plain
+                    class="primary  mt-2 mb-2 me-2"
                     >Kaufen</v-btn
                   >
                   <v-btn @click="buyDetail(item)" small plain class="primary  mt-2 mb-2"
