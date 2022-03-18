@@ -1,7 +1,12 @@
 <template>
   <div class="fill-height">
     <TopBarMarket @someEvent="overlay = !overlay" />
-    <v-overlay zIndex="9996" :absolute="absolute" :value="overlay"></v-overlay>
+    <v-overlay
+      zIndex="9996"
+      :absolute="absolute"
+      :value="overlay"
+      opacity="0.35"
+    ></v-overlay>
     <v-container class="fill-height" fluid>
       <v-row class="negativMargin" d-flex justify="center">
         <v-col cols="12" sm="8">
@@ -418,7 +423,7 @@ export default {
   z-index: 9999;
 }
 .cardbackground {
-  background-color: white !important;
+  background-color: #fff !important;
   border-radius: 4px !important;
   border-width: thin; //!default
   border-style: solid;
