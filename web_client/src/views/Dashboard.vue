@@ -353,13 +353,13 @@ export default {
     },
     async getData() {
       this.user = (await server.get('http://localhost:3000/user/data')).data;
-      console.log(this.user);
+      // console.log(this.user);
     },
     async getStocks() {
       this.stocks = (
         await server.get(`http://localhost:3000/competitions/${this.comp_id}/getCompStocks`)
       ).data;
-      console.log(this.stocks);
+      // console.log(this.stocks);
     },
     async buyStock() {
       console.log('buy');

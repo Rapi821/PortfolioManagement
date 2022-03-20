@@ -353,7 +353,7 @@ export default {
   name: "Market",
   data() {
     return {
-      dialog2: false,
+      dialog2: true,
       buyDialog: false,
       step: 0,
       weeklyPerChange: 0,
@@ -422,6 +422,9 @@ export default {
       basisday: 0,
       day: 0,
       factor: 0,
+
+      user: {},
+      competetions: [],
     };
   },
   // watch: {
@@ -431,21 +434,7 @@ export default {
   //     setTimeout(() => (this.dialog = false), 4000);
   //   },
   // },
-  async mounted() {
-    // this.loaded = false
-    // try {
-    //     await axios.get(
-    //       `http://localhost:5000/akDetailKurs/${this.akInfo.isin}`
-    //     )
-    //   // this.chartdata = userlist
-    //   this.loaded = true
-    // } catch (e) {
-    //   console.error(e)
-    // }
-    // this.oneDay();
-    // this.oneWeek();
-    // this.oneMonth();
-  },
+
   methods: {
     openBuySellDialog() {
       this.dialog2 = true;
@@ -648,6 +637,17 @@ export default {
         this.akByTimeWert.push(elm.wert);
       }
     },
+
+    async getData() {
+      this.user = (await server.get("http://localhost:3000/user/data")).data;
+      // console.log(this.user);
+    },
+    async getComps() {
+      this.competetions = (
+        await server.get(`http://localhost:3000/user/competitions`)
+      ).data;
+      // console.log(this.competetions);
+    },
   },
   components: {
     Chart,
@@ -655,14 +655,18 @@ export default {
   },
   async created() {
     this.loading = true;
+    await this.getData();
+    await this.getComps();
+    console.log(this.competetions);
+    console.log(this.comp_id);
     this.akInfo = (
       await axios.get(
         `https://heroku-porftolio-crawler.herokuapp.com/akDetail/${this.isin}`
       )
     ).data[0];
-    this.competetion = (
-      await server.get(`http://localhost:3000/user/competitions`)
-    ).data;
+    // this.competetion = (
+    //   await server.get(`http://localhost:3000/user/competitions`)
+    // ).data;
 
     // console.log(this.competetion);
 
