@@ -36,6 +36,8 @@
         </v-col>
       </v-row>
     </v-container>
+
+    
     <!-- <v-spacer></v-spacer> -->
     <!-- <div class="d-none d-xl-flex a"></div> -->
   </div>
@@ -58,7 +60,7 @@ export default {
       akInfo: [],
       akKurs: [],
       akData: [],
-
+      
       headers: [
         {
           text: "Name",
@@ -90,8 +92,10 @@ export default {
         }
         el.kurs = wert.wert;
       }
+
       // console.log(this.akData);
     },
+    
   },
   async created() {
     this.loading = true;

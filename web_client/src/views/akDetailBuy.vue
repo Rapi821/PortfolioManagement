@@ -28,8 +28,12 @@
               :chartdata="chartData"
               :options="chartOptions"
               :key="componentRefreshKey"
-            /> </v-card
-        ></v-col>
+            />
+          </v-card>
+          <!-- <v-btn color="primary" :to="`/Dashboard/${comp_id}`"
+            >Zurück zur competetion {{ competetion[comp_id].title }}</v-btn
+          > -->
+        </v-col>
         <v-col cols="12" sm="1"> </v-col>
         <v-col cols="12" sm="2" class="">
           <!-- Buysellwindow nicht so gut mit padding maybe noch ändern -->
@@ -93,6 +97,12 @@
               >
             </div></v-card
           >
+          <v-btn block class="mt-2 primary" @click="openBuySellDialog"
+            ><v-container class="mx-auto">Kaufen</v-container>|<v-container
+              class="mx-auto"
+              >Verkaufen</v-container
+            ></v-btn
+          >
         </v-col>
         <v-col cols="12" sm="2"> </v-col>
       </v-row>
@@ -115,7 +125,7 @@
     <!-- <div class="d-flex  justify-center align-center">
       <Chart v-if="!loaded" :chartdata="chartData" :options="options" />
     </div> -->
-    <v-dialog v-model="buyDialog" max-width="500px">
+    <!-- <v-dialog v-model="buyDialog" max-width="500px">
       <v-card>
         <v-card-title>Aktien Kaufen</v-card-title>
         <v-window>
@@ -143,6 +153,193 @@
           >
         </v-card-action>
       </v-card>
+    </v-dialog> -->
+    <v-dialog v-model="dialog2" max-width="500px">
+      <v-card>
+        <div class="d-flex justify-space-around">
+          <v-container
+            fluid
+            :style="[
+              !visible
+                ? {
+                    'border-bottom': '1px solid #fff',
+                  }
+                : {
+                    'border-bottom': '1px solid rgba(0,0,0,0.12)',
+                  },
+            ]"
+            style="border-right:1px solid rgba(0,0,0,0.12)"
+          >
+            <div v-on:click="stepc0" :disabled="step == 0">
+              Kaufen
+            </div>
+          </v-container>
+          <!-- <v-divider class="ml-5" vertical></v-divider> -->
+          <!-- ml-5 nicht clean -->
+          <v-container
+            fluid
+            :style="[
+              visible
+                ? {
+                    'border-bottom': '1px solid #fff',
+                  }
+                : {
+                    'border-bottom': '1px solid rgba(0,0,0,0.12)',
+                  },
+            ]"
+          >
+            <div v-on:click="stepc1" :disabled="step == 1">Verkaufen</div>
+          </v-container>
+        </div>
+        <!-- Nicht löschen -->
+        <!-- <div class="d-flex flex-row">
+          <v-divider
+            :style="{ visibility: visible ? 'visible' : 'hidden' }"
+          ></v-divider>
+          <v-divider
+            :style="{ visibility: !visible ? 'visible' : 'hidden' }"
+          ></v-divider>
+        </div> -->
+        <v-window v-model="step">
+          <v-container class="buysellwindow">
+            <v-window-item :value="0"
+              ><v-form
+                ><v-text-field
+                  label="Anzahl kaufen"
+                  name="Anzahl"
+                  type="Number"
+                  color="primary"
+                  v-model="sellPrice"
+                  @input="sellAkCount"
+              /></v-form>
+              <!-- <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
+                <v-btn width="45%">Plus</v-btn>
+                <v-btn width="45%">Minus</v-btn>
+              </div> -->
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld:
+                </div>
+                <div class="h5">
+                  {{ cash }}
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis pro Aktie:
+                </div>
+                <div class="h5">
+                  <!-- {{ akData.find((e) => e.isin == curAk.isin).kurs }} -->
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Dein Aktienwert:
+                </div>
+                <div class="h5">
+                  <!-- {{ curAk.wert }} -->
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis insgesamt:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
+              </div>
+              <v-divider class="divider_style"></v-divider>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Portfolio Wert:
+                </div>
+                <div class="h5">
+                  <!-- {{ portValue }} -->
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld nach Kauf:
+                </div>
+                <div class="h5">
+                  <!-- {{ Number(cash) + Number(sellPrice) }} -->
+                </div>
+              </div>
+              <div class="mb-n3 mt-3 textfields d-flex ">
+                <v-btn width="100%" @click="sellAk">Verkaufen</v-btn>
+              </div>
+            </v-window-item>
+            <!-- Verkauf -->
+            <v-window-item :value="1">
+              <v-form
+                ><v-text-field
+                  label="Anzahl verkaufen"
+                  name="Anzahl"
+                  type="Number"
+                  color="primary"
+                  v-model="sellPrice"
+                  @input="sellAkCount"
+              /></v-form>
+              <!-- <div class="mb-3 mt-n1 textfields d-flex justify-space-between">
+                <v-btn width="45%">Plus</v-btn>
+                <v-btn width="45%">Minus</v-btn>
+              </div> -->
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld:
+                </div>
+                <div class="h5">
+                  {{ cash }}
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis pro Aktie:
+                </div>
+                <div class="h5">
+                  <!-- {{ akData.find((e) => e.isin == curAk.isin).kurs }} -->
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Dein Aktienwert:
+                </div>
+                <div class="h5">
+                  <!-- {{ curAk.wert }} -->
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Preis insgesamt:
+                </div>
+                <div class="h5">
+                  2344
+                </div>
+              </div>
+              <v-divider class="divider_style"></v-divider>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Portfolio Wert:
+                </div>
+                <div class="h5">
+                  <!-- {{ portValue }} -->
+                </div>
+              </div>
+              <div class="textfields d-flex justify-space-between">
+                <div class="h5">
+                  Verfügbares Geld nach Verkauf:
+                </div>
+                <div class="h5">
+                  <!-- {{ Number(cash) + Number(sellPrice) }} -->
+                </div>
+              </div>
+              <div class="mb-n3 mt-3 textfields d-flex ">
+                <v-btn width="100%" @click="sellAk">Verkaufen</v-btn>
+              </div></v-window-item
+            >
+          </v-container>
+        </v-window>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -156,6 +353,9 @@ export default {
   name: "Market",
   data() {
     return {
+      dialog2: false,
+      buyDialog: false,
+      step: 0,
       weeklyPerChange: 0,
       dailyPerChange: 0,
       monthlyPerChange: 0,
@@ -199,7 +399,7 @@ export default {
           },
         },
       },
-      buyDialog: false,
+      buyDialog2: false,
       chartData: {
         labels: [],
         datasets: [
@@ -247,6 +447,17 @@ export default {
     // this.oneMonth();
   },
   methods: {
+    openBuySellDialog() {
+      this.dialog2 = true;
+    },
+    stepc0() {
+      this.step = 0;
+      this.visible = false;
+    },
+    stepc1() {
+      this.step = 1;
+      this.visible = true;
+    },
     getWeeklyPerChange() {
       this.factor = this.test.length / 30;
       this.factor = Math.round(this.factor);
