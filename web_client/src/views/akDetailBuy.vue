@@ -59,6 +59,38 @@
                 Monat
               </div>
               <div class="text-h5 ">{{ this.monthlyPerChange }}%</div>
+            </div>
+            <div class="mx-auto mt-4">
+              <v-btn
+                class="me-1"
+                outlined
+                elevation="0"
+                tile
+                block
+                color="primary"
+                @click="oneDay()"
+                >Tagesansicht</v-btn
+              >
+              <v-btn
+                class="me-1 mt-1"
+                elevation="0"
+                outlined
+                tile
+                block
+                color="primary"
+                @click="oneWeek()"
+                >Wochenansicht</v-btn
+              >
+              <v-btn
+                class="me-1 mt-1"
+                elevation="0"
+                outlined
+                tile
+                block
+                color="primary"
+                @click="oneMonth()"
+                >Monatsansicht</v-btn
+              >
             </div></v-card
           >
         </v-col>
@@ -189,6 +221,7 @@ export default {
       month: 0,
       basisday: 0,
       day: 0,
+      factor: 0,
     };
   },
   // watch: {
@@ -215,33 +248,50 @@ export default {
   },
   methods: {
     getWeeklyPerChange() {
+      this.factor = this.test.length / 30;
+      this.factor = Math.round(this.factor);
+      // console.log("getWeeklyPerChangeTest Start");
       // console.log(this.test);
-      this.basisWeek = parseInt(this.test[this.test.length - 1]);
+      // console.log(this.factor);
+      // console.log(this.test.length);
+      this.basisWeek = parseInt(this.test[this.test.length - this.factor * 8]);
+      // console.log("aha");
+      // console.log(this.test.length - this.factor * 7);
       // console.log(this.basisWeek);
-      this.week = parseInt(this.test[this.test.length - 15]);
+      this.week = parseInt(this.test[this.test.length - 1]);
       // console.log(this.week);
       this.weeklyPerChange = parseInt(
         ((this.week - this.basisWeek) / this.basisWeek) * 100
       );
-      //console.log(this.weeklyPerChange);
-      // console.log("hallo");
-      // console.log(this.test.length);
+      // console.log(this.weeklyPerChange);
+
+      // console.log("getWeeklyPerChangeTest End");
     },
     getDailyPerChange() {
-      this.basisday = parseInt(this.test[this.test.length - 1]);
-      this.day = parseInt(this.test[this.test.length - 5]);
+      this.factor = this.test.length / 30;
+      this.factor = Math.round(this.factor);
+      this.basisday = parseInt(this.test[this.test.length - this.factor * 1]); //Maybe *2
+      this.day = parseInt(this.test[this.test.length - 1]);
       this.dailyPerChange = parseInt(
         ((this.day - this.basisday) / this.basisday) * 100
       );
+      // console.log(this.basisday);
+      // console.log(this.day);
     },
     getMonthlyPerChange() {
-      this.basisMonth = parseInt(this.test[this.test.length - 1]);
-      console.log(this.basisMonth);
-      this.month = parseInt(this.test[this.test.length - 61]);
-      console.log(this.month);
+      // console.log("getMonthlyPerChange Start");
+      this.basisMonth = parseInt(this.test[0]);
+      // console.log(this.test);
+      // console.log(this.basisMonth);
+      this.month = parseInt(this.test[this.test.length - 1]);
+      // console.log(this.month);
       this.monthlyPerChange = parseInt(
         ((this.month - this.basisMonth) / this.basisMonth) * 100
       );
+      // console.log("test111");
+      // console.log("getMonthlyPerChange test.length");
+      // console.log(this.test.length);
+      // console.log("getMonthlyPerChange End");
     },
     async getCompbyID() {},
     forceRerender() {
@@ -281,6 +331,9 @@ export default {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
       }
+      this.chartData.labels.reverse();
+      //Hier this.test array reversen
+      this.test.reverse();
       this.chartData.datasets[0].data = this.test;
     },
     async oneWeek() {
@@ -298,6 +351,7 @@ export default {
       this.datum = yesterdayDate;
       this.chartData.datasets[0].data = [];
       this.chartData.labels = [];
+      this.test = [];
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
@@ -308,10 +362,14 @@ export default {
         let datumZeit = `${zeit} ${datum}`;
         this.chartData.labels.push(datumZeit);
       }
+      this.chartData.labels.reverse();
+      //Hier this.test array reversen
+      this.test.reverse();
       this.chartData.datasets[0].data = this.test;
       // console.log(this.chartData.labels);
       // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
+      // this.getWeeklyPerChange();
       // console.log(this.datum);
       this.loaded = true;
       this.forceRerender();
@@ -345,6 +403,7 @@ export default {
       }
       this.chartData.datasets[0].data = [];
       this.chartData.labels = [];
+      this.test = [];
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
@@ -360,14 +419,16 @@ export default {
       this.test.reverse();
       this.chartData.datasets[0].data = this.test;
       // console.log(this.test);
-      this.getWeeklyPerChange();
-      this.getMonthlyPerChange();
-      this.getDailyPerChange();
+      // this.getWeeklyPerChange();
+
+      // this.getDailyPerChange();
       // console.log(this.chartData.labels);
       // console.log(this.chartData.datasets[0].data);
       this.wertExtraktion();
+
       // console.log(this.datum);
       this.loaded = true;
+
       this.forceRerender();
     },
     wertExtraktion() {
@@ -396,8 +457,11 @@ export default {
 
     this.getKurs();
     // this.getCompbyID();
-    this.oneMonth();
-
+    await this.oneMonth();
+    this.getMonthlyPerChange();
+    this.getWeeklyPerChange();
+    this.getDailyPerChange();
+    // setTimeout(this.getWeeklyPerChange, 3000);
     this.loading = false;
   },
 
