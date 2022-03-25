@@ -63,7 +63,7 @@
                     {{
                       parseInt(item.portfolio_value)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
                     }}
                   </div>
                 </td>
@@ -72,7 +72,7 @@
                     {{
                       parseInt(item.cash)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
                     }}
                   </div>
                 </td>
@@ -81,7 +81,7 @@
                     {{
                       parseInt(item.total)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
                     }}
                   </div>
                 </td>
@@ -92,7 +92,7 @@
                     :color="getColor(item.active)"
                     v-if="item.active"
                   >
-                    {{ "aktiv" }}
+                    {{ 'aktiv' }}
                   </v-chip>
                   <v-chip
                     dark
@@ -101,7 +101,7 @@
                     :color="getColor(item.active)"
                     v-if="item.active == false"
                   >
-                    {{ "inaktiv" }}
+                    {{ 'inaktiv' }}
                   </v-chip>
                 </td>
               </tr>
@@ -291,23 +291,47 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog></v-card-actions
-      >
+        </v-dialog>
+        <!-- Dialog damit man einer Competiton beitreten kann -->
+        <v-dialog v-model="dialog_enter" max-width="500px">
+          <v-card
+            ><v-card-title>
+              <span class="text-h5">Competition Beitreten</span>
+            </v-card-title>
+            <v-text-field
+              v-model="compCode"
+              label="Competition Code"
+              placeholder="1a2b3c"
+              filled
+              clearable
+              dense
+              max-width="350px"
+            ></v-text-field>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="competetionEnter">
+                Enter
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
-import TopBarMarket from "../components/TopBar.vue";
-import server from "@/serverInterface";
+import TopBarMarket from '../components/TopBar.vue';
+import server from '@/serverInterface';
 export default {
   components: {
     TopBarMarket,
   },
   methods: {
     getColor(active) {
-      if (active) return "green";
-      else return "red";
+      if (active) return 'green';
+      else return 'red';
     },
     async getRecords(obj) {
       const x = (
@@ -333,13 +357,17 @@ export default {
     compCreate() {
       this.dialog = true;
     },
-    async compEnter(obj) {
-      // this.dialog_enter = true;
-      await server.post(`http://localhost:3000/user/addUserToCompetition`, obj);
-      this.getComps();
+    compEnter() {
+      this.dialog_enter = true;
+      // await server.post(`http://localhost:3000/user/addUserToCompetition`, obj);
+      // this.getComps();
     },
-    competetionEnter() {
-      //Do something
+    async competetionEnter() {
+      let obj = { code: this.compCode };
+      await server.post(`http://localhost:3000/user/addUserToCompetition`, obj);
+      this.compCode = '';
+      this.dialog_enter = false;
+      this.getComps();
     },
     async getComps() {
       this.competetions = (
@@ -365,32 +393,31 @@ export default {
     return {
       overlay: false,
       zIndex: 0,
-
+      compCode: '',
       absolute: true,
       competetions: [],
       user: {},
       dialog: false,
       dialog_enter: false,
-      compCode: "",
       competetion: {
-        title: "",
+        title: '',
         starting_money: 0,
-        end_date: "",
+        end_date: '',
       },
       headers: [
         {
-          text: "titel",
-          align: "start",
+          text: 'titel',
+          align: 'start',
           sortable: false,
-          value: "title",
+          value: 'title',
         },
         {
-          text: "Portfoliowert",
-          value: "portfolio_value",
+          text: 'Portfoliowert',
+          value: 'portfolio_value',
         },
-        { text: "Cash", value: "cash" },
-        { text: "Total", value: "total" },
-        { text: "Status", value: "active" },
+        { text: 'Cash', value: 'cash' },
+        { text: 'Total', value: 'total' },
+        { text: 'Status', value: 'active' },
         // { text: 'id', value: 'competition_id' },
       ],
     };
