@@ -26,7 +26,7 @@
 <script>
 // import axios from 'axios';
 // import server from '@/serverInterface';
-import TopBarMarket from "../components/TopBar.vue";
+import TopBarMarket from '../components/TopBar.vue';
 export default {
   components: { TopBarMarket },
   props: {
@@ -38,13 +38,13 @@ export default {
     return {
       headers: [
         {
-          text: "Platzierung",
-          align: "start",
+          text: 'Platzierung',
+          align: 'start',
           sortable: true,
-          value: "#",
+          value: '#',
         },
-        { text: "Name", value: "#" },
-        { text: "Portfolio Wert", value: "#" },
+        { text: 'Name', value: '#' },
+        { text: 'Portfolio Wert', value: '#' },
       ],
     };
   },

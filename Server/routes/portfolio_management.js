@@ -42,7 +42,7 @@ router.get('/user/competitions', getUserCompetitions);
 router.post('/user/buyStocks', buyStocks);
 // Neuen User zu einer Competition hinzufügen
 router.post('/user/addUserToCompetition', addUserToCompetition);
-// Route für Daten von einer Competition von einem User
+// Route für Daten von einer Competition von einem User 
 router.get('/competition/:competition_id', getCompetition);
 // Route um Aktien wieder zu verkaufen
 router.post('/user/sellStocks', sellStocks);
