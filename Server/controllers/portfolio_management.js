@@ -116,6 +116,7 @@ const buyStocks = asyncHandler(async (req, res) => {
 });
 
 const getCompetition = asyncHandler(async (req, res) => {
+  console.log(req.session);
   res
     .status(200)
     .json(

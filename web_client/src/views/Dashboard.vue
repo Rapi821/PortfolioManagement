@@ -11,7 +11,11 @@
             </div>
             <v-card :loading="loading" class="elevation-0" max-width="200">
               <template slot="progress">
-                <v-progress-linear color="primary" indeterminate height="2"></v-progress-linear>
+                <v-progress-linear
+                  color="primary"
+                  indeterminate
+                  height="2"
+                ></v-progress-linear>
               </template>
               <v-list-item three-line>
                 <v-list-item-content>
@@ -69,6 +73,9 @@
                 </v-list-item-content>
               </v-list-item>
             </v-card>
+            <v-btn class="primary mt-2" @click="showCode"
+              >Competition Code</v-btn
+            >
           </div></v-col
         >
 
@@ -109,20 +116,29 @@
                 </div>
               </template>
               <template v-slot:[`item.verkaufen`]="{ item }">
-                <v-btn @click="openSellDialog(item)" small plain class="primary  mt-2 mb-2 me-2"
+                <v-btn
+                  @click="openSellDialog(item)"
+                  small
+                  plain
+                  class="primary  mt-2 mb-2 me-2"
                   >Verkaufen</v-btn
                 >
               </template>
             </v-data-table>
           </div></v-col
         >
+
         <v-col cols="12" sm="2"></v-col>
       </v-row>
     </v-container>
 
     <div>
       <!-- <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn> -->
-      <v-btn data-testid="btnBuyDialog" @click="sellbuy" class="mx-auto" color="sucess"
+      <v-btn
+        data-testid="btnBuyDialog"
+        @click="sellbuy"
+        class="mx-auto"
+        color="sucess"
         >Kaufen</v-btn
       >
     </div>
@@ -193,7 +209,11 @@
                     class="primary  mt-2 mb-2 me-2"
                     >Kaufen</v-btn
                   >
-                  <v-btn @click="buyDetail(item)" small plain class="primary  mt-2 mb-2"
+                  <v-btn
+                    @click="buyDetail(item)"
+                    small
+                    plain
+                    class="primary  mt-2 mb-2"
                     >Detail</v-btn
                   >
                 </template>
@@ -305,8 +325,26 @@
           </v-window-item>
         </v-window>
         <v-card-action>
-          <v-btn data-testid="btnBuyStock" @click="buyStock" small class="primary  mt-2 mb-2">Kaufen</v-btn>
-          <v-btn @click="closeBuy" small class="primary  mt-2 mb-2">Cancel</v-btn>
+          <v-btn
+            data-testid="btnBuyStock"
+            @click="buyStock"
+            small
+            class="primary  mt-2 mb-2"
+            >Kaufen</v-btn
+          >
+          <v-btn @click="closeBuy" small class="primary  mt-2 mb-2"
+            >Cancel</v-btn
+          >
+        </v-card-action>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="compCode_dialog">
+      <v-card>
+        <v-card-title>{{ compCode }}</v-card-title>
+        <v-card-action>
+          <v-btn @click="closeCode" small class="primary  mt-2 mb-2"
+            >Cancel</v-btn
+          >
         </v-card-action>
       </v-card>
     </v-dialog>
@@ -338,6 +376,17 @@ export default {
     closeBuy() {
       this.buyDialog = false;
     },
+    closeCode() {
+      this.compCode_dialog = false;
+    },
+    async showCode() {
+      let comps = (await server.get(`http://localhost:3000/user/competitions`))
+        .data;
+      comps = comps.find((e) => e.competition_id == this.comp_id);
+      this.compCode = comps.competition_code;
+      // console.log(comps);
+      this.compCode_dialog = true;
+    },
     sellAkCount() {
       if (this.sellPrice > this.curAk.wert) {
         this.sellPrice = this.curAk.wert;
@@ -357,7 +406,9 @@ export default {
     },
     async getStocks() {
       this.stocks = (
-        await server.get(`http://localhost:3000/competitions/${this.comp_id}/getCompStocks`)
+        await server.get(
+          `http://localhost:3000/competitions/${this.comp_id}/getCompStocks`
+        )
       ).data;
       // console.log(this.stocks);
     },
@@ -447,8 +498,12 @@ export default {
   async created() {
     (this.loading = true), await this.getData();
     await this.getStocks();
-    this.akInfo = (await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')).data;
-    this.akKurs = (await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')).data;
+    this.akInfo = (
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+    ).data;
+    this.akKurs = (
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+    ).data;
     this.createAktie();
     this.createAkForTable();
     this.loading = false;
@@ -461,6 +516,8 @@ export default {
       akKurs: [],
       akHave: [],
       cash: 0,
+      compCode_dialog: false,
+      compCode: '',
       anzGeld: 0,
       buyCount: 0,
       portValue: 0,
