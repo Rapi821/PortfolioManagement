@@ -3,14 +3,6 @@
 describe('Test Start and Login', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8081/');
-  });
-
-  it.skip('Start', () => {
-    cy.get('[data-testid="btnstart"]').click();
-    cy.url().should('include', '/LoginRegister');
-  });
-
-  it.skip('Login', () => {
     cy.get('[data-testid="btnstart"]').click();
     cy.url().should('include', '/LoginRegister');
     cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
@@ -19,11 +11,14 @@ describe('Test Start and Login', () => {
     cy.url().should('include', '/mainmenu');
   });
 
-  it.skip('CreateCompetition', () => {
-    cy.get('[data-testid="btnstart"]').click();
-    cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
-    cy.get('[data-testid="passwordLogin"]').type('test123');
-    cy.get('[data-testid="btnLogin"]').click();
+  // it.skip('Start', () => {
+  //   cy.get('[data-testid="btnstart"]').click();
+  //   cy.url().should('include', '/LoginRegister');
+  // });
+
+  // it.skip('Login', () => {});
+
+  it('create competition', () => {
     cy.get('[data-testid="btnCompCreate"]').click();
     cy.get('[data-testid="comptitle"]').type('CompTest');
     cy.get('[data-testid="compmoney"]').type(3000);
@@ -32,18 +27,10 @@ describe('Test Start and Login', () => {
     cy.get('[data-testid="compenddate"]').type('01.02.2023');
   });
   it.skip('CheckCompetition', () => {
-    cy.get('[data-testid="btnstart"]').click();
-    cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
-    cy.get('[data-testid="passwordLogin"]').type('test123');
-    cy.get('[data-testid="btnLogin"]').click();
     cy.get('[data-testid="dataTable"]').contains('CompTest' && '3000€' && 'aktiv'); // Ist zwar nicht für eine Zeile sondern eher ob diese Werte allgemein in der Tabelle vorkommen, aber das Funktioniert zumindest
   });
 
-  it.skip('Buy Stocks', () => {
-    cy.get('[data-testid="btnstart"]').click();
-    cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
-    cy.get('[data-testid="passwordLogin"]').type('test123');
-    cy.get('[data-testid="btnLogin"]').click();
+  it('Buy Stocks', () => {
     cy.get('[data-testid="dataTable"]')
       .contains('Raphis Aktien Game')
       .click();
@@ -59,11 +46,7 @@ describe('Test Start and Login', () => {
     cy.get('[data-testid="AktienWert"]').should('contain', '212€');
   });
 
-  it.skip('Dashboard', () => {
-    cy.get('[data-testid="btnstart"]').click();
-    cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
-    cy.get('[data-testid="passwordLogin"]').type('test123');
-    cy.get('[data-testid="btnLogin"]').click();
+  it('Dashboard', () => {
     cy.get('[data-testid="dataTable"]')
       .contains('CompTest')
       .click();
@@ -72,11 +55,7 @@ describe('Test Start and Login', () => {
     cy.get('[data-testid="AktienWert"]').should('contain', '0€');
   });
 
-  it.skip('Main Menu', () => {
-    cy.get('[data-testid="btnstart"]').click();
-    cy.get('[data-testid="emailLogin"]').type('wolfsberger.r03@htlwienwest.at');
-    cy.get('[data-testid="passwordLogin"]').type('test123');
-    cy.get('[data-testid="btnLogin"]').click();
+  it('Main Menu', () => {
     cy.get('[data-testid="dataTable"]')
       .contains('CompTest')
       .click();
