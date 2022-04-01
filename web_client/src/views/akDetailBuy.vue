@@ -1,11 +1,11 @@
 <template>
   <div class="fill-height">
     <TopBarMarket :comp_id="comp_id" />
-    <v-container class="fill-height " fluid>
+    <v-container class="fill-height" fluid>
       <v-row no-gutters class="mt-n12">
         <v-col cols="12" sm="2" class="mr-n2"> </v-col>
         <v-col cols="12" sm="5">
-          <div class=" text-h5 mt-n8 font-weight-light">
+          <div class="text-h5 mt-n8 font-weight-light">
             {{ akInfo.title }}
           </div>
           <v-card outlined>
@@ -39,30 +39,20 @@
           <!-- Buysellwindow nicht so gut mit padding maybe noch ändern -->
           <v-card class="buysellwindow"
             ><div class="textfields d-flex justify-space-between">
-              <div class="text-h8 font-weight-light">
-                Zeitraum
-              </div>
-              <div class="text-h8 font-weight-light">
-                Veränderung
-              </div>
+              <div class="text-h8 font-weight-light">Zeitraum</div>
+              <div class="text-h8 font-weight-light">Veränderung</div>
             </div>
             <div class="textfields mt-4 d-flex justify-space-between">
-              <div class="text-h5 ">
-                Tag
-              </div>
-              <div class="text-h5 ">{{ this.dailyPerChange }}%</div>
+              <div class="text-h5">Tag</div>
+              <div class="text-h5">{{ this.dailyPerChange }}%</div>
             </div>
             <div class="textfields mt-1 d-flex justify-space-between">
-              <div class="text-h5 ">
-                Woche
-              </div>
-              <div class="text-h5 ">{{ this.weeklyPerChange }}%</div>
+              <div class="text-h5">Woche</div>
+              <div class="text-h5">{{ this.weeklyPerChange }}%</div>
             </div>
             <div class="textfields mt-1 d-flex justify-space-between">
-              <div class="text-h5 ">
-                Monat
-              </div>
-              <div class="text-h5 ">{{ this.monthlyPerChange }}%</div>
+              <div class="text-h5">Monat</div>
+              <div class="text-h5">{{ this.monthlyPerChange }}%</div>
             </div>
             <div class="mx-auto mt-4">
               <v-btn
@@ -168,11 +158,9 @@
                     'border-bottom': '1px solid rgba(0,0,0,0.12)',
                   },
             ]"
-            style="border-right:1px solid rgba(0,0,0,0.12)"
+            style="border-right: 1px solid rgba(0, 0, 0, 0.12)"
           >
-            <div v-on:click="stepc0" :disabled="step == 0">
-              Kaufen
-            </div>
+            <div v-on:click="stepc0" :disabled="step == 0">Kaufen</div>
           </v-container>
           <!-- <v-divider class="ml-5" vertical></v-divider> -->
           <!-- ml-5 nicht clean -->
@@ -217,55 +205,41 @@
                 <v-btn width="45%">Minus</v-btn>
               </div> -->
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Verfügbares Geld:
-                </div>
+                <div class="h5">Verfügbares Geld:</div>
                 <div class="h5">
                   {{ cash }}
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis pro Aktie:
-                </div>
+                <div class="h5">Preis pro Aktie:</div>
                 <div class="h5">
                   <!-- {{ akData.find((e) => e.isin == curAk.isin).kurs }} -->
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Dein Aktienwert:
-                </div>
+                <div class="h5">Dein Aktienwert:</div>
                 <div class="h5">
                   <!-- {{ curAk.wert }} -->
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis insgesamt:
-                </div>
-                <div class="h5">
-                  2344
-                </div>
+                <div class="h5">Preis insgesamt:</div>
+                <div class="h5">2344</div>
               </div>
               <v-divider class="divider_style"></v-divider>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Portfolio Wert:
-                </div>
+                <div class="h5">Portfolio Wert:</div>
                 <div class="h5">
                   <!-- {{ portValue }} -->
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Verfügbares Geld nach Kauf:
-                </div>
+                <div class="h5">Verfügbares Geld nach Kauf:</div>
                 <div class="h5">
                   <!-- {{ Number(cash) + Number(sellPrice) }} -->
                 </div>
               </div>
-              <div class="mb-n3 mt-3 textfields d-flex ">
+              <div class="mb-n3 mt-3 textfields d-flex">
                 <v-btn width="100%" @click="sellAk">Verkaufen</v-btn>
               </div>
             </v-window-item>
@@ -285,55 +259,41 @@
                 <v-btn width="45%">Minus</v-btn>
               </div> -->
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Verfügbares Geld:
-                </div>
+                <div class="h5">Verfügbares Geld:</div>
                 <div class="h5">
                   {{ cash }}
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis pro Aktie:
-                </div>
+                <div class="h5">Preis pro Aktie:</div>
                 <div class="h5">
                   <!-- {{ akData.find((e) => e.isin == curAk.isin).kurs }} -->
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Dein Aktienwert:
-                </div>
+                <div class="h5">Dein Aktienwert:</div>
                 <div class="h5">
                   <!-- {{ curAk.wert }} -->
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Preis insgesamt:
-                </div>
-                <div class="h5">
-                  2344
-                </div>
+                <div class="h5">Preis insgesamt:</div>
+                <div class="h5">2344</div>
               </div>
               <v-divider class="divider_style"></v-divider>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Portfolio Wert:
-                </div>
+                <div class="h5">Portfolio Wert:</div>
                 <div class="h5">
                   <!-- {{ portValue }} -->
                 </div>
               </div>
               <div class="textfields d-flex justify-space-between">
-                <div class="h5">
-                  Verfügbares Geld nach Verkauf:
-                </div>
+                <div class="h5">Verfügbares Geld nach Verkauf:</div>
                 <div class="h5">
                   <!-- {{ Number(cash) + Number(sellPrice) }} -->
                 </div>
               </div>
-              <div class="mb-n3 mt-3 textfields d-flex ">
+              <div class="mb-n3 mt-3 textfields d-flex">
                 <v-btn width="100%" @click="sellAk">Verkaufen</v-btn>
               </div></v-window-item
             >
@@ -618,7 +578,7 @@ export default {
       //Hier this.test array reversen
       this.test.reverse();
       this.chartData.datasets[0].data = this.test;
-      // console.log(this.test);
+      console.log(this.test.slice(499, 598));
       // this.getWeeklyPerChange();
 
       // this.getDailyPerChange();
