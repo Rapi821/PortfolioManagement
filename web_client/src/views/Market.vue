@@ -27,12 +27,15 @@
                 </td>
                 <td>{{ item.kurs }}</td>
                 <td>
-                  <v-sparkline
-                    line-width="5"
-                    smooth="10"
-                    :value="item.graphvalues"
-                    auto-draw
-                  ></v-sparkline>
+                  <!-- maybe smooth noch bissi ändern? -->
+                  <div class="ml-n6 mr-6">
+                    <v-sparkline
+                      line-width="5"
+                      smooth="8"
+                      :value="item.graphvalues"
+                      auto-draw
+                    ></v-sparkline>
+                  </div>
                 </td>
                 <td>
                   <v-btn
@@ -152,7 +155,7 @@ export default {
             this.hilfsarr.push(elle.wert);
           }
           this.hilfsarr2 = [];
-          for (let i = 0; i < this.hilfsarr.length; i = i + 100) {
+          for (let i = 0; i < this.hilfsarr.length; i = i + 56) {
             this.hilfsarr2.push(this.hilfsarr[i]);
           }
           let aktie = {
@@ -181,7 +184,7 @@ export default {
             this.hilfsarr.push(elle.wert);
           }
           this.hilfsarr2 = [];
-          for (let i = 0; i < this.hilfsarr.length; i = i + 60) {
+          for (let i = 0; i < this.hilfsarr.length; i = i + 56) {
             this.hilfsarr2.push(this.hilfsarr[i]);
           }
           let aktie = {
