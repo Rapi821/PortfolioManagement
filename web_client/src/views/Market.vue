@@ -28,9 +28,10 @@
                 <td>{{ item.kurs }}</td>
                 <td>
                   <v-sparkline
-                    line-width="10"
-                    :smooth="false"
+                    line-width="5"
+                    smooth="10"
                     :value="item.graphvalues"
+                    auto-draw
                   ></v-sparkline>
                 </td>
                 <td>
@@ -86,14 +87,14 @@ export default {
       headers: [
         {
           text: "Name",
-          align: "center",
+
           sortable: true,
           value: "name",
         },
         { text: "ISIN", value: "isin", sortable: false },
         { text: "WKN", value: "wkn", sortable: false },
         { text: "Kurs", value: "kurs" },
-        { text: "", value: "graphvalues", width: "100%" },
+        { text: "", value: "graphvalues", width: "15%", sortable: false },
         { text: "Aktionen", value: "actions", width: "22%" },
       ],
     };
@@ -150,10 +151,15 @@ export default {
           for (let elle of lol) {
             this.hilfsarr.push(elle.wert);
           }
+          this.hilfsarr2 = [];
+          for (let i = 0; i < this.hilfsarr.length; i = i + 100) {
+            this.hilfsarr2.push(this.hilfsarr[i]);
+          }
           let aktie = {
             id: counterid,
-            werte: this.hilfsarr,
+            werte: this.hilfsarr2,
           };
+
           this.allakKurs.push(aktie);
           counterid++;
           // console.log(lol.filter((elem) => elem.wert));
@@ -175,7 +181,7 @@ export default {
             this.hilfsarr.push(elle.wert);
           }
           this.hilfsarr2 = [];
-          for (let i = 0; i < this.hilfsarr.length; i = i + 100) {
+          for (let i = 0; i < this.hilfsarr.length; i = i + 60) {
             this.hilfsarr2.push(this.hilfsarr[i]);
           }
           let aktie = {
