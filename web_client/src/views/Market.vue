@@ -28,7 +28,7 @@
                 <td>{{ item.kurs }}</td>
                 <td>
                   <v-sparkline
-                    line-width="1"
+                    line-width="10"
                     :smooth="false"
                     :value="item.graphvalues"
                   ></v-sparkline>
@@ -55,12 +55,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-sparkline
-      line-width="1"
-      :smooth="false"
-      :value="this.allakKurs[0].werte"
-      auto-draw
-    ></v-sparkline>
+
     <!-- <v-spacer></v-spacer> -->
     <!-- <div class="d-none d-xl-flex a"></div> -->
   </div>
@@ -81,6 +76,7 @@ export default {
   data() {
     return {
       loading: false,
+      loading2: false,
       akInfo: [],
       akKurs: [],
       akData: [],
@@ -97,8 +93,8 @@ export default {
         { text: "ISIN", value: "isin", sortable: false },
         { text: "WKN", value: "wkn", sortable: false },
         { text: "Kurs", value: "kurs" },
-        { text: "", value: "graphvalues" },
-        { text: "Aktionen", value: "actions" },
+        { text: "", value: "graphvalues", width: "100%" },
+        { text: "Aktionen", value: "actions", width: "22%" },
       ],
     };
   },
@@ -116,11 +112,9 @@ export default {
           kurs: 1,
           graphvalues: this.allakKurs[counter].werte,
         };
-
         console.log("test 1");
         // console.log();
         this.akData.push(aktie);
-
         counter++;
       }
       for (let el of this.akData) {
@@ -131,7 +125,6 @@ export default {
         }
         el.kurs = wert.wert;
       }
-
       // console.log(this.akData);
     },
     async getKurs() {
@@ -215,6 +208,7 @@ export default {
     console.log(this.akInfo);
     console.log(this.allakKurs);
     this.loading = false;
+    // Vielleicht noch mit loading2 optimieren
   },
 };
 </script>
