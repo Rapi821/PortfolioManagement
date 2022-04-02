@@ -44,14 +44,16 @@
                     small
                     >{{ icons.mdiArrowDownThin }}</v-icon
                   >
-                  <div
+                  <v-icon
+                    class="mb-3 ml-1"
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] ==
                       item.graphvalues[item.graphvalues.length - 2]
                     "
+                    disabled
+                    x-small
+                    >{{ icons.mdiColorHelper }}</v-icon
                   >
-                    -
-                  </div>
                 </td>
                 <td>
                   <!-- maybe smooth noch bissi ändern? -->
@@ -131,7 +133,7 @@
 
 <script>
 import axios from "axios";
-import { mdiArrowDownThin, mdiArrowUpThin } from "@mdi/js";
+import { mdiArrowDownThin, mdiArrowUpThin, mdiColorHelper } from "@mdi/js";
 
 import TopBarMarket from "../components/TopBarMarket.vue";
 // import server from "@/serverInterface";
@@ -148,6 +150,7 @@ export default {
       icons: {
         mdiArrowDownThin,
         mdiArrowUpThin,
+        mdiColorHelper,
       },
       loading: false,
       loading2: false,
