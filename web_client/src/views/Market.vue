@@ -1,3 +1,4 @@
+
 <template>
   <div class="fill-height">
     <TopBarMarket :comp_id="comp_id" />
@@ -25,11 +26,74 @@
                 <td>
                   {{ item.wkn }}
                 </td>
-                <td>{{ item.kurs }}</td>
+                <td>
+                  {{ item.kurs }}
+                  <v-icon
+                    v-if="
+                      item.graphvalues[item.graphvalues.length - 1] >
+                      item.graphvalues[item.graphvalues.length - 2]
+                    "
+                    small
+                    >{{ icons.mdiArrowUpThin }}</v-icon
+                  >
+                  <v-icon
+                    v-if="
+                      !item.graphvalues[item.graphvalues.length - 1] >
+                      item.graphvalues[item.graphvalues.length - 2]
+                    "
+                    small
+                    >{{ icons.mdiArrowDownThin }}</v-icon
+                  >
+                  <div
+                    v-if="
+                      item.graphvalues[item.graphvalues.length - 1] ==
+                      item.graphvalues[item.graphvalues.length - 2]
+                    "
+                  >
+                    -
+                  </div>
+                </td>
                 <td>
                   <!-- maybe smooth noch bissi ändern? -->
-                  <div class="ml-n6 mr-6">
+                  <div
+                    v-if="
+                      item.graphvalues[item.graphvalues.length - 1] >
+                      item.graphvalues[item.graphvalues.length - 2]
+                    "
+                    class="ml-n6 mr-6"
+                  >
                     <v-sparkline
+                      color="green"
+                      line-width="5"
+                      smooth="8"
+                      :value="item.graphvalues"
+                      auto-draw
+                    ></v-sparkline>
+                  </div>
+                  <div
+                    v-if="
+                      !item.graphvalues[item.graphvalues.length - 1] >
+                      item.graphvalues[item.graphvalues.length - 2]
+                    "
+                    class="ml-n6 mr-6"
+                  >
+                    <v-sparkline
+                      color="red"
+                      line-width="5"
+                      smooth="8"
+                      :value="item.graphvalues"
+                      auto-draw
+                    ></v-sparkline>
+                  </div>
+                  <div
+                    v-if="
+                      item.graphvalues[item.graphvalues.length - 1] ==
+                      item.graphvalues[item.graphvalues.length - 2]
+                    "
+                    class="ml-n6 mr-6"
+                  >
+                    <v-sparkline
+                      color="orange"
                       line-width="5"
                       smooth="8"
                       :value="item.graphvalues"
@@ -67,6 +131,8 @@
 
 <script>
 import axios from "axios";
+import { mdiArrowDownThin, mdiArrowUpThin } from "@mdi/js";
+
 import TopBarMarket from "../components/TopBarMarket.vue";
 // import server from "@/serverInterface";
 export default {
@@ -79,6 +145,10 @@ export default {
   },
   data() {
     return {
+      icons: {
+        mdiArrowDownThin,
+        mdiArrowUpThin,
+      },
       loading: false,
       loading2: false,
       akInfo: [],
