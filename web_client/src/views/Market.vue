@@ -66,7 +66,7 @@
                   >
                     <v-sparkline
                       color="green"
-                      line-width="5"
+                      line-width="3"
                       smooth="8"
                       :value="item.graphvalues"
                       auto-draw
@@ -81,7 +81,7 @@
                   >
                     <v-sparkline
                       color="red"
-                      line-width="5"
+                      line-width="3"
                       smooth="8"
                       :value="item.graphvalues"
                       auto-draw
@@ -96,7 +96,7 @@
                   >
                     <v-sparkline
                       color="orange"
-                      line-width="5"
+                      line-width="3"
                       smooth="8"
                       :value="item.graphvalues"
                       auto-draw
@@ -171,11 +171,14 @@ export default {
         { text: "WKN", value: "wkn", sortable: false },
         { text: "Kurs", value: "kurs" },
         { text: "", value: "graphvalues", width: "15%", sortable: false },
-        { text: "Aktionen", value: "actions", width: "22%" },
+        { text: "", value: "actions", width: "22%" },
       ],
     };
   },
   methods: {
+    removeNull(array) {
+      return array.filter((x) => x !== null);
+    },
     createAktie() {
       // Funktion die alle Aktein mit deren Kruse bekommt
       // Für Datatable werden Manuell Objekte für die einzelnen Aktein erstellt
@@ -187,9 +190,9 @@ export default {
           isin: elm.isin,
           wkn: elm.wkn,
           kurs: 1,
-          graphvalues: this.allakKurs[counter].werte,
+          graphvalues: this.removeNull(this.allakKurs[counter].werte),
         };
-        console.log("test 1");
+        console.log(aktie);
         // console.log();
         this.akData.push(aktie);
         counter++;
