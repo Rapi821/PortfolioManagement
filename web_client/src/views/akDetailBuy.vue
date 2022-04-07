@@ -592,7 +592,7 @@ export default {
       //Hier this.test array reversen
       this.test.reverse();
       this.chartData.datasets[0].data = this.test;
-      console.log(this.test.slice(499, 598));
+      // console.log(this.test.slice(499, 598));
       // this.getWeeklyPerChange();
 
       // this.getDailyPerChange();
@@ -631,8 +631,8 @@ export default {
     this.loading = true;
     await this.getData();
     await this.getComps();
-    console.log(this.competetions);
-    console.log(this.comp_id);
+    // console.log(this.competetions);
+    // console.log(this.comp_id);
     this.akInfo = (
       await axios.get(
         `https://heroku-porftolio-crawler.herokuapp.com/akDetail/${this.isin}`

@@ -30,15 +30,15 @@
                   <v-icon
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] >
-                        item.graphvalues[item.graphvalues.length - 2]
+                      item.graphvalues[item.graphvalues.length - 2]
                     "
                     small
                     >{{ icons.mdiArrowUpThin }}</v-icon
                   >
                   <v-icon
                     v-if="
-                      !item.graphvalues[item.graphvalues.length - 1] >
-                        item.graphvalues[item.graphvalues.length - 2]
+                      item.graphvalues[item.graphvalues.length - 1] <
+                      item.graphvalues[item.graphvalues.length - 2]
                     "
                     small
                     >{{ icons.mdiArrowDownThin }}</v-icon
@@ -47,7 +47,7 @@
                     class="mb-3 ml-1"
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] ==
-                        item.graphvalues[item.graphvalues.length - 2]
+                      item.graphvalues[item.graphvalues.length - 2]
                     "
                     disabled
                     x-small
@@ -59,7 +59,7 @@
                   <div
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] >
-                        item.graphvalues[item.graphvalues.length - 2]
+                      item.graphvalues[item.graphvalues.length - 2]
                     "
                     class="ml-n6 mr-6"
                   >
@@ -73,8 +73,8 @@
                   </div>
                   <div
                     v-if="
-                      !item.graphvalues[item.graphvalues.length - 1] >
-                        item.graphvalues[item.graphvalues.length - 2]
+                      item.graphvalues[item.graphvalues.length - 1] <
+                      item.graphvalues[item.graphvalues.length - 2]
                     "
                     class="ml-n6 mr-6"
                   >
@@ -89,7 +89,7 @@
                   <div
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] ==
-                        item.graphvalues[item.graphvalues.length - 2]
+                      item.graphvalues[item.graphvalues.length - 2]
                     "
                     class="ml-n6 mr-6"
                   >
@@ -124,20 +124,26 @@
         </v-col>
       </v-row>
     </v-container>
-
+    <!-- <v-sparkline
+      color="orange"
+      line-width="3"
+      smooth="8"
+      :value="akData[0].graphvalues"
+      auto-draw
+    ></v-sparkline> -->
     <!-- <v-spacer></v-spacer> -->
     <!-- <div class="d-none d-xl-flex a"></div> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { mdiArrowDownThin, mdiArrowUpThin, mdiColorHelper } from '@mdi/js';
+import axios from "axios";
+import { mdiArrowDownThin, mdiArrowUpThin, mdiColorHelper } from "@mdi/js";
 
-import TopBarMarket from '../components/TopBarMarket.vue';
+import TopBarMarket from "../components/TopBarMarket.vue";
 // import server from "@/serverInterface";
 export default {
-  name: 'Market',
+  name: "Market",
   components: { TopBarMarket },
   props: {
     comp_id: {
@@ -161,16 +167,16 @@ export default {
       hilfsarr2: [],
       headers: [
         {
-          text: 'Name',
+          text: "Name",
 
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'WKN', value: 'wkn', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: '', value: 'graphvalues', width: '15%', sortable: false },
-        { text: '', value: 'actions', width: '22%' },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "WKN", value: "wkn", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "", value: "graphvalues", width: "15%", sortable: false },
+        { text: "", value: "actions", width: "22%" },
       ],
     };
   },
@@ -214,7 +220,7 @@ export default {
         lastMonth = 12;
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
-          lastYear + '-' + lastMonth + '-' + today.getDate();
+          lastYear + "-" + lastMonth + "-" + today.getDate();
         this.datum = yesterdayDate;
         // console.log(yesterdayDate);
         let counterid = 0;
@@ -244,7 +250,7 @@ export default {
         }
       } else {
         const yesterdayDate =
-          today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+          today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
         // console.log(yesterdayDate);
         let counterid = 0;
         for (let elem of this.akInfo) {
@@ -280,10 +286,10 @@ export default {
   async created() {
     this.loading = true;
     this.akInfo = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
     ).data;
     this.akKurs = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
     ).data;
     // console.log(this.akKurs);
 
@@ -292,6 +298,7 @@ export default {
     console.log(this.akInfo);
     console.log(this.allakKurs);
     this.loading = false;
+    console.log(this.akData);
     // Vielleicht noch mit loading2 optimieren
   },
 };
