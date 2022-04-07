@@ -1,10 +1,17 @@
 <template>
   <v-app-bar app color="secondary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
-    <v-btn color="black" active-class="white black--text" @click="logOut">Logout</v-btn>
+    <v-btn color="black" active-class="white black--text" @click="logOut"
+      >Logout</v-btn
+    >
 
     <v-spacer></v-spacer>
-    <v-btn outlined active-class="white primary--text" :to="`/Market/${comp_id}`">Market</v-btn>
+    <v-btn
+      outlined
+      active-class="white primary--text"
+      :to="`/Market/${comp_id}`"
+      >Market</v-btn
+    >
     <v-btn
       data-testid="btnMainMenu"
       outlined
@@ -22,8 +29,9 @@
 </template>
 
 <script>
+import server from "@/serverInterface";
 export default {
-  name: 'TopBarMarket',
+  name: "TopBarMarket",
   props: {
     comp_id: {
       type: String,
@@ -33,7 +41,10 @@ export default {
     //
   }),
   methods: {
-    logOut() {},
+    async logOut() {
+      await server.post("http://localhost:3000/user/logout");
+       this.$router.replace(`/`);
+    },
   },
 };
 </script>
