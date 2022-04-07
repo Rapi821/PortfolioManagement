@@ -17,6 +17,7 @@ const {
   getRanking,
   getRecords,
   logoutUser,
+  changeStatus,
 } = require('../controllers/portfolio_management');
 
 const router = express.Router();
@@ -53,4 +54,6 @@ router.post('/user/sellStocks', sellStocks);
 router.get('/ranking/:competition_id', getRanking);
 // Route um die Records (also alle Aktionen, Kauf und Verkauf von Aktien) von einem User in einer Competition abzufragen
 router.get('/competition/records/:competition_id', getRecords);
+// Route um Competition auf inaktiv/aktiv zu setzen
+router.post('/competition/changeStatus/:competition_id', changeStatus);
 module.exports = router;

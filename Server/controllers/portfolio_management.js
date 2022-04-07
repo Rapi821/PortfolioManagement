@@ -132,6 +132,10 @@ const getRecords = asyncHandler(async (req, res) => {
     .json(await persons.getRecords(req.params.competition_id, req.session.user.user_id));
 });
 
+const changeStatus = asyncHandler(async (req, res) => {
+  res.status(200).json(await persons.changeStatus(req.params.competition_id, req.body));
+});
+
 module.exports = {
   getUsers,
   getUserById,
@@ -149,4 +153,5 @@ module.exports = {
   getRanking,
   getRecords,
   logoutUser,
+  changeStatus,
 };
