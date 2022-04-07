@@ -3,7 +3,7 @@
     <TopBar />
     <v-card elevation="1" outlined max-width="700" class="mx-auto mt-2">
       <v-card-title justify="center" class="mx-auto">{{
-        akInfo.title 
+        akInfo.title
       }}</v-card-title>
       <v-card-text>
         <v-row>
@@ -51,12 +51,12 @@
 </template>
 
 <script>
-import Chart from "../components/Chart";
-import TopBar from "../components/TopBar.vue";
+import Chart from '../components/Chart';
+import TopBar from '../components/TopBar.vue';
 
-import axios from "axios";
+import axios from 'axios';
 export default {
-  name: "Market",
+  name: 'Market',
   data() {
     return {
       componentRefreshKey: 0,
@@ -64,24 +64,25 @@ export default {
       test: [],
       loaded: false,
       chartOptions: {
-       legend: {
-            display: false
-         },//geht wahrscheinlich nicht
-         tooltips: {
-            enabled: false
-         }},
+        legend: {
+          display: false,
+        }, //geht wahrscheinlich nicht
+        tooltips: {
+          enabled: false,
+        },
+      },
 
       chartData: {
         labels: [],
         datasets: [
           {
-            backgroundColor: "#f87979",
+            backgroundColor: '#f87979',
 
             data: [],
           },
         ],
       },
-      
+
       akInfo: [],
       akKurs: [],
       akByTime: [],
@@ -118,7 +119,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 1;
       const yesterdayDate =
-        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
+        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -137,7 +138,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 7;
       const yesterdayDate =
-        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
+        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -156,7 +157,7 @@ export default {
         lastMonth = 12;
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
-          lastYear + "-" + lastMonth + "-" + today.getDate();
+          lastYear + '-' + lastMonth + '-' + today.getDate();
         this.datum = yesterdayDate;
         // console.log(yesterdayDate);
         this.akByTime = (
@@ -166,7 +167,7 @@ export default {
         ).data;
       } else {
         const yesterdayDate =
-          today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+          today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
