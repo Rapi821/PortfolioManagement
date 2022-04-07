@@ -428,9 +428,8 @@ export default {
     },
     async sellAk() {
       // console.log(this.sellPrice);
-      console.log(this.curAk);
+      // console.log(this.curAk);
       let newCount = (this.sellPrice / this.curAk.wert).toFixed(2);
-      console.log(newCount);
       let obj = {
         isin: this.curAk.isin,
         sell_price: this.sellPrice,
@@ -439,7 +438,6 @@ export default {
         count: Number(newCount),
       };
       console.log(obj);
-      // console.log(obj);
       await server.post(`http://localhost:3000/user/sellStocks`, obj);
       this.getComps();
       this.createAkForTable();
