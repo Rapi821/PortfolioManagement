@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-row mx-auto  d-flex mb-6 justify-center fill-height">
+  <div class="flex-row mx-auto  d-flex  justify-center fill-height">
     <v-content>
-      <v-container class="fill-height mt-n16" fluid>
+      <v-container class="fill-height " fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="6">
             <v-card class="elevation-0">
