@@ -1,7 +1,8 @@
 <template>
-  <div class="flex-row mx-auto  d-flex  justify-center fill-height">
+  <div class="flex-row mx-auto d-flex justify-center fill-height">
+    <!-- <input @keyup.enter="onenter" /> -->
     <v-content>
-      <v-container class="fill-height " fluid>
+      <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="6">
             <v-card class="elevation-0">
@@ -10,7 +11,7 @@
                   <v-row>
                     <v-col cols="12" md="8">
                       <v-card-text class="mt-12">
-                        <h1 class="text-center primary--text  display-2">
+                        <h1 class="text-center primary--text display-2">
                           Willkommen
                         </h1>
                         <!-- <div class="text-center mt-4">
@@ -28,6 +29,7 @@
                         <h4 class="text-center font-weight-light mt-4">
                           Melde dich hier an
                         </h4>
+
                         <v-form>
                           <v-text-field
                             data-testid="emailLogin"
@@ -66,7 +68,7 @@
                         >
                       </div>
                     </v-col>
-                    <v-col cols="12" md="4" class=" grad1">
+                    <v-col cols="12" md="4" class="grad1">
                       <v-card-text class="white--text mt-12">
                         <h1 class="text-center display-1">
                           Noch kein Account?
@@ -77,7 +79,9 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für account erstellen -->
-                        <v-btn rounded outlined dark @click="step++">SIGN UP</v-btn>
+                        <v-btn rounded outlined dark @click="step++"
+                          >SIGN UP</v-btn
+                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -95,13 +99,15 @@
                       </v-card-text>
                       <div class="text-center">
                         <!-- Button um zum Dialog für anmelden -->
-                        <v-btn rounded outlined dark @click="step--">Sign in</v-btn>
+                        <v-btn rounded outlined dark @click="step--"
+                          >Sign in</v-btn
+                        >
                       </div>
                     </v-col>
 
                     <v-col cols="12" md="8">
                       <v-card-text class="mt-12">
-                        <h1 class="text-center display-2 primary--text ">
+                        <h1 class="text-center display-2 primary--text">
                           Account Erstellen
                         </h1>
                         <!-- <div class="text-center mt-4">
@@ -165,7 +171,13 @@
                       </v-card-text>
                       <div class="text-center mt-n5 mb-12">
                         <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
-                        <v-btn rounded color="primary" dark @click="createAccount">SIGN UP</v-btn>
+                        <v-btn
+                          rounded
+                          color="primary"
+                          dark
+                          @click="createAccount"
+                          >SIGN UP</v-btn
+                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -181,20 +193,23 @@
 
 <script>
 // import axios from 'axios';
-import server from '@/serverInterface';
+import server from "@/serverInterface";
 export default {
   data: () => ({
     step: 1,
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
+    email: "",
+    password: "",
+    firstname: "",
+    lastname: "",
   }),
   props: {
     source: String,
     user_id: String,
   },
   methods: {
+    onenter() {
+      console.log("test2");
+    },
     async loginUser() {
       console.log(this.email);
       let user = (
@@ -204,11 +219,11 @@ export default {
         })
       ).data;
       if (user.user_id != undefined) {
-        console.log('richtiges passwort');
+        console.log("richtiges passwort");
         this.$router.replace(`/mainmenu`);
         // Router.beforeach machen
       } else {
-        this.password = 'falsches Passwort';
+        this.password = "falsches Passwort";
       }
     },
     async createAccount() {
@@ -225,11 +240,11 @@ export default {
         })
       ).data;
       if (user.user_id != undefined) {
-        console.log('richtiges passwort');
+        console.log("richtiges passwort");
         this.$router.replace(`/mainmenu`);
         // Router.beforeach machen
       } else {
-        this.password = 'falsches Passwort';
+        this.password = "falsches Passwort";
       }
     },
   },
