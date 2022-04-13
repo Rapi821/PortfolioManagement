@@ -30,7 +30,7 @@
                           Melde dich hier an
                         </h4>
 
-                        <v-form>
+                        <v-form ref="form" v-model="valid" lazy-validation>
                           <v-text-field
                             data-testid="emailLogin"
                             label="Email"
@@ -38,7 +38,8 @@
                             prepend-icon="mdi-email"
                             type="text"
                             color="primary"
-                            v-model="email"
+                            :rules="nameRules"
+                            v-model="emaillog"
                           />
 
                           <v-text-field
@@ -49,7 +50,8 @@
                             prepend-icon="mdi-lock"
                             type="password"
                             color="primary"
-                            v-model="password"
+                            :rules="nameRules"
+                            v-model="passwordlog"
                           />
                         </v-form>
                         <h3 class="text-center font-weight-light mt-4">
@@ -59,10 +61,11 @@
                       <div class="text-center mt-3 mb-12">
                         <!-- Anmelde Button um zum Dashboard MainMenu zu kommen -->
                         <v-btn
+                          :disabled="!valid"
                           data-testid="btnLogin"
                           rounded
                           color="primary"
-                          dark
+                          elevation="0"
                           @click="loginUser"
                           >SIGN IN</v-btn
                         >
@@ -125,10 +128,11 @@
                         <h4 class="text-center font-weight-light mt-4">
                           Gib deine Daten ein und erstelle einen Account
                         </h4>
-                        <v-form>
+                        <v-form ref="form2" v-model="valid2" lazy-validation>
                           <v-layout>
                             <v-flex xs6>
                               <v-text-field
+                                :rules="nameRules"
                                 label="Vorname"
                                 name="Vorname"
                                 prepend-icon="mdi-account"
@@ -140,6 +144,7 @@
 
                             <v-flex xs6>
                               <v-text-field
+                                :rules="nameRules"
                                 class="ml-1"
                                 label="Nachname"
                                 name="Nachname"
@@ -150,6 +155,7 @@
                             </v-flex>
                           </v-layout>
                           <v-text-field
+                            :rules="nameRules"
                             label="Email"
                             name="Email"
                             prepend-icon="mdi-email"
@@ -159,6 +165,7 @@
                           />
 
                           <v-text-field
+                            :rules="passRules"
                             id="password"
                             label="Passwort"
                             name="password"
@@ -172,9 +179,10 @@
                       <div class="text-center mt-n5 mb-12">
                         <!-- Button um zum Dashboard MainMenu nach Accout erstellen -->
                         <v-btn
+                          :disabled="!valid2"
                           rounded
                           color="primary"
-                          dark
+                          elevation="0"
                           @click="createAccount"
                           >SIGN UP</v-btn
                         >
@@ -201,6 +209,13 @@ export default {
     password: "",
     firstname: "",
     lastname: "",
+    valid: true,
+    valid2: true,
+    nameRules: [(v) => !!v || "Du hast da was vergessen ;)"],
+    passRules: [
+      (v) => !!v || "Du hast da was vergessen ;)",
+      (v) => (v && v.length >= 6) || "Passwort muss mehr als 6 Zeichen haben",
+    ],
   }),
   props: {
     source: String,
@@ -211,11 +226,12 @@ export default {
       console.log("test2");
     },
     async loginUser() {
-      console.log(this.email);
+      this.$refs.form.validate();
+      // console.log(this.email);
       let user = (
         await server.post(`http://localhost:3000/user/login`, {
-          email: this.email,
-          password: this.password,
+          email: this.emaillog,
+          password: this.passwordlog,
         })
       ).data;
       if (user.user_id != undefined) {
@@ -223,10 +239,12 @@ export default {
         this.$router.replace(`/mainmenu`);
         // Router.beforeach machen
       } else {
-        this.password = "falsches Passwort";
+        this.passwordlog = "falsches Passwort";
+        console.log("falsches passwort ???");
       }
     },
     async createAccount() {
+      this.$refs.form2.validate();
       await server.post(`http://localhost:3000/user/createNewOne`, {
         email: this.email,
         firstname: this.firstname,
