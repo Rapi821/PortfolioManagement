@@ -30,7 +30,7 @@ describe('Test Start and Login', () => {
     cy.get('[data-testid="dataTable"]').contains('CompTest' && '3000€' && 'aktiv'); // Ist zwar nicht für eine Zeile sondern eher ob diese Werte allgemein in der Tabelle vorkommen, aber das Funktioniert zumindest
   });
 
-  it('Buy Stocks', () => {
+  it.skip('Buy Stocks', () => {
     cy.get('[data-testid="dataTable"]')
       .contains('Raphis Aktien Game')
       .click();
