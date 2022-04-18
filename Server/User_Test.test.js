@@ -24,10 +24,12 @@ describe('after authenticating session', function () {
         authenticatedSession = testSession;
         return done();
       });
+    // Authentication as User im beforeEach Method
   });
   afterAll(async () => {
     console.log('after all tests: close server');
     await db.close();
+    // close Database
   });
 
   it.skip('should get a competition list', async () => {
@@ -63,38 +65,36 @@ describe('after authenticating session', function () {
   });
 
   it.skip('create competition ', async () => {
+    // creating competition:
     const respost = await authenticatedSession.post('/createNewCompetition').send({
       title: 'RouterTestComp',
       starting_money: 20000,
       end_date: '2022-12-1',
-      // user_id: 2,
     });
     const resget = await authenticatedSession.get('/competition/' + 52);
-    // console.log(res.body);
-    // make sure that at least 1 entry is listed
+    // make sure that at least 1 competition is listed
     console.log(respost.body);
     console.log(resget.body);
     expect(resget.body).toEqual(
       expect.arrayContaining([expect.objectContaining({ isin: '0000' })]),
     );
+    // make sure that competition RouterTestComp is listed
     expect(resget.body).toEqual(
       expect.arrayContaining([expect.objectContaining({ buy_price: '20000' })]),
     );
-    // Es wir jedes mal beim Aufruf des Tests eine neue Competition erstellt, weil keine Löschfunktion vorhanden ist, die diese wirder löscht
+    // Es wir jedes mal beim Aufruf des Tests eine neue Competition erstellt, weil keine Löschfunktion vorhanden ist, die diese wieder löscht
     // expect(res.body.length).toBeGreaterThan(0);
-
-    // // array should contain isin 0000 => cash
-    // expect(res.body).toEqual(expect.arrayContaining([expect.objectContaining({ isin: '0000' })]));
   });
 
   it.skip('should get user data ', async () => {
     const resget = await authenticatedSession.get('/user/data');
-    // console.log(resget.body);
+    // Check if User data equals with authenticated User
     expect(resget.body).toEqual(expect.objectContaining({ email: 'devall.s03@htlwienwest.at' }));
     expect(resget.body).toEqual(expect.objectContaining({ password: 'qHV3#ctbt' }));
   });
 
   it('should buy and sell stocks ', async () => {
+    // buy Stock:
     const respostbuy = await authenticatedSession.post('/user/buyStocks').send({
       isin: 'US5949181045',
       buy_price: 298.76,
@@ -104,6 +104,7 @@ describe('after authenticating session', function () {
     });
     const resgett = await authenticatedSession.get('/competitions/' + 39 + '/getCompStocks');
     console.log(resgett.body);
+    // Sell Stock:
     const respostsell = await authenticatedSession.post('/user/sellStocks').send({
       isin: 'US5949181045',
       sell_price: 298.76,
@@ -113,6 +114,7 @@ describe('after authenticating session', function () {
     });
     const resget = await authenticatedSession.get('/competitions/' + 39 + '/getCompStocks');
     console.log(resget.body);
+    // Check if Stock is bought and sold:
     expect(resget.body).toEqual(
       expect.arrayContaining([expect.objectContaining({ isin: 'US5949181045' })]),
     );
