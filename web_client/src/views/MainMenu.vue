@@ -63,7 +63,7 @@
                     {{
                       parseInt(item.portfolio_value)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                     }}
                   </div>
                 </td>
@@ -72,7 +72,7 @@
                     {{
                       parseInt(item.cash)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                     }}
                   </div>
                 </td>
@@ -81,7 +81,7 @@
                     {{
                       parseInt(item.total)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                     }}
                   </div>
                 </td>
@@ -89,19 +89,18 @@
                   <v-chip
                     dark
                     outlined
-                    :color="getColor(item.active)"
-                    v-if="item.active"
+                    :color="getColor(item)"
+                    v-if="getColor(item) == `green`"
                   >
-                    {{ 'aktiv' }}
+                    {{ "aktiv" }}
                   </v-chip>
                   <v-chip
                     dark
-                    label
                     outlined
-                    :color="getColor(item.active)"
-                    v-if="item.active == false"
+                    :color="getColor(item)"
+                    v-if="getColor(item) == `red`"
                   >
-                    {{ 'inaktiv' }}
+                    {{ "inaktiv" }}
                   </v-chip>
                 </td>
               </tr>
@@ -322,16 +321,39 @@
 </template>
 
 <script>
-import TopBarMarket from '../components/TopBar.vue';
-import server from '@/serverInterface';
+import TopBarMarket from "../components/TopBar.vue";
+import server from "@/serverInterface";
 export default {
   components: {
     TopBarMarket,
   },
   methods: {
-    getColor(active) {
-      if (active) return 'green';
-      else return 'red';
+    getColor(obj) {
+      let date = obj.end_date;
+      if (date == null) {
+        return "green";
+      }
+      let parts = date.split("-");
+      let mydate = new Date(
+        parseInt(parts[0]),
+        parseInt(parts[1]) - 1,
+        parseInt(parts[2])
+      );
+      // console.log(mydate.toDateString());
+      date = date.split("T")[0];
+      const today = this.getCurrentDate();
+      // console.log(typeof date, typeof today);
+      if (mydate > today) {
+        return "green";
+      } else {
+        server.post(
+          `http://localhost:3000/competition/changeStatus/${obj.competition_id}`,
+          {
+            active: "false",
+          }
+        );
+        return "red";
+      }
     },
     async getRecords(obj) {
       const x = (
@@ -365,7 +387,7 @@ export default {
     async competetionEnter() {
       let obj = { code: this.compCode };
       await server.post(`http://localhost:3000/user/addUserToCompetition`, obj);
-      this.compCode = '';
+      this.compCode = "";
       this.dialog_enter = false;
       this.getComps();
     },
@@ -373,7 +395,16 @@ export default {
       this.competetions = (
         await server.get(`http://localhost:3000/user/competitions`)
       ).data;
-      // console.log(this.competetions);
+      console.log(this.competetions);
+    },
+    getCurrentDate() {
+      let currentDate = new Date();
+      // let cDay = currentDate.getDate();
+      // let cMonth = currentDate.getMonth() + 1;
+      // let cYear = currentDate.getFullYear();
+      // return cYear + "-" + cMonth + "-" + cDay;
+      console.log(currentDate);
+      return currentDate;
     },
     async createCompetition() {
       console.log(this.competetion);
@@ -393,31 +424,31 @@ export default {
     return {
       overlay: false,
       zIndex: 0,
-      compCode: '',
+      compCode: "",
       absolute: true,
       competetions: [],
       user: {},
       dialog: false,
       dialog_enter: false,
       competetion: {
-        title: '',
+        title: "",
         starting_money: 0,
-        end_date: '',
+        end_date: "",
       },
       headers: [
         {
-          text: 'titel',
-          align: 'start',
+          text: "titel",
+          align: "start",
           sortable: false,
-          value: 'title',
+          value: "title",
         },
         {
-          text: 'Portfoliowert',
-          value: 'portfolio_value',
+          text: "Portfoliowert",
+          value: "portfolio_value",
         },
-        { text: 'Cash', value: 'cash' },
-        { text: 'Total', value: 'total' },
-        { text: 'Status', value: 'active' },
+        { text: "Cash", value: "cash" },
+        { text: "Total", value: "total" },
+        { text: "Status", value: "active" },
         // { text: 'id', value: 'competition_id' },
       ],
     };
