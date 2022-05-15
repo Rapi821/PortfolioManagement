@@ -141,7 +141,46 @@
         <v-col cols="12" sm="2"></v-col>
       </v-row>
     </v-container>
-
+    <v-dialog v-model="sellDialog" max-width="500px">
+      <v-card>
+        <div class="d-flex justify-space-around">
+          <v-container
+            fluid
+            :style="[
+              !visible
+                ? {
+                    'border-bottom': '1px solid #fff',
+                  }
+                : {
+                    'border-bottom': '1px solid rgba(0,0,0,0.12)',
+                  },
+            ]"
+            style="border-right:1px solid rgba(0,0,0,0.12)"
+          >
+            <div>
+              Verkaufen
+            </div>
+            <v-text-field
+              v-model="sellCount"
+              hide-details
+              single-line
+              type="number"
+              @input="sellAkWert"
+            />
+            <div>
+              <p class="font-weight-bold">Wert:</p>
+              <p>{{ sellWert }}</p>
+            </div>
+            <v-btn @click="sellAk" small class="primary  mt-2 mb-2"
+              >Verkaufen</v-btn
+            >
+            <v-btn @click="closeSell" small class="primary  mt-2 mb-2"
+              >Close</v-btn
+            >
+          </v-container>
+        </div>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <div class="d-flex justify-space-around">
@@ -363,13 +402,26 @@ export default {
     TopBarMarket,
   },
   methods: {
+    sellAkWert() {
+      let akHavingCount = this.stocks.find((e) => e.isin == this.curAk.isin)
+        .count;
+      if (this.sellCount > akHavingCount) {
+        this.sellCount = akHavingCount;
+        alert(`Du kannst nur maximal ${akHavingCount} Aktien verkaufen`);
+      }
+      this.sellPrice = this.akKurs.find((e) => e.isin == this.curAk.isin).wert;
+      this.sellWert = this.sellPrice * this.sellCount;
+    },
+    closeSell() {
+      this.sellDialog = false;
+    },
     async sellbuy() {
       this.dialog = true;
     },
     openSellDialog(item) {
       this.curAk = item;
       this.step = 1;
-      this.dialog = true;
+      this.sellDialog = true;
     },
     openBuyDialog(item) {
       this.curAk = item;
@@ -432,18 +484,21 @@ export default {
     async sellAk() {
       // console.log(this.sellPrice);
       // console.log(this.curAk);
-      let newCount = (this.sellPrice / this.curAk.wert).toFixed(2);
+      // let newCount = (this.sellPrice / this.curAk.wert).toFixed(2);
+      this.sellPrice = this.akKurs.find((e) => e.isin == this.curAk.isin).wert;
       let obj = {
         isin: this.curAk.isin,
         sell_price: this.sellPrice,
         buy_price: Number(this.curAk.buy_price),
         competition_id: this.comp_id,
-        count: Number(newCount),
+        count: Number(this.sellCount),
       };
       console.log(obj);
       await server.post(`http://localhost:3000/user/sellStocks`, obj);
-      this.getComps();
-      this.createAkForTable();
+      this.sellDialog = false;
+      window.location.reload();
+      // this.getStocks();
+      // this.createAkForTable();
     },
     createAktie() {
       // Funktion die alle Aktein mit deren Kruse bekommt
@@ -505,6 +560,8 @@ export default {
     this.akKurs = (
       await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
     ).data;
+    // console.log(this.akInfo);
+    // console.log(this.akKurs);
     this.createAktie();
     this.createAkForTable();
     this.loading = false;
@@ -516,6 +573,7 @@ export default {
       akData: [],
       akKurs: [],
       akHave: [],
+      sellDialog: false,
       cash: 0,
       compCode_dialog: false,
       compCode: '',
@@ -524,6 +582,7 @@ export default {
       portValue: 0,
       akValue: 0,
       sellPrice: 0,
+      sellCount: 0,
       newCash: 0,
       dialog: false,
       buyDialog: false,
@@ -531,6 +590,7 @@ export default {
       visible: false,
       competetion: {},
       user: {},
+      sellWert: 0,
       curAk: {},
       stocks: [],
       headers: [
