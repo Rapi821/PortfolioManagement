@@ -1,7 +1,7 @@
 
-GET http://localhost:3000/users
+GET http://localhost:3000/userss
 ###
-GET http://localhost:3000/user/bilge.m01@htlwienwest.at
+GET http://localhost:3000/users/bilge.m01@htlwienwest.at
 ###
 POST http://localhost:3000/user/createNewOne
 content-Type: application/json

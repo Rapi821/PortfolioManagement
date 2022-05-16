@@ -116,7 +116,7 @@ const buyStocks = asyncHandler(async (req, res) => {
 });
 
 const getCompetition = asyncHandler(async (req, res) => {
-  console.log(req.session);
+  // console.log(req.session);
   res
     .status(200)
     .json(
@@ -128,7 +128,7 @@ const getCompetition = asyncHandler(async (req, res) => {
 });
 
 const sellStocks = asyncHandler(async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   req.body.buy_date = help_functions.getCurrentDate();
   req.body.buysell = 'sell';
   if (
