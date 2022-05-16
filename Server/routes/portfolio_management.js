@@ -16,6 +16,8 @@ const {
   sellStocks,
   getRanking,
   getRecords,
+  logoutUser,
+  changeStatus,
 } = require('../controllers/portfolio_management');
 
 const router = express.Router();
@@ -34,6 +36,8 @@ router.post('/createNewCompetition', createNewCompetition);
 router.get('/competitions/:competition_id/getCompStocks', getStocksFromDepot);
 // Login Route
 router.post('/user/login', loginUser);
+// Logout Route
+router.post('/user/logout', logoutUser);
 // Route um Daten vonm eingeloggten User zu bekommen
 router.get('/user/data', getUserData);
 // Alle Competitions in denen der User bereits ist
@@ -42,7 +46,7 @@ router.get('/user/competitions', getUserCompetitions);
 router.post('/user/buyStocks', buyStocks);
 // Neuen User zu einer Competition hinzufügen
 router.post('/user/addUserToCompetition', addUserToCompetition);
-// Route für Daten von einer Competition von einem User 
+// Route für Daten von einer Competition von einem User
 router.get('/competition/:competition_id', getCompetition);
 // Route um Aktien wieder zu verkaufen
 router.post('/user/sellStocks', sellStocks);
@@ -50,4 +54,6 @@ router.post('/user/sellStocks', sellStocks);
 router.get('/ranking/:competition_id', getRanking);
 // Route um die Records (also alle Aktionen, Kauf und Verkauf von Aktien) von einem User in einer Competition abzufragen
 router.get('/competition/records/:competition_id', getRecords);
+// Route um Competition auf inaktiv/aktiv zu setzen
+router.post('/competition/changeStatus/:competition_id', changeStatus);
 module.exports = router;

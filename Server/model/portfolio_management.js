@@ -227,6 +227,13 @@ const getRecords = async (comp_id, user_id) =>
       [user_id, comp_id]
     )
   ).rows;
+const changeStatus = async (comp_id, newData) =>
+  (
+    await query(
+      'update competitions set active=$1 where competition_id= $2 returning *',
+      [newData.active, comp_id]
+    )
+  ).rows;
 
 module.exports = {
   getUsers,
@@ -251,4 +258,5 @@ module.exports = {
   addMoney,
   getRanking,
   getRecords,
+  changeStatus,
 };
