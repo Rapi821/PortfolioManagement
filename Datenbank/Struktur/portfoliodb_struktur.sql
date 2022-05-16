@@ -721,4 +721,3 @@ GRANT USAGE ON SEQUENCE public.users_id_seq TO read_write;
 --
 -- PostgreSQL database dump complete
 --
-

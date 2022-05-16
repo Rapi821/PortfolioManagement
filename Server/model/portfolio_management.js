@@ -1,17 +1,17 @@
 /* eslint-disable camelcase */
-const { query } = require('../db/index');
+const { query } = require("../db/index");
 
 //Test Routen
-const getUsers = async () => (await query('SELECT * FROM users')).rows;
+const getUsers = async () => (await query("SELECT * FROM users")).rows;
 const getUserById = async (user_id) =>
-  (await query('SELECT * FROM users WHERE user_id= $1', [user_id])).rows;
+  (await query("SELECT * FROM users WHERE user_id= $1", [user_id])).rows;
 const getUserByEmail = async (email) =>
-  (await query('SELECT * FROM users WHERE email= $1', [email])).rows;
+  (await query("SELECT * FROM users WHERE email= $1", [email])).rows;
 //Neuen User registrieren
 const registerNewUser = async (newData) =>
   (
     await query(
-      'INSERT INTO users (email, firstname, lastname, password) VALUES ($1, $2, $3, $4) returning *',
+      "INSERT INTO users (email, firstname, lastname, password) VALUES ($1, $2, $3, $4) returning *",
       [newData.email, newData.firstname, newData.lastname, newData.password]
     )
   ).rows;
@@ -19,7 +19,7 @@ const registerNewUser = async (newData) =>
 const getCompetitionsByUser = async (user_id) =>
   (
     await query(
-      'select c.competition_id, c.title, c.competition_code, c.active, c.end_date ,sum(buy_price) as total from competition_member_depot_lines JOIN competitions c on c.competition_id = competition_member_depot_lines.competition_id GROUP BY member_id, c.competition_id, c.title, c.end_date, c.active having member_id in (select member_id from competition_members where user_id=$1)',
+      "select c.competition_id, c.title, c.competition_code, c.active, c.end_date ,sum(buy_price) as total from competition_member_depot_lines JOIN competitions c on c.competition_id = competition_member_depot_lines.competition_id GROUP BY member_id, c.competition_id, c.title, c.end_date, c.active having member_id in (select member_id from competition_members where user_id=$1)",
       [user_id]
     )
   ).rows;
@@ -54,7 +54,7 @@ const getstockValue = async (user_id) =>
 const createNewCompetition = async (newData, user_id) =>
   (
     await query(
-      'INSERT INTO competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (DEFAULT, $1, $2, $3, DEFAULT, $4, $5, $6)',
+      "INSERT INTO competitions (competition_id, creation_date, title, starting_money, active, end_date, owner_id, competition_code) VALUES (DEFAULT, $1, $2, $3, DEFAULT, $4, $5, $6)",
       [
         newData.creation_date,
         newData.title,
@@ -69,7 +69,7 @@ const createNewCompetition = async (newData, user_id) =>
 const addUserToCompetition = async (newData, user_id) => {
   (
     await query(
-      'insert into competition_members (member_id, user_id, competition_id) VALUES (DEFAULT, $1, (select competition_id from competitions where competition_code= $2))',
+      "insert into competition_members (member_id, user_id, competition_id) VALUES (DEFAULT, $1, (select competition_id from competitions where competition_code= $2))",
       [user_id, newData.code]
     )
   ).rows;
@@ -84,7 +84,7 @@ const addUserToCompetition = async (newData, user_id) => {
 const getStocksFromDepot = async (competition_id, user_id) =>
   (
     await query(
-      'select isin, buy_price, count from competition_member_depot_lines where member_id=(select member_id from competition_members where competition_members.competition_id = $1 and user_id=$2)',
+      "select isin, buy_price, count from competition_member_depot_lines where member_id=(select member_id from competition_members where competition_members.competition_id = $1 and user_id=$2)",
       [competition_id, user_id]
     )
   ).rows;
@@ -92,7 +92,7 @@ const getStocksFromDepot = async (competition_id, user_id) =>
 const loginUser = async (user) => {
   // User password hashen
   const res = (
-    await query('SELECT * FROM users WHERE email= $1 AND password=$2', [
+    await query("SELECT * FROM users WHERE email= $1 AND password=$2", [
       user.email,
       user.password,
     ])
@@ -106,7 +106,7 @@ const loginUser = async (user) => {
 const buyNewStocks = async (newData, user_id) =>
   (
     await query(
-      'insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id) VALUES ($1, $2::NUMERIC*$3::NUMERIC, $3::NUMERIC, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4))',
+      "insert into competition_member_depot_lines (isin, buy_price, count, competition_id, member_id) VALUES ($1, $2::NUMERIC*$3::NUMERIC, $3::NUMERIC, $4, (select member_id from competition_members where user_id=$5 and competition_id=$4))",
       [
         newData.isin,
         newData.buy_price,
@@ -129,7 +129,7 @@ const removeMoney = async (newData, user_id) =>
 // Die gekauften Aktien in die Records eintragen
 const addToRecords = async (newData, user_id) =>
   await query(
-    'insert into depot_records (member_id, date, price, count, buy_sell, isin) VALUES ((select member_id from competition_members where user_id=$1 and competition_id=$2), $3, $4, $5, $7, $6)',
+    "insert into depot_records (member_id, date, price, count, buy_sell, isin) VALUES ((select member_id from competition_members where user_id=$1 and competition_id=$2), $3, $4, $5, $7, $6)",
     [
       user_id,
       newData.competition_id,
@@ -176,7 +176,7 @@ const rebuyStocks = async (newData, user_id) =>
 const getCompetition = async (comp_id, user_id) =>
   (
     await query(
-      'select isin, buy_price, count from competition_member_depot_lines where member_id=(select member_id from competition_members where user_id=$1 and competition_id= $2)',
+      "select isin, buy_price, count from competition_member_depot_lines where member_id=(select member_id from competition_members where user_id=$1 and competition_id= $2)",
       [user_id, comp_id]
     )
   ).rows;
@@ -216,22 +216,29 @@ const addMoney = async (newData, user_id) =>
 const getRanking = async (comp_id) =>
   (
     await query(
-      'select cm.user_id, u.firstname, u.lastname, cmdl.isin, cmdl.count, cmdl.buy_price from competition_members cm join users u on cm.user_id = u.user_id join competition_member_depot_lines cmdl on cm.member_id = cmdl.member_id where cmdl.competition_id= $1',
+      "select cm.user_id, u.firstname, u.lastname, cmdl.isin, cmdl.count, cmdl.buy_price from competition_members cm join users u on cm.user_id = u.user_id join competition_member_depot_lines cmdl on cm.member_id = cmdl.member_id where cmdl.competition_id= $1",
       [comp_id]
     )
   ).rows;
 const getRecords = async (comp_id, user_id) =>
   (
     await query(
-      'select isin, price, count, (price*count) as total, buy_sell, date from depot_records where member_id= (select member_id from competition_members where user_id=$1 and competition_id= $2)',
+      "select isin, price, count, (price*count) as total, buy_sell, date from depot_records where member_id= (select member_id from competition_members where user_id=$1 and competition_id= $2)",
       [user_id, comp_id]
     )
   ).rows;
 const changeStatus = async (comp_id, newData) =>
   (
     await query(
-      'update competitions set active=$1 where competition_id= $2 returning *',
+      "update competitions set active=$1 where competition_id= $2 returning *",
       [newData.active, comp_id]
+    )
+  ).rows;
+const sellStocksCompletely = async (newData, user_id) =>
+  (
+    await query(
+      "delete from competition_member_depot_lines where competition_id=$1 and member_id=(select member_id from competition_members where user_id=$2 and competition_id=$1) and isin=$3 returning *",
+      [newData.competition_id, user_id,newData.isin,]
     )
   ).rows;
 
@@ -259,4 +266,5 @@ module.exports = {
   getRanking,
   getRecords,
   changeStatus,
+  sellStocksCompletely
 };

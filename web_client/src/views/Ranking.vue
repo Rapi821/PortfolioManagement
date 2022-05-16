@@ -30,7 +30,7 @@ export default {
   components: { TopBarMarket },
   props: {
     comp_id: {
-      type: Number,
+      type: String, // hab ich auf String geändert (vorher Number) :Sebi
     },
   },
   data() {
