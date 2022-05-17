@@ -1,33 +1,38 @@
 <template>
-  <div>
-    <TopBarMarket />
-    <h1>Ranking</h1>
-    <div>
+  <div class="fill-height">
+    <TopBar :comp_id="comp_id" />
+    <v-container class="fill-height" fluid>
+      <v-row class="negativMargin" d-flex justify="center">
+        <v-col cols="12" sm="8">
+          <div class=" text-h5 mb-2 ">Ranking</div>
+          <v-data-table :headers="headers" :items="ranking" class="elevation-0">
+          </v-data-table>
+          <v-btn class="mt-2" :to="`/Dashboard/${comp_id}`" color="primary"
+            >Zurück zum Portfolio</v-btn
+          >
+        </v-col></v-row
+      >
+    </v-container>
+
+    <!-- <div>
       <v-btn :to="`/Dashboard/${comp_id}`">Zurück zum Dashboard</v-btn>
     </div>
     <div>
       <template>
         <v-container class="fill-height " fluid>
           <v-row align="center" justify="center">
-            <v-col cols="12" sm="8">
-              <v-data-table
-                :headers="headers"
-                :items="ranking"
-                class="elevation-1"
-                max-width="500px"
-              >
-              </v-data-table> </v-col></v-row
+            <v-col cols="12" sm="8"> </v-col></v-row
         ></v-container>
       </template>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
-import axios from 'axios';
-import server from '@/serverInterface';
-import TopBarMarket from '../components/TopBar.vue';
+import axios from "axios";
+import server from "@/serverInterface";
+import TopBar from "../components/TopBarMarket.vue";
 export default {
-  components: { TopBarMarket },
+  components: { TopBar },
   props: {
     comp_id: {
       type: String, // hab ich auf String geändert (vorher Number) :Sebi
@@ -37,13 +42,13 @@ export default {
     return {
       headers: [
         {
-          text: 'Platzierung',
-          align: 'start',
+          text: "Platzierung",
+          align: "start",
           sortable: true,
-          value: '#',
+          value: "#",
         },
-        { text: 'Name', value: 'name' },
-        { text: 'Portfolio Wert', value: 'portwert' },
+        { text: "Name", value: "name" },
+        { text: "Portfolio Wert", value: "portwert" },
       ],
       rankingList: [],
       rItem: {},
@@ -56,7 +61,7 @@ export default {
   methods: {
     async getAkKurs() {
       this.akKurs = (
-        await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+        await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
       ).data;
     },
     async getRankingCompetition() {
@@ -88,7 +93,7 @@ export default {
         // console.log(holdArr);
         for (const h of holdArr) {
           // console.log(h);
-          if (h.isin !== '0000') {
+          if (h.isin !== "0000") {
             this.akArr.push(h);
           }
         }
@@ -98,7 +103,7 @@ export default {
           ak = this.akKurs.find((e) => e.isin == a.isin);
           portWert += ak.wert;
         }
-        portWert += holdArr.find((e) => e.isin == '0000').buy_price;
+        portWert += holdArr.find((e) => e.isin == "0000").buy_price;
         this.rItem = {
           name: `${r.firstname} ${r.lastname}`,
           portwert: portWert,

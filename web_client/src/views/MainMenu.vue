@@ -17,7 +17,7 @@
             data-testid="dataTable"
             :headers="headers"
             :items="competetions"
-            class="elevation-3"
+            class="elevation-2"
           >
             <!-- <v-chip class="cardbackground" color="primary" outlined label>
               <router-link
@@ -172,10 +172,11 @@
               </span>
             </template> -->
           </v-data-table>
-          <v-btn @click="compEnter" class="mt-2" color="primary"
+          <v-btn elevation="1" @click="compEnter" class="mt-2" color="primary"
             >Competition Beitreten</v-btn
           >
           <v-btn
+            elevation="1"
             data-testid="btnCompCreate"
             @click="compCreate"
             class="btn mt-2 ml-2"
@@ -281,6 +282,7 @@
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
               <v-btn
+                elevation="1"
                 data-testid="btncompcreate"
                 color="blue darken-1"
                 text
@@ -308,8 +310,15 @@
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="competetionEnter">
+              <v-btn color="blue darken-1" elevation="1" text @click="close">
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                elevation="1"
+                text
+                @click="competetionEnter"
+              >
                 Enter
               </v-btn>
             </v-card-actions>

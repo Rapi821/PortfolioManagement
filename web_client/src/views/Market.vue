@@ -11,7 +11,7 @@
             :headers="headers"
             :items="akData"
             :items-per-page="10"
-            class="elevation-0"
+            class="elevation-2"
           >
             <!-- Detailpage der einzelnen Aktien -->
             <template v-slot:item="{ item }">
@@ -30,7 +30,7 @@
                   <v-icon
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] >
-                      item.graphvalues[item.graphvalues.length - 2]
+                        item.graphvalues[item.graphvalues.length - 2]
                     "
                     small
                     >{{ icons.mdiArrowUpThin }}</v-icon
@@ -38,7 +38,7 @@
                   <v-icon
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] <
-                      item.graphvalues[item.graphvalues.length - 2]
+                        item.graphvalues[item.graphvalues.length - 2]
                     "
                     small
                     >{{ icons.mdiArrowDownThin }}</v-icon
@@ -47,7 +47,7 @@
                     class="mb-3 ml-1"
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] ==
-                      item.graphvalues[item.graphvalues.length - 2]
+                        item.graphvalues[item.graphvalues.length - 2]
                     "
                     disabled
                     x-small
@@ -59,7 +59,7 @@
                   <div
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] >
-                      item.graphvalues[item.graphvalues.length - 2]
+                        item.graphvalues[item.graphvalues.length - 2]
                     "
                     class="ml-n6 mr-6"
                   >
@@ -74,7 +74,7 @@
                   <div
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] <
-                      item.graphvalues[item.graphvalues.length - 2]
+                        item.graphvalues[item.graphvalues.length - 2]
                     "
                     class="ml-n6 mr-6"
                   >
@@ -89,7 +89,7 @@
                   <div
                     v-if="
                       item.graphvalues[item.graphvalues.length - 1] ==
-                      item.graphvalues[item.graphvalues.length - 2]
+                        item.graphvalues[item.graphvalues.length - 2]
                     "
                     class="ml-n6 mr-6"
                   >

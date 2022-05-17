@@ -9,7 +9,7 @@
             <div class=" text-h5 mb-2">
               Dashboard
             </div>
-            <v-card :loading="loading" class="elevation-0" max-width="200">
+            <v-card :loading="loading" class="elevation-2" max-width="200">
               <template slot="progress">
                 <v-progress-linear
                   color="primary"
@@ -30,7 +30,7 @@
                     {{
                       parseInt(portValue)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                     }}
                   </v-list-item-title>
                   <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
@@ -47,7 +47,7 @@
                     {{
                       parseInt(cash)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                     }}
                   </v-list-item-title>
                   <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
@@ -64,7 +64,7 @@
                     {{
                       parseInt(akValue)
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                     }}
                   </v-list-item-title>
                   <v-list-item-title v-if="loading" class="text-h6 mb-1 mt-n6">
@@ -73,16 +73,22 @@
                 </v-list-item-content>
               </v-list-item>
             </v-card>
-            <v-btn class="primary mt-2" @click="showCode"
+            <v-btn elevation="1" class="primary  mt-2" @click="showCode"
               >Competition Code</v-btn
             >
           </div>
           <div>
-            <v-btn :to="`/ranking/${comp_id}`">Ranking</v-btn>
             <v-btn
+              elevation="1"
+              class="primary mt-2"
+              :to="`/ranking/${comp_id}`"
+              >Ranking</v-btn
+            >
+            <v-btn
+              elevation="1"
               data-testid="btnBuyDialog"
               @click="sellbuy"
-              class="mx-auto"
+              class="primary mt-2 ml-2"
               color="sucess"
               >Kaufen</v-btn
             >
@@ -91,19 +97,19 @@
 
         <v-col cols="12" sm="5"
           ><div class="z">
-            <div class=" text-h5 mb-2 ms-5">Dein Aktien Gemma</div>
+            <div class=" text-h5 mb-2 ms-5">Aktien</div>
             <v-data-table
               :loading="loading"
               :headers="headers"
               :items="akHave"
-              class="elevation-0 ms-5"
+              class="elevation-2 ms-5"
             >
               <template v-slot:[`item.wert`]="{ item }">
                 <div>
                   {{
                     parseInt(item.wert)
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                   }}
                 </div>
               </template>
@@ -112,7 +118,7 @@
                   {{
                     parseInt(item.buy_price)
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '€'
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "€"
                   }}
                 </div>
               </template>
@@ -121,16 +127,18 @@
                   {{
                     parseInt(item.count)
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
                   }}
                 </div>
               </template>
               <template v-slot:[`item.verkaufen`]="{ item }">
                 <v-btn
                   @click="openSellDialog(item)"
+                  outlined
+                  elevation="0"
+                  class="  mt-2 mb-2 me-2"
                   small
-                  plain
-                  class="primary  mt-2 mb-2 me-2"
+                  color="primary"
                   >Verkaufen</v-btn
                 >
               </template>
@@ -141,42 +149,47 @@
         <v-col cols="12" sm="2"></v-col>
       </v-row>
     </v-container>
-    <v-dialog v-model="sellDialog" max-width="500px">
+    <v-dialog v-model="sellDialog" max-width="300px">
       <v-card>
         <div class="d-flex justify-space-around">
-          <v-container
-            fluid
-            :style="[
-              !visible
-                ? {
-                    'border-bottom': '1px solid #fff',
-                  }
-                : {
-                    'border-bottom': '1px solid rgba(0,0,0,0.12)',
-                  },
-            ]"
-            style="border-right:1px solid rgba(0,0,0,0.12)"
-          >
-            <div>
-              Verkaufen
-            </div>
-            <v-text-field
-              v-model="sellCount"
-              hide-details
-              single-line
-              type="number"
-              @input="sellAkWert"
-            />
-            <div>
-              <p class="font-weight-bold">Wert:</p>
-              <p>{{ sellWert }}</p>
-            </div>
-            <v-btn @click="sellAk" small class="primary  mt-2 mb-2"
-              >Verkaufen</v-btn
+          <v-container fluid>
+            <v-row
+              ><v-col cols="12" sm="6"
+                ><div>
+                  Verkaufen
+                </div>
+                <v-text-field
+                  v-model="sellCount"
+                  hide-details
+                  single-line
+                  type="number"
+                  @input="sellAkWert"
+              /></v-col>
+              <v-col cols="12" sm="6"
+                ><div>
+                  <p>Wert:</p>
+                  <p>{{ sellWert }}</p>
+                </div></v-col
+              ></v-row
             >
-            <v-btn @click="closeSell" small class="primary  mt-2 mb-2"
+            <div class="d-flex justify-space-around">
+              <v-btn
+                @click="sellAk"
+                elevation="1"
+                small
+                block
+                class="primary  mt-1 mb-1 mx-auto"
+                >Verkaufen</v-btn
+              >
+            </div>
+
+            <!-- <v-btn
+              @click="closeSell"
+              elevation="1"
+              small
+              class="primary  mt-1 mb-1"
               >Close</v-btn
-            >
+            > -->
           </v-container>
         </div>
       </v-card>
@@ -393,9 +406,9 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import TopBarMarket from '../components/TopBarMarket.vue';
-import server from '@/serverInterface';
+import axios from "axios";
+import TopBarMarket from "../components/TopBarMarket.vue";
+import server from "@/serverInterface";
 
 export default {
   components: {
@@ -456,7 +469,7 @@ export default {
       this.visible = true;
     },
     async getData() {
-      this.user = (await server.get('http://localhost:3000/user/data')).data;
+      this.user = (await server.get("http://localhost:3000/user/data")).data;
       // console.log(this.user);
     },
     async getStocks() {
@@ -468,7 +481,7 @@ export default {
       // console.log(this.stocks);
     },
     async buyStock() {
-      console.log('buy');
+      console.log("buy");
       let newItem = {
         isin: this.curAk.isin,
         buy_price: this.curAk.kurs,
@@ -531,7 +544,7 @@ export default {
       let ak = {};
       let kurs = {};
       for (let a of this.stocks) {
-        if (a.isin != '0000') {
+        if (a.isin != "0000") {
           kurs = this.akData.find((e) => e.isin == a.isin);
           ak = {
             name: this.akInfo.find((e) => e.isin == a.isin).title,
@@ -555,10 +568,10 @@ export default {
     (this.loading = true), await this.getData();
     await this.getStocks();
     this.akInfo = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akInfo')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akInfo")
     ).data;
     this.akKurs = (
-      await axios.get('https://heroku-porftolio-crawler.herokuapp.com/akKurs')
+      await axios.get("https://heroku-porftolio-crawler.herokuapp.com/akKurs")
     ).data;
     // console.log(this.akInfo);
     // console.log(this.akKurs);
@@ -576,7 +589,7 @@ export default {
       sellDialog: false,
       cash: 0,
       compCode_dialog: false,
-      compCode: '',
+      compCode: "",
       anzGeld: 0,
       buyCount: 0,
       portValue: 0,
@@ -595,31 +608,31 @@ export default {
       stocks: [],
       headers: [
         {
-          text: 'Name',
-          align: 'start',
-          value: 'name',
+          text: "Name",
+          align: "start",
+          value: "name",
         },
         {
-          text: 'Isin',
-          align: 'start',
+          text: "Isin",
+          align: "start",
           sortable: false,
-          value: 'isin',
+          value: "isin",
         },
-        { text: 'Wert', value: 'wert' },
-        { text: 'Kaufpreis', value: 'buy_price' },
-        { text: 'Count?', value: 'count' },
-        { text: '', value: 'verkaufen' },
+        { text: "Wert", value: "wert" },
+        { text: "Kaufpreis", value: "buy_price" },
+        { text: "Count?", value: "count" },
+        { text: "", value: "verkaufen" },
       ],
       headersKaufen: [
         {
-          text: 'Name',
-          align: 'center',
+          text: "Name",
+          align: "center",
           sortable: true,
-          value: 'name',
+          value: "name",
         },
-        { text: 'ISIN', value: 'isin', sortable: false },
-        { text: 'Kurs', value: 'kurs' },
-        { text: 'Kaufen', value: 'actions', sortable: false },
+        { text: "ISIN", value: "isin", sortable: false },
+        { text: "Kurs", value: "kurs" },
+        { text: "Kaufen", value: "actions", sortable: false },
       ],
     };
   },
