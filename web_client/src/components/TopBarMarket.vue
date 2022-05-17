@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app elevation="3" color="secondary" dark class="px-16">
+  <v-app-bar app elevation="1" color="secondary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
     <v-btn color="white" outlined @click="logOut">Logout</v-btn>
 
