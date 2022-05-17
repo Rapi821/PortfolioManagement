@@ -9,7 +9,7 @@
             <div class=" text-h5 mb-2">
               Dashboard
             </div>
-            <v-card :loading="loading" class="elevation-2" max-width="200">
+            <v-card :loading="loading" class="elevation-2" max-width="203">
               <template slot="progress">
                 <v-progress-linear
                   color="primary"
@@ -73,27 +73,27 @@
                 </v-list-item-content>
               </v-list-item>
             </v-card>
+            <div>
+              <v-btn
+                elevation="1"
+                class="primary mt-2"
+                :to="`/ranking/${comp_id}`"
+                >Ranking</v-btn
+              >
+              <v-btn
+                elevation="1"
+                data-testid="btnBuyDialog"
+                @click="sellbuy"
+                class="primary mt-2 ml-2"
+                color="sucess"
+                >Kaufen</v-btn
+              >
+            </div>
             <v-btn elevation="1" class="primary  mt-2" @click="showCode"
               >Competition Code</v-btn
             >
           </div>
-          <div>
-            <v-btn
-              elevation="1"
-              class="primary mt-2"
-              :to="`/ranking/${comp_id}`"
-              >Ranking</v-btn
-            >
-            <v-btn
-              elevation="1"
-              data-testid="btnBuyDialog"
-              @click="sellbuy"
-              class="primary mt-2 ml-2"
-              color="sucess"
-              >Kaufen</v-btn
-            >
-          </div></v-col
-        >
+        </v-col>
 
         <v-col cols="12" sm="5"
           ><div class="z">
