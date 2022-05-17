@@ -1,12 +1,13 @@
 <template>
   <v-app
-    style="background-image: linear-gradient(to left top, #ccf0ff, #d3f2ff, #d9f3ff, #e0f5ff, #e6f7ff);"
+    style="background-image: linear-gradient(to left top, #b3e7ff, #d3f2ff, #d9f3ff, #e0f5ff, #e6f7ff);"
   >
     <!-- <v-app-bar app color="primary" dark class="px-16">
       <div class="d-none d-xl-flex a"></div>
       <v-btn color="black" active-class="white black--text" to="/LoginRegister"
         >Button1</v-btn
       >
+    style="background-image: linear-gradient(to left top, #ccf0ff, #d3f2ff, #d9f3ff, #e0f5ff, #e6f7ff);"
 
       <v-spacer></v-spacer>
       <v-btn outlined>Button2</v-btn>

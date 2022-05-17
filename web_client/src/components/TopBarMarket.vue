@@ -1,21 +1,14 @@
 <template>
-  <v-app-bar app color="secondary" dark class="px-16">
+  <v-app-bar app elevation="3" color="secondary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
-    <v-btn color="black" active-class="white black--text" @click="logOut"
-      >Logout</v-btn
-    >
+    <v-btn color="white" outlined @click="logOut">Logout</v-btn>
 
     <v-spacer></v-spacer>
-    <v-btn
-      outlined
-      active-class="white primary--text"
-      :to="`/Market/${comp_id}`"
-      >Market</v-btn
-    >
+    <v-btn outlined active-class="" :to="`/Market/${comp_id}`">Market</v-btn>
     <v-btn
       data-testid="btnMainMenu"
       outlined
-      active-class="white primary--text"
+      active-class=""
       class="mx-3"
       :to="`/mainmenu`"
       >Main Menu</v-btn
@@ -43,7 +36,7 @@ export default {
   methods: {
     async logOut() {
       await server.post("http://localhost:3000/user/logout");
-       this.$router.replace(`/`);
+      this.$router.replace(`/`);
     },
   },
 };

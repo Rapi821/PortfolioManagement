@@ -360,13 +360,16 @@
           <v-window-item
             ><v-form
               ><v-text-field
+                class="ml-2"
                 data-testid="MoneyForStock"
                 label="Geld"
                 name="toBuy"
                 type="number"
                 color="primary"
                 v-model="anzGeld"
-                @input="getBuyCount"/><v-text-field
+                @input="getBuyCount"/>
+              <v-text-field
+                class="ml-2"
                 label="Anzahl"
                 name="Count"
                 type="text"
@@ -381,10 +384,16 @@
             data-testid="btnBuyStock"
             @click="buyStock"
             small
-            class="primary  mt-2 mb-2"
+            class="primary  mt-0 ml-2 mb-2"
+            elevation="1"
             >Kaufen</v-btn
           >
-          <v-btn @click="closeBuy" small class="primary  mt-2 mb-2"
+          <v-btn
+            @click="closeBuy"
+            small
+            text
+            color="primary"
+            class=" ml-2 mt-0 mb-2"
             >Cancel</v-btn
           >
         </v-card-action>

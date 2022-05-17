@@ -106,21 +106,26 @@
                   <v-btn
                     :to="`/detailAk/${item.isin}/${comp_id}`"
                     small
-                    plain
-                    class="primary mt-2 mb-2"
+                    outlined
+                    color="primary"
+                    class=" mt-2 mb-2"
                     >Details</v-btn
                   >
                   <v-btn
                     @click="openSellDialog(item)"
                     small
-                    plain
-                    class="primary ml-2 mt-2 mb-2 me-2"
+                    outlined
+                    class=" ml-2 mt-2 mb-2 me-2"
+                    color="primary"
                     >Handeln</v-btn
                   >
                 </td>
               </tr>
             </template>
           </v-data-table>
+          <v-btn class="mt-2" :to="`/Dashboard/${comp_id}`" color="primary"
+            >Zurück zum Portfolio</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>

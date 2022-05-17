@@ -51,12 +51,12 @@
 </template>
 
 <script>
-import Chart from '../components/Chart';
-import TopBar from '../components/TopBar.vue';
+import Chart from "../components/Chart";
+import TopBar from "../components/TopBar.vue";
 
-import axios from 'axios';
+import axios from "axios";
 export default {
-  name: 'Market',
+  name: "Market",
   data() {
     return {
       componentRefreshKey: 0,
@@ -76,7 +76,7 @@ export default {
         labels: [],
         datasets: [
           {
-            backgroundColor: '#f87979',
+            backgroundColor: "#f87979",
 
             data: [],
           },
@@ -119,7 +119,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 1;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -138,7 +138,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 7;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -157,7 +157,7 @@ export default {
         lastMonth = 12;
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
-          lastYear + '-' + lastMonth + '-' + today.getDate();
+          lastYear + "-" + lastMonth + "-" + today.getDate();
         this.datum = yesterdayDate;
         // console.log(yesterdayDate);
         this.akByTime = (
@@ -167,7 +167,7 @@ export default {
         ).data;
       } else {
         const yesterdayDate =
-          today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+          today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(

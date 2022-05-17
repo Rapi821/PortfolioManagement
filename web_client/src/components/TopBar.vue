@@ -1,9 +1,7 @@
 <template>
-  <v-app-bar app color="secondary" dark class="px-16">
+  <v-app-bar app elevation="3" color="secondary" dark class="px-16">
     <div class="d-none d-xl-flex a"></div>
-    <v-btn color="black" active-class="white black--text" @click="logOut"
-      >Logout</v-btn
-    >
+    <v-btn color="white" outlined @click="logOut">Logout</v-btn>
     <v-spacer></v-spacer>
     <v-tooltip left v-model="show">
       <template v-slot:activator="{ on }">
@@ -12,12 +10,7 @@
           @mouseover="$emit('someEvent')"
           @mouseleave="$emit('someEvent')"
         >
-          <v-btn
-            disabled
-            v-bind="attrs"
-            v-on="on"
-            outlined
-            active-class="white primary--text"
+          <v-btn disabled v-bind="attrs" v-on="on" outlined active-class=""
             >Market</v-btn
           >
         </div>
@@ -28,11 +21,7 @@
       >
     </v-tooltip>
 
-    <v-btn
-      outlined
-      active-class="white primary--text"
-      class="mx-3"
-      :to="`/mainmenu`"
+    <v-btn outlined active-class="" class="mx-3" :to="`/mainmenu`"
       >Main Menu</v-btn
     >
     <!-- <v-btn outlined active-class="white primary--text" to="/Dashboard"

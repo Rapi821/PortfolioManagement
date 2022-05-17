@@ -6,9 +6,9 @@
         <v-col cols="12" sm="2" class="mr-n2"> </v-col>
         <v-col cols="12" sm="5">
           <div class="text-h5 mt-n8 font-weight-light">
-            {{ akInfo.title }}
+            {{ akInfo.title }} Aktienkurs
           </div>
-          <v-card outlined>
+          <v-card elevation="2">
             <!-- <v-card-title justify="center" class="mx-auto">{{
               akInfo.title
             }}</v-card-title> -->
@@ -37,7 +37,7 @@
         <v-col cols="12" sm="1"> </v-col>
         <v-col cols="12" sm="2" class="">
           <!-- Buysellwindow nicht so gut mit padding maybe noch ändern -->
-          <v-card class="buysellwindow"
+          <v-card class="buysellwindow" elevation="2"
             ><div class="textfields d-flex justify-space-between">
               <div class="text-h8 font-weight-light">Zeitraum</div>
               <div class="text-h8 font-weight-light">Veränderung</div>
@@ -87,7 +87,11 @@
               >
             </div></v-card
           >
-          <v-btn block class="mt-2 primary" @click="openBuySellDialog"
+          <v-btn
+            block
+            elevation="1"
+            class="mt-2 primary"
+            @click="openBuySellDialog"
             ><v-container class="mx-auto">Kaufen</v-container>|<v-container
               class="mx-auto"
               >Verkaufen</v-container
@@ -305,21 +309,21 @@
 </template>
 
 <script>
-import Chart from '../components/Chart';
-import TopBarMarket from '../components/TopBarMarket.vue';
-import axios from 'axios';
-import server from '@/serverInterface';
+import Chart from "../components/Chart";
+import TopBarMarket from "../components/TopBarMarket.vue";
+import axios from "axios";
+import server from "@/serverInterface";
 export default {
-  name: 'Market',
+  name: "Market",
   data() {
     return {
-      dialog2: true,
+      dialog2: false,
       buyDialog: false,
       step: 0,
       weeklyPerChange: 0,
       dailyPerChange: 0,
       monthlyPerChange: 0,
-      dialog: true,
+      dialog: false,
       loading: false,
       componentRefreshKey: 0,
       datum: new Date(),
@@ -364,9 +368,9 @@ export default {
         labels: [],
         datasets: [
           {
-            backgroundColor: '#f87979',
-            type: 'line',
-            borderColor: '#f87979',
+            backgroundColor: "#f87979",
+            type: "line",
+            borderColor: "#f87979",
             data: [],
           },
         ],
@@ -397,7 +401,7 @@ export default {
 
   methods: {
     async buyStock() {
-      console.log('buy');
+      console.log("buy");
       let newItem = {
         isin: this.curAk.isin,
         buy_price: this.curAk.kurs,
@@ -491,7 +495,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 1;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -514,7 +518,7 @@ export default {
       const today = new Date();
       const yesterday = today.getDate() - 7;
       const yesterdayDate =
-        today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + yesterday;
+        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + yesterday;
       // console.log(yesterdayDate);
       this.akByTime = (
         await axios.get(
@@ -529,10 +533,10 @@ export default {
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
-        let zeitMod = elm.zeit.split('T');
+        let zeitMod = elm.zeit.split("T");
         // console.log(zeitMod);
         let datum = zeitMod[0];
-        let zeit = zeitMod[1].split('.')[0];
+        let zeit = zeitMod[1].split(".")[0];
         let datumZeit = `${zeit} ${datum}`;
         this.chartData.labels.push(datumZeit);
       }
@@ -557,7 +561,7 @@ export default {
         lastMonth = 12;
         let lastYear = today.getFullYear() - 1;
         const yesterdayDate =
-          lastYear + '-' + lastMonth + '-' + today.getDate();
+          lastYear + "-" + lastMonth + "-" + today.getDate();
         this.datum = yesterdayDate;
         // console.log(yesterdayDate);
         this.akByTime = (
@@ -567,7 +571,7 @@ export default {
         ).data;
       } else {
         const yesterdayDate =
-          today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+          today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
         // console.log(yesterdayDate);
         this.akByTime = (
           await axios.get(
@@ -581,10 +585,10 @@ export default {
       for (let elm of this.akByTime) {
         // this.chartData.datasets.data.push(elm.wert);
         this.test.push(elm.wert);
-        let zeitMod = elm.zeit.split('T');
+        let zeitMod = elm.zeit.split("T");
         // console.log(zeitMod);
         let datum = zeitMod[0];
-        let zeit = zeitMod[1].split('.')[0];
+        let zeit = zeitMod[1].split(".")[0];
         let datumZeit = `${zeit} ${datum}`;
         this.chartData.labels.push(datumZeit);
       }
@@ -613,7 +617,7 @@ export default {
     },
 
     async getData() {
-      this.user = (await server.get('http://localhost:3000/user/data')).data;
+      this.user = (await server.get("http://localhost:3000/user/data")).data;
       // console.log(this.user);
     },
     async getComps() {

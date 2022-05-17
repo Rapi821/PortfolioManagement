@@ -280,12 +280,11 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="primary" text @click="close"> Cancel </v-btn>
               <v-btn
                 elevation="1"
                 data-testid="btncompcreate"
-                color="blue darken-1"
-                text
+                color="primary"
                 @click="createCompetition"
               >
                 Create
@@ -310,15 +309,8 @@
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" elevation="1" text @click="close">
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                elevation="1"
-                text
-                @click="competetionEnter"
-              >
+              <v-btn color="primary" text @click="close"> Cancel </v-btn>
+              <v-btn color="primary" elevation="1" @click="competetionEnter">
                 Enter
               </v-btn>
             </v-card-actions>
