@@ -12,6 +12,7 @@ const cheerio = require('cheerio');
 const app = express();
 const routes = require('./routes');
 
+const url = 'https://www.finanzen.net/aktien';
 const aktien = [
   'adidas',
   'airbus',
@@ -119,7 +120,7 @@ let job = new CronJob(
     for (let elm of aktien) {
       (async () => {
         //  Seitenaufruf
-        let res = await axios(`https://www.finanzen.net/aktien/${elm}-aktie`);
+        let res = await axios(`${url}/${elm}-aktie`);
         const html = res.data;
         const $ = cheerio.load(html);
 
@@ -163,13 +164,15 @@ let job = new CronJob(
 let jobHeroku = new CronJob(
   '* * * * *',
   async function () {
-   console.log('Yay');
-   let data = (await axios.get('https://heroku-porftolio-crawler.herokuapp.com')).data;
-   console.log(data);
-  }, 'Americas/Vancouver'
+    console.log('Yay');
+    let data = (
+      await axios.get('https://heroku-porftolio-crawler.herokuapp.com')
+    ).data;
+    console.log(data);
+  },
+  'Americas/Vancouver'
 );
 // jobHeroku.start();
-
 
 // Function um Datum & Zeit zu bekommen
 function getTime() {
@@ -208,7 +211,7 @@ async function crawling() {
   for (let elm of aktien) {
     (async () => {
       //  Seitenaufruf
-      let res = await axios(`https://www.finanzen.net/aktien/${elm}-aktie`);
+      let res = await axios(`${url}/${elm}-aktie`);
       const html = res.data;
       const $ = cheerio.load(html);
 

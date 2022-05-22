@@ -2,16 +2,19 @@ GET http://localhost:5000/akInfo
 
 ###
 
-GET http://localhost:3000/akKurs
+GET http://localhost:5000/akKurs
 
 ###
 
-GET http://localhost:3000/akDetail/DE000BAY0017
+GET http://localhost:5000/akDetail/DE000BAY0017
 
 ###
 
-GET http://localhost:3000/akDetailKurs/DE000A1EWWW0
+GET http://localhost:5000/akDetailKurs/DE000A1EWWW0
 
 ###
 
 GET http://localhost:5000/kursByTime/DE000A1EWWW0WKN?date=2022-02-02
+
+###
+GET https://heroku-porftolio-crawler.herokuapp.com/akInfo
