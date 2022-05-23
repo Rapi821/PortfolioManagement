@@ -335,11 +335,11 @@ export default {
         maintainAspectRatio: false,
         layout: {
           padding: {
-            left: 10,
-            top: 10,
+            left: 12,
+            top: 17,
             // Nicht responsive nicht so nice
             right: 20,
-            bottom: 10,
+            bottom: 12,
           },
         },
         plugins: {
