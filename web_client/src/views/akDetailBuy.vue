@@ -370,7 +370,7 @@ export default {
           {
             backgroundColor: "#f87979",
             type: "line",
-            borderColor: "#f87979",
+            borderColor: "#008bcc",
             data: [],
           },
         ],
