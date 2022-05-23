@@ -181,7 +181,7 @@ export default {
         { text: "WKN", value: "wkn", sortable: false },
         { text: "Kurs", value: "kurs" },
         { text: "", value: "graphvalues", width: "15%", sortable: false },
-        { text: "", value: "actions", width: "22%" },
+        { text: "", value: "actions", width: "22%", sortable: false },
       ],
     };
   },
